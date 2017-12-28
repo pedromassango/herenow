@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "162317275839",
+    "firebase_url": "https://here-now-4f4e7.firebaseio.com",
+    "project_id": "here-now-4f4e7",
+    "storage_bucket": "here-now-4f4e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162317275839:android:0edbb01bd340325f",
+        "android_client_info": {
+          "package_name": "com.pedromassango.herenow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162317275839-nnadbipmfkm7t1rkh9ajma9t4da4159h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pedromassango.herenow",
+            "certificate_hash": "faa1b30b60f9ed1ac273b59f878921dadfc5e985"
+          }
+        },
+        {
+          "client_id": "162317275839-n8eqgjpgfqr1hasuo4s59mvoc99u12kp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL6hW1s37z0n_tcNYVjieIlvwRLHi9OZ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162317275839-n8eqgjpgfqr1hasuo4s59mvoc99u12kp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

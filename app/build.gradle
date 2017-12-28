@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.pedromassango.herenow"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        // AccountKit - Optional: Specify the language(s) your app supports.
+        resConfigs "en_US", "pt_PT"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:recyclerview-v7:$android_support_version"
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support:cardview-v7:$android_support_version"
+    implementation "com.android.support:support-v4:$android_support_version"
+
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    implementation "com.google.android.gms:play-services-maps:$google_version"
+    implementation "com.google.android.gms:play-services:$google_version"
+    implementation "com.google.firebase:firebase-database:$google_version"
+
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.apl-devs:appintro:v4.2.2'
+    implementation "com.facebook.android:facebook-android-sdk:$facebook_version"
+    implementation 'com.facebook.android:account-kit-sdk:4.24.0'
+
+    //implementation 'com.google.code.gson:gson:2.8.0'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.3.0'
+            }
+        }
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'
