@@ -11,12 +11,16 @@ class PreferencesHelper(context: Context) {
 
     // Keys to fetch
     private val KEY_LOGGED_IN = "com.pedromassango.herenow.database.keys.KEY_LOGGED_IN"
+    private val KEY_FIRST_TIME = "com.pedromassango.herenow.database.keys.KEY_FIRST_TIME"
     private val KEY_NAME = "com.pedromassango.herenow.database.keys.KEY_NAME"
     private val KEY_NUMBER = "com.pedromassango.herenow.database.keys.KEY_NUMBER"
     private val KEY_COUNTRY_CODE = "com.pedromassango.herenow.database.keys.KEY_C_CODE"
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor = preferences.edit()
+
+    var isFirstTime = preferences.getBoolean(KEY_FIRST_TIME, true)
+    set(value) = editor.putBoolean(KEY_FIRST_TIME, value).apply()
 
     var isLoggedIn = preferences.getBoolean(KEY_LOGGED_IN, false)
     set(value) = editor.putBoolean(KEY_LOGGED_IN, value).apply()

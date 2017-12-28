@@ -32,5 +32,13 @@
     <string name="map">Mapa</string>
     <string name="peoples">Pessoas</string>
     <string name="settings">Configuracoes</string>
+    <string name="intro_one_title">Veja quem esta perto de você neste momento.</string>
+    <string name="intro_one_description">Adicione contactos para poderem ver você no mapa.</string>
+    <string name="intro_two_title">Seja visto por quem você quer.</string>
+    <string name="intro_two_description">Você precisa estar na lista de seus amigos, para você poder ver eles também.</string>
+    <string name="intro_tree_title">Dé-me acesso a sua localizacao</string>
+    <string name="intro_tree_description">Nao se preocupe, mostramos sua localizacao apenas a quem voce permitir.</string>
+    <string name="intro_four_title">Precisamos de acesso a seus contactos.</string>
+    <string name="intro_four_description">Precisaremos listar e dar a escolha a você de selecionar quem pode ver voê no mapa.</string>
 
 </resources>

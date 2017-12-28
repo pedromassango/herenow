@@ -1,17 +1,24 @@
 package com.pedromassango.herenow.ui.main
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.data.PreferencesHelper
+import com.pedromassango.herenow.ui.intro.IntroActivity
+import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.ContactsFragment
 import com.pedromassango.herenow.ui.main.fragments.MapFragment
 import com.pedromassango.herenow.ui.main.fragments.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener {
+
+    //MVP
+    private lateinit var presenter: MainPresenter
 
     private fun initializeViews() {
 
@@ -20,7 +27,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         // set a listener in bootom navigation bar
         bottom_navigation.setOnNavigationItemSelectedListener(this)
-        bottom_navigation.selectedItemId = R.id.action_home
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +36,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         // Setup views
         initializeViews()
 
+        presenter = MainPresenter(this, PreferencesHelper(this))
+        presenter.checkAppState()
+    }
+
+    override fun startSplashActivity() = startActivity( Intent(this, IntroActivity::class.java))
+
+    override fun startLoginActivity() = startActivity( Intent(this, LoginActivity::class.java))
+
+    override fun showMapFragment() {
+        // Select the map fragment
+        // in bottom navigation view
+        bottom_navigation.selectedItemId = R.id.action_home
     }
 
     // BottomNavigationView item selected listener

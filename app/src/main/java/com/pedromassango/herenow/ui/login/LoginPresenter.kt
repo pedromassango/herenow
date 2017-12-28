@@ -37,6 +37,9 @@ class LoginPresenter(val view: LoginContract.View,
                 preferencesHelper.phoneNumber = phoneNumber
                 preferencesHelper.countryCode = countryCode
 
+                // Change login state
+                preferencesHelper.isLoggedIn = true
+
                 // Start next activity
                 view.closeActivityAndSendResultBAck()
             }
