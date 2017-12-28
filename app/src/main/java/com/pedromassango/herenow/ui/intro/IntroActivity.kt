@@ -8,7 +8,7 @@ import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.PreferencesHelper
-import com.pedromassango.herenow.ui.login.LoginActivity
+import com.pedromassango.herenow.ui.main.MainActivity
 
 /**
  * Created by pedromassango on 12/28/17.
@@ -71,7 +71,7 @@ class IntroActivity : AppIntro() {
                 .isFirstTime = false
 
         // Start Login Activity
-        startActivity( Intent(this, LoginActivity::class.java))
+        startActivity( Intent(this, MainActivity::class.java))
     }
 
 

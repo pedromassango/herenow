@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
         val id = item.itemId
         val title: String
 
-        // Select the item clicked
-        bottom_navigation.selectedItemId = id
+        // Check the item clicked
+        item.isChecked = true
 
         val fragment = when (id) {
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
         }
 
         // Change activity title, with the selected fragment name
-        setTitle( title)
+        this.title = title
 
         // Show the selected frament
         supportFragmentManager.beginTransaction()
