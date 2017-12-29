@@ -25,26 +25,18 @@ class ContactsFragment : Fragment() {
             DUMMY.add( Contact(contactName =  "Pedro Massango",phoneNumber =  "948 020 308",lat =  0.0, lng =  0.0))
             DUMMY.add( Contact(contactName =  "Suraia Gourgel",phoneNumber =  "928 573 178",lat =  0.0, lng =  0.0))
             DUMMY.add( Contact(contactName =  "Anisio Isidoro",phoneNumber =  "923 123 463",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Januario Machado",phoneNumber =  "934 783 328",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Suraia Gourgel",phoneNumber =  "928 573 178",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Mendes Massango",phoneNumber =  "910 527 624",lat =  0.0, lng =  0.0))
         }
 
-        private var INSTANCE: ContactsFragment? = null
-
         fun getInstance(): ContactsFragment {
-            if (INSTANCE == null) {
-                INSTANCE = ContactsFragment()
-            }
-            return INSTANCE!!
+            return ContactsFragment()
         }
     }
 
     // Contacts adapter
-    lateinit var contactsAdapter: ContactAdapter
+    private lateinit var contactsAdapter: ContactAdapter
 
     // Root view
-    lateinit var root: View
+    private lateinit var root: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +61,7 @@ class ContactsFragment : Fragment() {
             recycler_contacts.adapter = contactsAdapter
         }
 
-        return view
+        return root
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -80,10 +72,10 @@ class ContactsFragment : Fragment() {
     }
 
     fun showContacts(data : ArrayList<Contact>) {
-       /* with(root){
+        with(root){
             tv_no_contacts.visibility = View.GONE
             progressbar_contacts.visibility = View.GONE
-        }*/
+        }
 
         contactsAdapter.add(data)
     }

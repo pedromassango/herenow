@@ -2,12 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="70dp"
     android:background="@android:color/transparent"
     android:clickable="true"
+    android:gravity="center_horizontal"
     android:focusable="true"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/row_padding_bottom"
     android:paddingEnd="@dimen/row_padding_end"
     android:paddingLeft="@dimen/row_padding_end"
     android:paddingRight="@dimen/row_padding_start"
@@ -32,14 +31,23 @@
         android:layout_centerVertical="true"
         android:visibility="gone" />
 
+    <Switch
+        android:id="@+id/cb_contact_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
     <RelativeLayout
+        android:layout_toStartOf="@id/cb_contact_permission"
+        android:layout_toLeftOf="@id/cb_contact_permission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/tv_contact_first_letter"
         android:layout_toRightOf="@id/tv_contact_first_letter"
-        android:orientation="vertical"
-        android:paddingEnd="0dp"
+        android:paddingEnd="16dp"
         android:paddingLeft="@dimen/size16"
         android:paddingRight="@dimen/size16"
         android:paddingStart="@dimen/size16">
@@ -65,13 +73,7 @@
             android:textSize="12sp"
             android:typeface="serif" />
 
-        <Switch
-            android:id="@+id/cb_contact_permission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
-
     </RelativeLayout>
+
 
 </RelativeLayout>
