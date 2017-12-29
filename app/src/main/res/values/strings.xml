@@ -42,5 +42,7 @@
     <string name="intro_four_description">Precisaremos listar e dar a escolha a você de selecionar quem pode ver voê no mapa.</string>
     <string name="empty_contacts_info">Sem contactos na sua lista.\n Clique aqui para adicionar.</string>
     <string name="add">Adicionar</string>
+    <string name="pick_contact_failed">Falha ao escolher contato.</string>
+    <string name="you_are_here">Você esta aqui!</string>
 
 </resources>

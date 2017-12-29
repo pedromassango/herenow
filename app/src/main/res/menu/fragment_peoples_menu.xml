@@ -6,4 +6,10 @@
         android:title="@string/add"
         android:icon="@drawable/ic_add_white"
         app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_import_contact"
+        android:title="Selecionar dos contactos"
+       android:icon="@drawable/ic_import_contacts_black"
+        app:showAsAction="ifRoom"/>
+
 </menu>

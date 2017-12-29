@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
         // Check the item clicked
         item.isChecked = true
 
-        val fragment = when (id) {
+        val fragment: Fragment = when (id) {
 
             R.id.action_home -> {
                 title = getString(R.string.map)
