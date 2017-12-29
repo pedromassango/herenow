@@ -40,5 +40,7 @@
     <string name="intro_tree_description">Nao se preocupe, mostramos sua localizacao apenas a quem voce permitir.</string>
     <string name="intro_four_title">Precisamos de acesso a seus contactos.</string>
     <string name="intro_four_description">Precisaremos listar e dar a escolha a você de selecionar quem pode ver voê no mapa.</string>
+    <string name="empty_contacts_info">Sem contactos na sua lista.\n Clique aqui para adicionar.</string>
+    <string name="add">Adicionar</string>
 
 </resources>

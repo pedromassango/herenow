@@ -5,14 +5,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.Toolbar
+import android.view.Menu
 import android.view.MenuItem
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.PreferencesHelper
 import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
-import com.pedromassango.herenow.ui.main.fragments.ContactsFragment
-import com.pedromassango.herenow.ui.main.fragments.MapFragment
-import com.pedromassango.herenow.ui.main.fragments.SettingsFragment
+import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
+import com.pedromassango.herenow.ui.main.fragments.map.MapFragment
+import com.pedromassango.herenow.ui.main.fragments.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -23,7 +24,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
     private fun initializeViews() {
 
         // Set a toolbar as actionBar
-        setSupportActionBar(toolbar as Toolbar)
+        val mToolbar = (toolbar as Toolbar)
+        setSupportActionBar(mToolbar)
+
+        // Changing tollbar title and subtitle text color
+        mToolbar.setTitleTextColor(resources.getColor(R.color.white))
+        mToolbar.setSubtitleTextColor(resources.getColor(R.color.white))
 
         // set a listener in bootom navigation bar
         bottom_navigation.setOnNavigationItemSelectedListener(this)
@@ -87,5 +93,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
                 .commit()
 
         return false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
     }
 }

@@ -8,4 +8,4 @@
     android:layout_height="match_parent"
     android:layout_below="@id/toolbar"
     map:mapType="normal"
-    tools:context="com.pedromassango.herenow.ui.main.fragments.MapFragment" />
+    tools:context="com.pedromassango.herenow.ui.main.fragments.map.MapFragment" />

@@ -1,4 +1,4 @@
-package com.pedromassango.herenow.ui.main.fragments
+package com.pedromassango.herenow.ui.main.fragments.settings
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,7 +15,7 @@ class SettingsFragment : Fragment() {
     companion object {
         private var INSTANCE: SettingsFragment? = null
 
-        fun getInstance(): SettingsFragment{
+        fun getInstance(): SettingsFragment {
             if(INSTANCE == null){
                 INSTANCE = SettingsFragment()
             }

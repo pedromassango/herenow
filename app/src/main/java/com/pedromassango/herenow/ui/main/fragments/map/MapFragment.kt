@@ -1,4 +1,4 @@
-package com.pedromassango.herenow.ui.main.fragments
+package com.pedromassango.herenow.ui.main.fragments.map
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,7 +15,7 @@ class MapFragment : Fragment() {
     companion object {
         var INSTANCE: MapFragment? = null
 
-        fun getInstance(): MapFragment{
+        fun getInstance(): MapFragment {
             if(INSTANCE == null){
                 INSTANCE = MapFragment()
             }
