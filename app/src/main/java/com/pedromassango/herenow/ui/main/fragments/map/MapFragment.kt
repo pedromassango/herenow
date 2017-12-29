@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
+import com.pedromassango.herenow.extras.Utils
 
 /**
  * Created by pedromassango on 12/28/17.
@@ -61,6 +62,10 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if(!Utils.isConnected(context)){
+            return
+        }
+
         // setup GoogleApiClient and location request
         // Setup  googleApiClient
         googleApiClient = GoogleApiClient.Builder(context)
@@ -79,7 +84,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
         myLocationMarker = MarkerOptions()
 
         myLocationMarker.title(getString(R.string.you_are_here))
-        myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on))
+//        myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on))
         myLocationMarker.draggable(false)
         myLocationMarker.flat(true)
 
@@ -91,8 +96,8 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
         val view = inflater!!.inflate(R.layout.fragment_maps, container, false)
 
         // Setting up MapFragment
-        val mapFragment = activity.supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        //val mapFragment = view.findViewById<View>(R.id.map) as SupportMapFragment
+        //mapFragment.getMapAsync(this)
 
         return view
     }
