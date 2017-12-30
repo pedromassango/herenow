@@ -21,7 +21,6 @@
         android:background="@drawable/contact_row_circle"
         android:gravity="center"
         android:maxLength="1"
-        android:text="P"
         android:textColor="@color/white" />
 
     <de.hdodenhof.circleimageview.CircleImageView

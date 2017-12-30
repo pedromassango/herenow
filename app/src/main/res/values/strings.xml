@@ -7,6 +7,7 @@
 
     <string name="please_wait">Por favor, aguarde…</string>
     <string name="save_contacts">Salvar contacto(s)</string>
+    <string name="saving_contact">Salvando contacto…</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -18,10 +19,6 @@
     <string name="something_was_wrong">Algo de errado aconteceu, tente novamente!</string>
     <string name="login_cancelled">Você precisa estar logado!</string>
     <string name="login_error">Erro de login, tente novamente.</string>
-    <string name="select_contacts_to_import">Selecione contactos</string>
-    <string name="location_permission_alert_title">Permissão necessária</string>
-    <string name="location_permission_alert_message">Você precisa conseder permissão de Mapas para usar nossos serviços.</string>
-    <string name="permission_request_down">Permission request down!</string>
     <string name="sem_contactos_na_sua_lista_nclique_aqui_para_adicionar">Sem contactos.\nClique aqui para adicionar.</string>
     <string name="register_new_contact">Novo contacto</string>
     <string name="str_save">Salvar</string>
@@ -42,7 +39,12 @@
     <string name="intro_four_description">Precisaremos listar e dar a escolha a você de selecionar quem pode ver voê no mapa.</string>
     <string name="empty_contacts_info">Sem contactos na sua lista.\n Clique aqui para adicionar.</string>
     <string name="add">Adicionar</string>
-    <string name="pick_contact_failed">Falha ao escolher contato.</string>
     <string name="you_are_here">Você esta aqui!</string>
+    <string name="fail">Falha!</string>
+    <string name="unable_to_save_contact">Nao foi possivel salvar o contacto. verifique sua conexao a internet, e tente novamente.</string>
+    <string name="not_connection">Sem conexao!</string>
+    <string name="no_connection_message">Parece que o dispositivo esta sem conexao com a internet. Verifique, e tente novamente!</string>
+    <string name="getting_contacts">Carregando contactos, aguarde...</string>
+    <string name="get_contacts_error_click_toretry">Falha ao obter s contactos. Clique para tentar novamente.</string>
 
 </resources>

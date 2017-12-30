@@ -1,26 +1,26 @@
 package com.pedromassango.herenow.ui.main.fragments.contacts
 
 import android.app.Activity
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds
 import android.support.annotation.StringRes
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Patterns
 import android.view.*
 import android.widget.Toast
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.Utils
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
-
 import android.provider.ContactsContract as DeviceContract
-import android.provider.ContactsContract.CommonDataKinds
-import android.support.design.widget.TextInputLayout
-import android.support.v7.app.AlertDialog
-import android.util.Patterns
 
 
 /**
@@ -30,16 +30,6 @@ class ContactsFragment : Fragment(), ContactsContract.View {
 
     // Static fields
     companion object {
-        var DUMMY : ArrayList<Contact> = ArrayList()
-
-        init {
-            DUMMY.add( Contact(contactName =  "Pedro Massango",phoneNumber =  "948 020 308",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Anisio Isidoro",phoneNumber =  "923 123 463",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Mendes Massango",phoneNumber =  "910 527 624",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Pedro Massango",phoneNumber =  "948 020 308",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Suraia Gourgel",phoneNumber =  "928 573 178",lat =  0.0, lng =  0.0))
-            DUMMY.add( Contact(contactName =  "Anisio Isidoro",phoneNumber =  "923 123 463",lat =  0.0, lng =  0.0))
-        }
 
         fun getInstance(): ContactsFragment {
             return ContactsFragment()
@@ -55,6 +45,10 @@ class ContactsFragment : Fragment(), ContactsContract.View {
     // Root view
     private lateinit var root: View
 
+    // To check if has connection to internet
+    override val isConnected: Boolean
+        get() = Utils.isConnected(context)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,7 +56,7 @@ class ContactsFragment : Fragment(), ContactsContract.View {
         setHasOptionsMenu(true)
 
         // Intialize presenter
-        presenter = ContactsPresenter(this)
+        presenter = ContactsPresenter(this, RepositoryManager.contactsRepository(PreferencesHelper(context)))
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -87,14 +81,19 @@ class ContactsFragment : Fragment(), ContactsContract.View {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: show DUMMY data, just for tests
-        showContacts(DUMMY)
+        // Load user contacts
+        presenter.getUserContacts()
     }
 
-    override fun showContacts(data : ArrayList<Contact>) {
-        with(root){
+    override fun showContact(data: ArrayList<Contact>) {
+        data.forEach { showContact(it) }
+    }
+
+    override fun showContact(data: Contact) {
+        with(root) {
             tv_no_contacts.visibility = View.GONE
             progressbar_contacts.visibility = View.GONE
+            recycler_contacts.visibility = View.VISIBLE
         }
 
         contactsAdapter.add(data)
@@ -109,12 +108,12 @@ class ContactsFragment : Fragment(), ContactsContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        when(item!!.itemId){
-            R.id.action_add_contact ->{
+        when (item!!.itemId) {
+            R.id.action_add_contact -> {
                 // Show dialog to enter a new contact
                 showDialogNewContact()
             }
-            R.id.action_import_contact ->{
+            R.id.action_import_contact -> {
 
                 // Start contact picker intent
                 val iPicker = Intent(Intent.ACTION_PICK, DeviceContract.CommonDataKinds.Phone.CONTENT_URI)
@@ -125,11 +124,74 @@ class ContactsFragment : Fragment(), ContactsContract.View {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun showGetContactsProgress() {
+        with(root) {
+            recycler_contacts.visibility = View.GONE
+            tv_no_contacts.visibility = View.VISIBLE
+            tv_no_contacts.text = getString(R.string.getting_contacts)
+
+            progressbar_contacts.visibility = View.VISIBLE
+        }
+    }
+
+    override fun showGetContactsError() {
+        with(root) {
+            recycler_contacts.visibility = View.GONE
+            tv_no_contacts.visibility = View.VISIBLE
+            progressbar_contacts.visibility = View.GONE
+            tv_no_contacts.text = getString(R.string.get_contacts_error_click_toretry)
+            tv_no_contacts.setOnClickListener { presenter.getUserContacts() }
+        }
+    }
+
+    override fun showNoContacts() {
+        with(root) {
+            recycler_contacts.visibility = View.GONE
+            progressbar_contacts.visibility = View.GONE
+            tv_no_contacts.visibility = View.VISIBLE
+            tv_no_contacts.text = getString(R.string.empty_contacts_info)
+        }
+    }
+
+    override fun showSaveContactProgress() {
+        with(root) {
+            recycler_contacts.visibility = View.GONE
+            tv_no_contacts.visibility = View.VISIBLE
+            tv_no_contacts.text = getString(R.string.saving_contact)
+
+            progressbar_contacts.visibility = View.VISIBLE
+        }
+    }
+
+    override fun showNoInternetInfo() {
+        showDialog(R.string.not_connection, R.string.no_connection_message)
+    }
+
+    override fun dismissSaveContactProgress() {
+        with(root) {
+            tv_no_contacts.visibility = View.GONE
+            progressbar_contacts.visibility = View.GONE
+        }
+    }
+
+    override fun showSaveContactError() {
+        showDialog(R.string.fail, R.string.unable_to_save_contact)
+    }
+
+    private fun showDialog(@StringRes title: Int, @StringRes message: Int) {
+        val builder = AlertDialog.Builder(context)
+        builder.setCancelable(false)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton(R.string.str_ok, null)
+    }
+
     private fun showDialogNewContact() {
         //  View for this Dialog
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_number, null, false)
         val edtName = view.findViewById<TextInputLayout>(R.id.input_name)
         val edtNumber = view.findViewById<TextInputLayout>(R.id.input_number)
+
 
         // Building the input dialog
         val builder = AlertDialog.Builder(context)
@@ -166,17 +228,15 @@ class ContactsFragment : Fragment(), ContactsContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == ContactsContract.RESULT_CONTACT_PICKER){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ContactsContract.RESULT_CONTACT_PICKER) {
                 val contact = toContact(data!!)
-                if(contact != null) {
-                    presenter.contactPicked( contact)
-                }else{
+                if (contact != null) {
+                    presenter.contactPicked(contact)
+                } else {
                     showToast(R.string.something_was_wrong)
                 }
             }
-        }else{
-            showToast(R.string.pick_contact_failed)
         }
     }
 
@@ -185,7 +245,7 @@ class ContactsFragment : Fragment(), ContactsContract.View {
      * @param data the result to retrieve the contact picked info
      */
     private fun toContact(data: Intent): Contact? {
-        var cursor: Cursor? = null
+        val cursor: Cursor?
         try {
             // getData() method will have the Content Uri of the selected contact
             val uri = data.data

@@ -1,4 +1,4 @@
-package com.pedromassango.herenow.data
+package com.pedromassango.herenow.data.preferences
 
 import android.content.Context
 import android.preference.PreferenceManager

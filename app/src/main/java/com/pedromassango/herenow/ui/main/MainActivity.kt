@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.pedromassango.herenow.R
-import com.pedromassango.herenow.data.PreferencesHelper
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment

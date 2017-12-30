@@ -11,7 +11,7 @@ import com.facebook.accountkit.ui.AccountKitActivity
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.AccountKitSettings
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
-import com.pedromassango.herenow.data.PreferencesHelper
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
 
 /**
  * Created by pedromassango on 12/28/17.

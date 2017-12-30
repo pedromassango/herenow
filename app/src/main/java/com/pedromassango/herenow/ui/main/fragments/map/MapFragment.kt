@@ -1,16 +1,13 @@
 package com.pedromassango.herenow.ui.main.fragments.map
 
 import android.annotation.SuppressLint
-import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -36,10 +33,10 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
     override fun onConnectionFailed(p0: ConnectionResult) = logcat("onConnectionFailed: $p0")
 
     companion object {
-        var INSTANCE: MapFragment? = null
+        private var INSTANCE: MapFragment? = null
 
         fun getInstance(): MapFragment {
-            if(INSTANCE == null){
+            if (INSTANCE == null) {
                 INSTANCE = MapFragment()
             }
             return INSTANCE!!
@@ -62,7 +59,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(!Utils.isConnected(context)){
+        if (!Utils.isConnected(context)) {
             return
         }
 
@@ -84,7 +81,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
         myLocationMarker = MarkerOptions()
 
         myLocationMarker.title(getString(R.string.you_are_here))
-//        myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on))
+        //myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_on))
         myLocationMarker.draggable(false)
         myLocationMarker.flat(true)
 
@@ -120,12 +117,12 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
             // Location updates
             logcat("onLocationChanged")
 
-            if(arleadySet){
+            if (arleadySet) {
                 // set the marker at first time
                 myLocationMarker.position(LatLng(location.latitude, location.longitude))
                 myMarker = map.addMarker(myLocationMarker)
                 arleadySet = true
-            }else{
+            } else {
                 // Update the hold position to a recent position
                 myMarker.position = LatLng(location.latitude, location.longitude)
             }

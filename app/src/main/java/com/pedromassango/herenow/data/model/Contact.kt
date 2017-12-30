@@ -9,8 +9,8 @@ import com.google.firebase.database.IgnoreExtraProperties
 @IgnoreExtraProperties
 data class Contact(var phoneNumber: String,
                    var contactName: String = "N/A",
-                   var lastLocation: String = "N/A",
-                   var permissions: HashMap<String, Boolean> = HashMap(),
+                   var lastLocation: String = "",
+                   var allow: Boolean = false,
                    var lat: Double = 0.0,
                    var lng: Double = 0.0) {
 
@@ -30,7 +30,20 @@ data class Contact(var phoneNumber: String,
 
     fun toMap(): Map<String, Any> {
         val map = java.util.HashMap<String, Any>()
-        map.put(phoneNumber, contactName)
+        map.put("phoneNumber", phoneNumber)
+        map.put("contactName", contactName)
+        map.put("lastLocation", lastLocation)
+        map.put("allow", allow)
+        map.put("lat", lat)
+        map.put("lng", lng)
+        return map
+    }
+
+    fun toDataMap(): Map<String, Any> {
+        val map = java.util.HashMap<String, Any>()
+        map.put("phoneNumber", phoneNumber)
+        map.put("contactName", contactName)
+        map.put("allow", allow)
         return map
     }
 }

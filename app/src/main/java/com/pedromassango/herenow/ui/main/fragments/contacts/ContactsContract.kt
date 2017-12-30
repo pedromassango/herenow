@@ -13,11 +13,20 @@ class ContactsContract {
     }
 
     interface View {
-        fun showContacts(data: ArrayList<Contact>)
+        fun showContact(data: Contact)
+        fun showContact(data: ArrayList<Contact>)
+        fun showSaveContactProgress()
+        fun dismissSaveContactProgress()
+        fun showSaveContactError()
+        val isConnected: Boolean
+        fun showNoInternetInfo()
+        fun showGetContactsProgress()
+        fun showNoContacts()
+        fun showGetContactsError()
     }
 
     interface Presenter {
         fun contactPicked(contact: Contact)
-
+        fun getUserContacts()
     }
 }

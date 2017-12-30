@@ -1,6 +1,6 @@
 package com.pedromassango.herenow.ui.main
 
-import com.pedromassango.herenow.data.PreferencesHelper
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
 
 /**
  * Created by pedromassango on 12/28/17.

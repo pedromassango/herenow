@@ -5,7 +5,7 @@ import com.facebook.accountkit.AccountKit
 import com.facebook.accountkit.AccountKitCallback
 import com.facebook.accountkit.AccountKitError
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
-import com.pedromassango.herenow.data.PreferencesHelper
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
 
 /**
  * Created by pedromassango on 12/28/17.

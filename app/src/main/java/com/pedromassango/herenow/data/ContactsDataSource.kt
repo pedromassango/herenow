@@ -12,5 +12,12 @@ interface ContactsDataSource{
         fun onError()
     }
 
-    fun saveUserContacts(contact: Contact, iSaveListener: ISaveListener)
+    interface IGetListener<T>{
+        fun onSuccess(data: ArrayList<T>)
+        fun onError()
+    }
+
+    fun getContacts(iGetListener: IGetListener<Contact>?)
+
+    fun saveUserContacts(contact: Contact, iSaveListener: ISaveListener?)
 }

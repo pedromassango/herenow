@@ -3,13 +3,12 @@ package com.pedromassango.herenow.ui.intro
 import android.Manifest
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.pedromassango.herenow.R
-import com.pedromassango.herenow.data.PreferencesHelper
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.ui.main.MainActivity
 
 /**
