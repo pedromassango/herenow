@@ -1,6 +1,10 @@
 package com.pedromassango.herenow.ui.main.fragments.map
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -24,13 +28,7 @@ import com.pedromassango.herenow.extras.Utils
 /**
  * Created by pedromassango on 12/28/17.
  */
-class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
-
-    // If suspended, try to reconnect
-    override fun onConnectionSuspended(p0: Int) = googleApiClient.connect()
-
-    // If connection failed, print a message
-    override fun onConnectionFailed(p0: ConnectionResult) = logcat("onConnectionFailed: $p0")
+class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationListener {
 
     companion object {
         private var INSTANCE: MapFragment? = null
@@ -47,9 +45,8 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
     lateinit var presenter: MapPresenter
 
     //Map
-    lateinit var map: GoogleMap
-    private lateinit var googleApiClient: GoogleApiClient
-    private lateinit var locationRequest: LocationRequest
+    var map: GoogleMap? = null
+    private lateinit var locationManager: LocationManager
     private lateinit var myLocationMarker: MarkerOptions
     private lateinit var myMarker: Marker
 
@@ -59,23 +56,8 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!Utils.isConnected(context)) {
-            return
-        }
-
-        // setup GoogleApiClient and location request
-        // Setup  googleApiClient
-        googleApiClient = GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build()
-
-        // Location request, for location updates
-        locationRequest = LocationRequest()
-        locationRequest.interval = 60000 // 1min
-        locationRequest.fastestInterval = 30000 // 30sec
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        // Setup locationManager
+        locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Prepare user marker on map
         myLocationMarker = MarkerOptions()
@@ -89,6 +71,11 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
         presenter = MapPresenter(this)
     }
 
+    override fun onDestroy() {
+        map = null
+        super.onDestroy()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_maps, container, false)
 
@@ -99,35 +86,41 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, GoogleApiC
         return view
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
         logcat("onMapReady")
         this.map = mMap!!
 
-        // Connect to googleApiClient to request location
-        googleApiClient.connect()
+        // Request location updates
+
+        val distance = 0F
+        val timeUpdate = 0L
+
+        // Request location updates via NETWORK
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate,distance, this)
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate,distance, this)
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onConnected(p0: Bundle?) {
-        // Once connected, to google API, request location updates
-        logcat("onConnected - requestLocationUpdates")
+    // Location updates
+    override fun onLocationChanged(location: Location?) {
+        logcat("onLocationChanged")
 
-        // Location request listener
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest) { location ->
-            // Location updates
-            logcat("onLocationChanged")
-
-            if (arleadySet) {
-                // set the marker at first time
-                myLocationMarker.position(LatLng(location.latitude, location.longitude))
-                myMarker = map.addMarker(myLocationMarker)
-                arleadySet = true
-            } else {
-                // Update the hold position to a recent position
-                myMarker.position = LatLng(location.latitude, location.longitude)
-            }
-
-            //TODO: save my location
+        if (arleadySet) {
+            // set the marker at first time
+            myLocationMarker.position(LatLng(location!!.latitude, location.longitude))
+            myMarker = map!!.addMarker(myLocationMarker)
+            arleadySet = true
+        } else {
+            // Update the hold position to a recent position
+            myMarker.position = LatLng(location!!.latitude, location.longitude)
         }
+
+        //TODO: save my location
     }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) = logcat("onStatusChanged:  $provider")
+
+    override fun onProviderDisabled(provider: String?) = logcat("onProviderDisabled:  $provider")
+
+    override fun onProviderEnabled(provider: String?) = logcat("onProviderEnabled:  $provider")
 }

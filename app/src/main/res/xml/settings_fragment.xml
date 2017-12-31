@@ -4,4 +4,5 @@
     <EditTextPreference android:id="@+id/username"
         android:hint="Digite seu nome"
         android:title="Username"/>
+
 </PreferenceScreen>

@@ -10,7 +10,7 @@
     </style>
 
     <style name="dialogStyle" parent="AlertDialog.AppCompat">
-        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:color">@color/primaryText</item>
     </style>
     <!-- ACCOUNTKIT THEME
     <style name="AppLoginTheme" parent="Theme.AccountKit">

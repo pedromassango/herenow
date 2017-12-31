@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.ui.main.MainActivity
+import org.w3c.dom.Text
+import org.xmlpull.v1.XmlPullParser
 
 /**
  * Created by pedromassango on 12/28/17.
