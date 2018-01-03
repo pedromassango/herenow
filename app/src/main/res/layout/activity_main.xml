@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/login_cover_image"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/application_bacground"
     tools:context="com.pedromassango.herenow.ui.main.MainActivity">
 
     <include

@@ -23,10 +23,14 @@ class ContactsContract {
         fun showGetContactsProgress()
         fun showNoContacts()
         fun showGetContactsError()
+        fun showPermissionUpdateSuccess()
+        fun updateContactInAdapter(position: Int, contact: Contact)
+        fun showPleaseWaitMessage()
     }
 
     interface Presenter {
         fun contactPicked(contact: Contact)
         fun getUserContacts()
+        fun contactPerssionSwitched(mPosition: Int, contact: Contact)
     }
 }

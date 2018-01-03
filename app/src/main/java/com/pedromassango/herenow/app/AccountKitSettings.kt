@@ -21,11 +21,13 @@ object AccountKitSettings{
             uiManager = SkinManager(
                     SkinManager.Skin.TRANSLUCENT,
                     context.resources.getColor(R.color.colorPrimary),
-                    R.drawable.login_cover_image,
-                    SkinManager.Tint.BLACK, 55.0)
+                    R.drawable.application_bacground,
+                    SkinManager.Tint.BLACK, 15.0)
 
             // ... perform additional configuration ...
             output!!.setReceiveSMS(true)
+            output!!.setFacebookNotificationsEnabled( true)
+            output!!.setDefaultCountryCode("+244")
             output!!.setUIManager(uiManager)
         }
 

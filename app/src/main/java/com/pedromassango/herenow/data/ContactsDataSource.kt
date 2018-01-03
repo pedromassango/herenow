@@ -12,12 +12,33 @@ interface ContactsDataSource{
         fun onError()
     }
 
-    interface IGetListener<T>{
+    interface IListener<T>{
         fun onSuccess(data: ArrayList<T>)
         fun onError()
     }
 
-    fun getContacts(iGetListener: IGetListener<Contact>?)
+    interface ILocationListener{
+        fun onAllowed(contact: Contact)
+        fun onNoFriends()
+        fun onError()
+    }
+
+    interface IContactListener{
+        fun onSuccess(contact: Contact?)
+    }
+
+    interface IResultListener{
+        fun onSuccess(position: Int)
+        fun onError(position: Int)
+    }
+
+    fun updateUserLocation(latitude: Double, longitude: Double)
+
+    fun getContacts(iListener: IListener<Contact>?)
+
+    fun updatePermission(position: Int, number:Contact, iListener: IResultListener?)
 
     fun saveUserContacts(contact: Contact, iSaveListener: ISaveListener?)
+
+    fun keepFriendsLocationSync(iLocationListener: ILocationListener)
 }

@@ -12,11 +12,17 @@ class ContactsPresenter(private val view: ContactsContract.View,
                         private val contactsRepository: ContactsRepository) : ContactsContract.Presenter {
 
     override fun getUserContacts() {
+
+        /*if(!view.isConnected){
+            view.showNoInternetInfo()
+            return
+        }*/
+
         // Show progress
         view.showGetContactsProgress()
 
         // Get contacts
-        contactsRepository.getContacts(object : ContactsDataSource.IGetListener<Contact>{
+        contactsRepository.getContacts(object : ContactsDataSource.IListener<Contact>{
             override fun onSuccess(data: ArrayList<Contact>) {
 
                 if(data.isEmpty()){
@@ -57,6 +63,40 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
                 // Show save contact error
                 view.showSaveContactError()
+            }
+        })
+    }
+
+    override fun contactPerssionSwitched(mPosition: Int, contact: Contact) {
+        logcat("contactPerssionSwitched: $mPosition")
+
+        // Check if is connected, before execute task
+        if(!view.isConnected){
+            view.showNoInternetInfo()
+            return
+        }
+
+        // Show a feedback, that the action is being processed
+        view.showPleaseWaitMessage()
+
+        contactsRepository.updatePermission(mPosition, contact, object : ContactsDataSource.IResultListener {
+            override fun onError(position: Int) {
+                logcat("onError: $position")
+
+                // Revert changes on Adapter
+                contact.allow = !contact.allow
+
+                view.updateContactInAdapter(position, contact)
+                view.showNoInternetInfo()
+            }
+
+            override fun onSuccess(position: Int) {
+                logcat("onSuccess: $position")
+
+                // Update item in adapter
+                view.updateContactInAdapter( position, contact)
+
+                view.showPermissionUpdateSuccess()
             }
         })
     }

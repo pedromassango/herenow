@@ -2,6 +2,7 @@ package com.pedromassango.herenow.extras
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.pedromassango.herenow.BuildConfig
 
 import com.pedromassango.herenow.app.HereNow
 
@@ -12,7 +13,12 @@ import com.pedromassango.herenow.app.HereNow
 object Utils {
 
     fun isConnected(context: Context): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return cm.activeNetworkInfo.isConnected
+        return try {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            cm.activeNetworkInfo.isConnected
+        } catch (ex: NullPointerException) {
+            ex.printStackTrace()
+            false
+        }
     }
 }

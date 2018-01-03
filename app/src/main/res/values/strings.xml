@@ -19,15 +19,16 @@
     <string name="something_was_wrong">Algo de errado aconteceu, tente novamente!</string>
     <string name="login_cancelled">Você precisa estar logado!</string>
     <string name="login_error">Erro de login, tente novamente.</string>
+    <string name="login_error_message">Erro de login, parece que nao ha uma conexao com a internet!</string>
     <string name="sem_contactos_na_sua_lista_nclique_aqui_para_adicionar">Sem contactos.\nClique aqui para adicionar.</string>
     <string name="register_new_contact">Novo contacto</string>
     <string name="str_save">Salvar</string>
     <string name="phone_number_invalid">Você adiciou um número invalido!</string>
     <string name="permission_denied_message">Você precisa garantir permissao  para o funcionamento do app.\nClique aqui para tentar novamente!</string>
     <string name="no_friend_to_show_title">Sem amigos disponivel!</string>
-    <string name="no_friend_to_show_message">Ninguem adicionou voce a lista de permitidos a ver sua localizacao. Partlinhe o app, e peca aos amigos que adicionem voce a lista de quem pode ver sua localizacao.</string>
+    <string name="no_friend_to_show_message">Ninguem adicionou voce a lista de permitidos a ver sua localizacao. Partlihe o app, e peca aos amigos que adicionem voce a lista de quem pode ver sua localizacao.</string>
     <string name="map">Mapa</string>
-    <string name="peoples">Pessoas</string>
+    <string name="contacts">Contactos</string>
     <string name="settings">Configuracoes</string>
     <string name="intro_one_title">Veja quem esta perto de você neste momento.</string>
     <string name="intro_one_description">Adicione contactos para poderem ver você no mapa.</string>
@@ -46,5 +47,8 @@
     <string name="no_connection_message">Parece que o dispositivo esta sem conexao com a internet. Verifique, e tente novamente!</string>
     <string name="getting_contacts">Carregando contactos, aguarde...</string>
     <string name="get_contacts_error_click_toretry">Falha ao obter s contactos. Clique para tentar novamente.</string>
+    <string name="permission_updated_success">Permissao actualizada!</string>
+    <string name="retry">Tentar novamente</string>
+    <string name="get_friends_location_error">Falha ao obter a localizacao de seus contactos. Clique aqui para tentar novamente!</string>
 
 </resources>

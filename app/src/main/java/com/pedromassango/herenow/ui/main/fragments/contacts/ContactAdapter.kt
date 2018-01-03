@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
 
 /**
  * Created by pedromassango on 12/29/17.
  */
-class ContactAdapter(mContacts: ArrayList<Contact>) : RecyclerView.Adapter<ContactVH>() {
+class ContactAdapter(private val mContacts: ArrayList<Contact>,
+                     private var switcherListener: ISuitcherPermissionListener) : RecyclerView.Adapter<ContactVH>() {
 
     private var contacts: ArrayList<Contact>
 
@@ -17,8 +19,9 @@ class ContactAdapter(mContacts: ArrayList<Contact>) : RecyclerView.Adapter<Conta
         contacts = mContacts
     }
 
-    constructor() : this(arrayListOf()) {
+    constructor(switcherListener: ISuitcherPermissionListener) : this(arrayListOf(), switcherListener) {
         contacts = arrayListOf()
+        this.switcherListener = switcherListener
     }
 
     fun add(contact: Contact) {
@@ -36,9 +39,18 @@ class ContactAdapter(mContacts: ArrayList<Contact>) : RecyclerView.Adapter<Conta
         }
     }
 
+    fun update(position: Int, contact: Contact) {
+        synchronized(ContactAdapter::class.java) {
+            contacts.removeAt(position)
+            contacts.add(position, contact)
+            notifyItemChanged(position)
+        }
+    }
+
     override fun onBindViewHolder(holder: ContactVH?, position: Int) {
         val contact = contacts[position]
-        holder!!.bindViews(contact)
+
+        holder!!.bindViews(contact, switcherListener)
     }
 
     override fun getItemCount(): Int = contacts.size

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds
 import android.support.annotation.StringRes
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
@@ -19,14 +18,15 @@ import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
+import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
 import android.provider.ContactsContract as DeviceContract
 
 
 /**
- * Created by pedromassango on 12/28/17.
+ * Created by Pedro Massango on 12/28/17.
  */
-class ContactsFragment : Fragment(), ContactsContract.View {
+class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionListener{
 
     // Static fields
     companion object {
@@ -63,10 +63,9 @@ class ContactsFragment : Fragment(), ContactsContract.View {
         root = inflater!!.inflate(R.layout.fragment_contacts, container, false)
 
         // Initialize adapter
-        contactsAdapter = ContactAdapter()
+        contactsAdapter = ContactAdapter(this)
 
         with(root) {
-            tv_no_contacts.setTextColor(resources.getColor(R.color.white))
 
             // RecyclerView setup
             recycler_contacts.setHasFixedSize(true)
@@ -101,7 +100,7 @@ class ContactsFragment : Fragment(), ContactsContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
 
-        inflater!!.inflate(R.menu.fragment_peoples_menu, menu)
+        inflater!!.inflate(R.menu.fragment_contacts_menu, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -132,6 +131,10 @@ class ContactsFragment : Fragment(), ContactsContract.View {
 
             progressbar_contacts.visibility = View.VISIBLE
         }
+    }
+
+    override fun showPleaseWaitMessage() {
+        showToast(R.string.please_wait)
     }
 
     override fun showGetContactsError() {
@@ -178,12 +181,23 @@ class ContactsFragment : Fragment(), ContactsContract.View {
         showDialog(R.string.fail, R.string.unable_to_save_contact)
     }
 
+    override fun showPermissionUpdateSuccess() {
+        showToast(R.string.permission_updated_success, Toast.LENGTH_LONG)
+    }
+
+    override fun updateContactInAdapter(position: Int, contact: Contact) {
+        contactsAdapter.update(position, contact)
+    }
+
     private fun showDialog(@StringRes title: Int, @StringRes message: Int) {
         val builder = AlertDialog.Builder(context)
         builder.setCancelable(false)
         builder.setTitle(title)
         builder.setMessage(message)
         builder.setPositiveButton(R.string.str_ok, null)
+
+        builder.create()
+                .show()
     }
 
     private fun showDialogNewContact() {
@@ -225,7 +239,7 @@ class ContactsFragment : Fragment(), ContactsContract.View {
         return true
     }
 
-
+    // Contact picker request result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -238,6 +252,10 @@ class ContactsFragment : Fragment(), ContactsContract.View {
                 }
             }
         }
+    }
+
+    override fun updatePermission(position: Int, contact: Contact) {
+        presenter.contactPerssionSwitched(position, contact)
     }
 
     /**
@@ -269,7 +287,7 @@ class ContactsFragment : Fragment(), ContactsContract.View {
         }
     }
 
-    private fun showToast(@StringRes pick_contact_failed: Int) {
+    private fun showToast(@StringRes pick_contact_failed: Int, duration: Int = Toast.LENGTH_SHORT) {
         Toast.makeText(activity, pick_contact_failed, Toast.LENGTH_SHORT).show()
     }
 }

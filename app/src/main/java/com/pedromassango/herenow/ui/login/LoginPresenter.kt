@@ -13,7 +13,6 @@ import com.pedromassango.herenow.data.preferences.PreferencesHelper
 class LoginPresenter(val view: LoginContract.View,
                      val preferencesHelper: PreferencesHelper) : LoginContract.Presenter {
 
-
     override fun startLoginRequest() {
         view.startAccountKitActivity()
     }
@@ -21,6 +20,10 @@ class LoginPresenter(val view: LoginContract.View,
     override fun saveAccountInfo() {
         logcat("saveAccountInfo...")
 
+        // show a loader
+        view.showLoader()
+
+        // AccoutKit to retrieve user information
         AccountKit.getCurrentAccount(object : AccountKitCallback<Account> {
 
             override fun onSuccess(account: Account) {
@@ -30,23 +33,33 @@ class LoginPresenter(val view: LoginContract.View,
                 val phoneNumber = number.toString()
                 val countryCode = number.countryCode
 
-                logcat("NUMBER: $number")
+                logcat("number: $number")
+                logcat("RAWnumber: ${number.rawPhoneNumber}")
                 logcat("countryCode: $countryCode")
+                logcat("countryCodeISO: ${number.countryCodeIso}")
+
+                logcat("saving upser data remotely")
+
+                // Change login state
+                preferencesHelper.isLoggedIn = true
 
                 // Save user phone number and country code
                 preferencesHelper.phoneNumber = phoneNumber
                 preferencesHelper.countryCode = countryCode
 
-                // Change login state
-                preferencesHelper.isLoggedIn = true
+                // remove loader
+                view.dismissLoader()
 
                 // Start next activity
-                view.closeActivityAndSendResultBAck()
+                view.closeActivity()
             }
 
             override fun onError(accountKitError: AccountKitError) {
                 logcat("Account Kit onError: ${accountKitError.userFacingMessage}")
                 logcat("Account Kit onError: $accountKitError")
+
+                view.dismissLoader()
+                view.showLoginErrorMessage()
             }
         })
 

@@ -19,7 +19,10 @@ class LoginContract {
 
         fun startAccountKitActivity()
 
-        fun closeActivityAndSendResultBAck()
+        fun closeActivity()
+        fun showLoginErrorMessage()
+        fun showLoader()
+        fun dismissLoader()
     }
 
     interface Presenter {

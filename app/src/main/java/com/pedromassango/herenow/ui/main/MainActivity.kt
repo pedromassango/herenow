@@ -1,19 +1,13 @@
 package com.pedromassango.herenow.ui.main
 
 import android.content.Intent
-import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
-import android.support.v7.widget.PopupMenu
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.PopupWindow
-import android.widget.TextView
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.ui.intro.IntroActivity
@@ -53,9 +47,10 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
         presenter.checkAppState()
     }
 
-    override fun startSplashActivity() = startActivity( Intent(this, IntroActivity::class.java))
+    override fun startSplashActivity() =
+            startActivityForResult(Intent(this, IntroActivity::class.java), MainContract.LOGIN_REQUEST)
 
-    override fun startLoginActivity() = startActivity( Intent(this, LoginActivity::class.java))
+    override fun startLoginActivity() = startActivity(Intent(this, LoginActivity::class.java))
 
     override fun showMapFragment() {
 
@@ -79,7 +74,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, BottomNavigationVie
                 MapFragment.getInstance()
             }
             R.id.action_contacts -> {
-                title = getString(R.string.peoples)
+                title = getString(R.string.contacts)
                 ContactsFragment.getInstance()
             }
             R.id.action_settings -> {

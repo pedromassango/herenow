@@ -23,13 +23,6 @@
         android:maxLength="1"
         android:textColor="@color/white" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/row_contact_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerVertical="true"
-        android:visibility="gone" />
-
     <Switch
         android:id="@+id/cb_contact_permission"
         android:layout_width="wrap_content"
@@ -46,10 +39,10 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/tv_contact_first_letter"
         android:layout_toRightOf="@id/tv_contact_first_letter"
-        android:paddingEnd="16dp"
-        android:paddingLeft="@dimen/size16"
-        android:paddingRight="@dimen/size16"
-        android:paddingStart="@dimen/size16">
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="@dimen/size16"
+        android:layout_marginRight="@dimen/size16"
+        android:layout_marginStart="@dimen/size16">
 
         <TextView
             android:id="@+id/tv_contact_name"
