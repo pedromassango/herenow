@@ -11,9 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -42,6 +40,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
     //Map
     var map: GoogleMap? = null
+    lateinit var mMapView: MapView
     private lateinit var locationManager: LocationManager
     private lateinit var myLocationMarker: MarkerOptions
     private lateinit var myMarker: Marker
@@ -76,19 +75,53 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
                 RepositoryManager.contactsRepository(PreferencesHelper(context)))
     }
 
+    override fun onStart() {
+        super.onStart()
+        mMapView.onStart()
+    }
+
+    override fun onStop() {
+        mMapView.onStop()
+        super.onStop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mMapView.onResume()
+    }
+
+    override fun onPause() {
+        mMapView.onPause()
+        super.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mMapView.onLowMemory()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        mMapView.onSaveInstanceState(outState)
+    }
+
     override fun onDestroy() {
-        map = null
+        mMapView.onDestroy()
         super.onDestroy()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         root = inflater!!.inflate(R.layout.fragment_maps, container, false)
-        logcat("onCreateView -> MapFragment")
 
-        // Setting up MapFragment
-        //val mapFragment = fragmentManager.findFragmentById(R.id.maps) as SupportMapFragment
-        //mapFragment.getMapAsync(this)
-        //getMapAsync(this)
+        mMapView = root.maps_view
+        mMapView.onCreate(savedInstanceState)
+        mMapView.onResume() // To setup Map immediately
+
+        try {
+            MapsInitializer.initialize(activity.applicationContext)
+        }catch (ex : Exception){ ex.printStackTrace()}
+
+        mMapView.getMapAsync(this)
 
         return root
     }
@@ -96,13 +129,13 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: enable it to fetch friends location
-        removeLoader()
-        //presenter.showFriendsOnMap()
+        // start fetch friends location
+        presenter.showFriendsOnMap()
     }
 
     override fun showGetFriendsLocationError() {
         with(root) {
+            mMapView.visibility = View.GONE
             tv_map_info.visibility = View.VISIBLE
             tv_map_info.text = getString(R.string.get_friends_location_error)
             tv_map_info.setOnClickListener { presenter.showFriendsOnMap() }
@@ -122,6 +155,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
     override fun showLoader() {
         with(root) {
+            mMapView.visibility = View.GONE
             progressbar_maps.visibility = View.VISIBLE
             tv_map_info.visibility = View.VISIBLE
             tv_map_info.text = getString(R.string.please_wait)
@@ -130,6 +164,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
     override fun removeLoader() {
         with(root) {
+            mMapView.visibility = View.VISIBLE
             progressbar_maps.visibility = View.GONE
             tv_map_info.visibility = View.GONE
         }
@@ -140,6 +175,8 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         logcat("onMapReady")
 
         this.map = mMap!!
+        map?.isBuildingsEnabled = true
+        map?.mapType = GoogleMap.MAP_TYPE_NORMAL
 
         // Request location updates
 

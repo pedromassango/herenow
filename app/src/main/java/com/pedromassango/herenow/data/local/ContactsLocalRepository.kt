@@ -45,6 +45,7 @@ class ContactsLocalRepository : ContactsDataSource {
         arrayList.add(Contact(contactName = "Jose Eduardo", phoneNumber = "948 020 308"))
         arrayList.add(Contact(contactName = "Suraia Gourgel", phoneNumber = "928 573 178"))
 
-        iListener?.onSuccess(arrayList)
+        //iListener?.onSuccess(arrayList)
+        iListener?.onError()
     }
 }

@@ -9,6 +9,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="appTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="dialogStyle" parent="AlertDialog.AppCompat">
         <item name="android:color">@color/primaryText</item>
     </style>

@@ -14,11 +14,13 @@ import android.util.Patterns
 import android.view.*
 import android.widget.Toast
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
 import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
+import com.pedromassango.herenow.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
 import android.provider.ContactsContract as DeviceContract
 
@@ -63,7 +65,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         root = inflater!!.inflate(R.layout.fragment_contacts, container, false)
 
         // Initialize adapter
-        contactsAdapter = ContactAdapter(this)
+        contactsAdapter = ContactAdapter(activity, this)
 
         with(root) {
 
@@ -79,6 +81,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        HereNow.logcat("ContactsFragment: onViewCreated.")
 
         // Load user contacts
         presenter.getUserContacts()
@@ -89,6 +92,9 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
     }
 
     override fun showContact(data: Contact) {
+
+        HereNow.logcat("showContact: onSuccess ->  $data")
+
         with(root) {
             tv_no_contacts.visibility = View.GONE
             progressbar_contacts.visibility = View.GONE
@@ -153,6 +159,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
             progressbar_contacts.visibility = View.GONE
             tv_no_contacts.visibility = View.VISIBLE
             tv_no_contacts.text = getString(R.string.empty_contacts_info)
+            tv_no_contacts.setOnClickListener { showDialogNewContact() }
         }
     }
 
@@ -164,10 +171,6 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
             progressbar_contacts.visibility = View.VISIBLE
         }
-    }
-
-    override fun showNoInternetInfo() {
-        showDialog(R.string.not_connection, R.string.no_connection_message)
     }
 
     override fun dismissSaveContactProgress() {
@@ -233,7 +236,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
     private fun validEntries(number: String): Boolean {
         if (!Patterns.PHONE.matcher(number).matches()) {
-            showToast(R.string.phone_number_invalid)
+            showToast(R.string.phone_number_invalid, Toast.LENGTH_LONG)
             return false
         }
         return true

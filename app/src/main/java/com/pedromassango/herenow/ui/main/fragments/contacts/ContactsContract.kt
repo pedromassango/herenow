@@ -19,7 +19,6 @@ class ContactsContract {
         fun dismissSaveContactProgress()
         fun showSaveContactError()
         val isConnected: Boolean
-        fun showNoInternetInfo()
         fun showGetContactsProgress()
         fun showNoContacts()
         fun showGetContactsError()

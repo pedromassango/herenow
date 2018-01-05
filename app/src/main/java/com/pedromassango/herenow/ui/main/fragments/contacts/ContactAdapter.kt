@@ -1,5 +1,6 @@
 package com.pedromassango.herenow.ui.main.fragments.contacts
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,19 +11,10 @@ import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
 /**
  * Created by pedromassango on 12/29/17.
  */
-class ContactAdapter(private val mContacts: ArrayList<Contact>,
+class ContactAdapter(private val context: Context,
                      private var switcherListener: ISuitcherPermissionListener) : RecyclerView.Adapter<ContactVH>() {
 
-    private var contacts: ArrayList<Contact>
-
-    init {
-        contacts = mContacts
-    }
-
-    constructor(switcherListener: ISuitcherPermissionListener) : this(arrayListOf(), switcherListener) {
-        contacts = arrayListOf()
-        this.switcherListener = switcherListener
-    }
+    private var contacts = arrayListOf<Contact>()
 
     fun add(contact: Contact) {
         synchronized(ContactAdapter::class.java) {
@@ -56,7 +48,7 @@ class ContactAdapter(private val mContacts: ArrayList<Contact>,
     override fun getItemCount(): Int = contacts.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ContactVH {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.row_contact, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.row_contact, parent, false)
         return ContactVH(view)
     }
 }

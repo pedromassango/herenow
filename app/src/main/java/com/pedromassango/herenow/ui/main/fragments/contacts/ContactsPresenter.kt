@@ -1,5 +1,6 @@
 package com.pedromassango.herenow.ui.main.fragments.contacts
 
+import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.ContactsDataSource
 import com.pedromassango.herenow.data.ContactsRepository
@@ -12,11 +13,10 @@ class ContactsPresenter(private val view: ContactsContract.View,
                         private val contactsRepository: ContactsRepository) : ContactsContract.Presenter {
 
     override fun getUserContacts() {
-
-        /*if(!view.isConnected){
-            view.showNoInternetInfo()
+        HereNow.logcat("ContactsPresenter: getUserContacts..")
+        if(!view.isConnected){
             return
-        }*/
+        }
 
         // Show progress
         view.showGetContactsProgress()
@@ -24,6 +24,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
         // Get contacts
         contactsRepository.getContacts(object : ContactsDataSource.IListener<Contact>{
             override fun onSuccess(data: ArrayList<Contact>) {
+                HereNow.logcat("ContactsPresenter: getUserContacts - onSuccess")
 
                 if(data.isEmpty()){
                     view.showNoContacts()
@@ -34,6 +35,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
             }
 
             override fun onError() {
+                HereNow.logcat("ContactsPresenter: getUserContacts - onError")
                 view.showGetContactsError()
             }
         })
@@ -44,7 +46,6 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
         // Check if there is connection to internet
         if(!view.isConnected){
-            view.showNoInternetInfo()
             return
         }
 
@@ -54,6 +55,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
         // Save the contact
         contactsRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener{
             override fun onSaved() {
+
                 view.dismissSaveContactProgress()
                 view.showContact(contact)
             }
@@ -72,7 +74,6 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
         // Check if is connected, before execute task
         if(!view.isConnected){
-            view.showNoInternetInfo()
             return
         }
 
@@ -87,7 +88,6 @@ class ContactsPresenter(private val view: ContactsContract.View,
                 contact.allow = !contact.allow
 
                 view.updateContactInAdapter(position, contact)
-                view.showNoInternetInfo()
             }
 
             override fun onSuccess(position: Int) {

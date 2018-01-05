@@ -43,9 +43,8 @@
     <string name="you_are_here">Você esta aqui!</string>
     <string name="fail">Falha!</string>
     <string name="unable_to_save_contact">Nao foi possivel salvar o contacto. verifique sua conexao a internet, e tente novamente.</string>
-    <string name="not_connection">Sem conexao!</string>
-    <string name="no_connection_message">Parece que o dispositivo esta sem conexao com a internet. Verifique, e tente novamente!</string>
-    <string name="getting_contacts">Carregando contactos, aguarde...</string>
+    <string name="not_connection">Sem conexao a internet!</string>
+    <string name="getting_contacts">Carregando contactos, aguarde…</string>
     <string name="get_contacts_error_click_toretry">Falha ao obter s contactos. Clique para tentar novamente.</string>
     <string name="permission_updated_success">Permissao actualizada!</string>
     <string name="retry">Tentar novamente</string>
