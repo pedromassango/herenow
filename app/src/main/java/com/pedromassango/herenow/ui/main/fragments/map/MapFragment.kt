@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -21,6 +22,7 @@ import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 
 /**
@@ -48,7 +50,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     private val friendsMarker: HashMap<String, Marker> = hashMapOf()
 
     // Location updates delay and distance
-    private val distance = 0F
+    private val distance = 20F
     private val timeUpdate = 1000L // 1sec
 
     // TO update marker position
@@ -143,6 +145,10 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     }
 
     override fun showNoFriendsMessage() {
+
+        // Show info in popup window
+        (activity as MainActivity).showPopupAlert(R.string.no_friend_to_show_title)
+
         val builder = AlertDialog.Builder(context)
         builder.setCancelable(false)
         builder.setTitle(R.string.no_friend_to_show_title)
@@ -182,7 +188,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
         // Request location updates via NETWORK
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this)
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate,distance, this)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
     }
 
     override fun showFriendOnMap(contact: Contact) {

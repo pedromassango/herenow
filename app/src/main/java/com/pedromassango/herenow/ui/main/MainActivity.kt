@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         HereNow.setConnectionListener(this)
     }
 
-    private fun showPopupAlert(@StringRes message: Int,
+    fun showPopupAlert(@StringRes message: Int,
                                bgColor: PopupColor = PopupColor.DEFAULT,
                                closeOnClick: Boolean = false) {
 

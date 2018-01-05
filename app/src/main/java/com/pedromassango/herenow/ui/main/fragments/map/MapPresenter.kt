@@ -11,8 +11,6 @@ import com.pedromassango.herenow.data.model.Contact
 class MapPresenter(private val view: MapContract.View,
                    private val contactsRepository: ContactsRepository) : MapContract.Presenter, ContactsDataSource.ILocationListener {
 
-    //TODO: get friends location to show on MAP
-
     override fun onUserLocationChanged(latitude: Double, longitude: Double) {
         logcat("onUserLocationChanged: $latitude && $longitude")
 

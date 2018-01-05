@@ -58,13 +58,17 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
                     checkAuthorization(friend.phoneNumber, userPhone, object : ContactsDataSource.IContactListener {
                         override fun onSuccess(contact: Contact?) {
                             // check retrieved contact is not null
+                            //TODO: return a list of friends to simply check how many
+                            //TODO: friend allow this user, and show a single message.
                             contact?.also {
                                 // check if the user can se their location
                                 if (it.allow) {
                                     logcat("friend allow you to see your their location")
                                     iLocationListener.onAllowed(friend)
+                                }else{
+                                    iLocationListener.onNoFriends()
                                 }
-                            } ?: Unit
+                            } ?: iLocationListener.onNoFriends()
                         }
                     })
                 }
