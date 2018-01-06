@@ -11,16 +11,12 @@
         android:id="@+id/input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size16"
-        android:textColor="#000"
-        android:textColorHint="#515151">
+        android:layout_marginTop="@dimen/size16">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome (opcional)"
-            android:textColor="#000"
-            android:textColorHint="#515151" />
+            android:hint="Nome (opcional)" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -28,16 +24,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/input_name"
-        android:layout_marginTop="@dimen/size16"
-        android:textColor="#000"
-        android:textColorHint="#515151">
+        android:layout_marginTop="@dimen/size16">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Numero de telefone"
-            android:inputType="phone"
-            android:textColor="#000"
-            android:textColorHint="#515151" />
+            android:inputType="phone" />
     </android.support.design.widget.TextInputLayout>
 </RelativeLayout>

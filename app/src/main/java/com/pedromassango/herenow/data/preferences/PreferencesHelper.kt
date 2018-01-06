@@ -12,6 +12,7 @@ class PreferencesHelper(context: Context) {
     // Keys to fetch
     private val KEY_LOGGED_IN = "com.pedromassango.herenow.database.keys.KEY_LOGGED_IN"
     private val KEY_FIRST_TIME = "com.pedromassango.herenow.database.keys.KEY_FIRST_TIME"
+    private val KEY_NO_FRIENDS_DIALOG_SHOWN = "com.pedromassango.herenow.database.keys.KEY_NO_FRIENDS_DIALOG_SHOWN"
     //private val KEY_NAME = "com.pedromassango.herenow.database.keys.KEY_NAME"
     private val KEY_NUMBER = "com.pedromassango.herenow.database.keys.KEY_NUMBER"
     private val KEY_LOGIN_TOKEN = "com.pedromassango.herenow.database.keys.KEY_LOGIN_TOKEN"
@@ -22,6 +23,9 @@ class PreferencesHelper(context: Context) {
 
     var isFirstTime = preferences.getBoolean(KEY_FIRST_TIME, true)
     set(value) = editor.putBoolean(KEY_FIRST_TIME, value).apply()
+
+    var noFriendsDialogShown = preferences.getBoolean(KEY_NO_FRIENDS_DIALOG_SHOWN, false)
+    set(value) = editor.putBoolean(KEY_NO_FRIENDS_DIALOG_SHOWN, value).apply()
 
     var isLoggedIn = preferences.getBoolean(KEY_LOGGED_IN, false)
     set(value) = editor.putBoolean(KEY_LOGGED_IN, value).apply()

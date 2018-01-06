@@ -7,7 +7,7 @@ import com.pedromassango.herenow.R
 /**
  * Created by pedromassango on 12/28/17.
  */
-object AccountKitSettings{
+object AccountKitSettings {
 
     private var output: AccountKitConfiguration.AccountKitConfigurationBuilder? = null
     private var uiManager: UIManager? = null
@@ -22,12 +22,11 @@ object AccountKitSettings{
                     SkinManager.Skin.TRANSLUCENT,
                     context.resources.getColor(R.color.colorPrimary),
                     R.drawable.application_bacground,
-                    SkinManager.Tint.BLACK, 15.0)
+                    SkinManager.Tint.BLACK, 55.0)
 
             // ... perform additional configuration ...
             output!!.setReceiveSMS(true)
-            output!!.setFacebookNotificationsEnabled( true)
-            output!!.setDefaultCountryCode("+244")
+            output!!.setFacebookNotificationsEnabled(true)
             output!!.setUIManager(uiManager)
         }
 

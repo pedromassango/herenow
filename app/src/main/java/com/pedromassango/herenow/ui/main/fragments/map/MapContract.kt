@@ -11,14 +11,12 @@ class MapContract {
         fun showFriendOnMap(contact: Contact)
         fun showGetFriendsLocationError()
         fun removeLoader()
-        fun showNoFriendsMessage()
+        fun showNoFriendsMessage(showDialog: Boolean)
         fun showLoader()
-
     }
 
     interface Presenter{
         fun onUserLocationChanged(latitude: Double, longitude: Double)
         fun showFriendsOnMap()
-
     }
 }

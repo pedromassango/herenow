@@ -10,5 +10,5 @@ import com.pedromassango.herenow.data.model.Contact
  */
 interface ISuitcherPermissionListener {
 
-    fun updatePermission(position: Int, contact: Contact)
+    operator fun invoke(position: Int, contact: Contact)
 }

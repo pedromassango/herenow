@@ -1,19 +1,21 @@
 <resources>
-    <string name="app_name">Here Now</string>
+    <string name="app_name" translatable="false">Here Now</string>
 
-    <string name="facebook_app_id">1364560283658078</string>
-    <string name="ACCOUNT_KIT_CLIENT_TOKEN">1998b6027012c6ba9b9e9fbf56923569</string>
-    <string name="GOOGLE_MAPS_API_KEY">AIzaSyAL6hW1s37z0n_tcNYVjieIlvwRLHi9OZ4</string>
+    <string name="facebook_app_id" translatable="false">1364560283658078</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN" translatable="false">1998b6027012c6ba9b9e9fbf56923569</string>
+    <string name="GOOGLE_MAPS_API_KEY" translatable="false">AIzaSyAL6hW1s37z0n_tcNYVjieIlvwRLHi9OZ4</string>
+    <string name="app_version_name" translatable="false">v1.0.0 - beta</string>
+    <string name="developer_name" translatable="false">Pedro Massango</string>
+    <string name="developer">Desenvolvedor</string>
+    <!--TODO: place the privacy policy URL-->
+    <string name="privacy_policy_url" translatable="false">https://wordpress.com/post/pedromassangoblog.wordpress.com/26</string>
 
     <string name="please_wait">Por favor, aguarde…</string>
     <string name="save_contacts">Salvar contacto(s)</string>
     <string name="saving_contact">Salvando contacto…</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-    <string name="str_ok">Ok</string>
+    <string name="str_ok" translatable="false">OK</string>
     <string name="str_cancel">Cancelar</string>
 
     <string name="something_was_wrong">Algo de errado aconteceu, tente novamente!</string>
@@ -49,5 +51,13 @@
     <string name="permission_updated_success">Permissao actualizada!</string>
     <string name="retry">Tentar novamente</string>
     <string name="get_friends_location_error">Falha ao obter a localizacao de seus contactos. Clique aqui para tentar novamente!</string>
+    <string name="privacy_policy">Politica de privacidade</string>
+    <string name="privacy_policy_summary">Clique aqui para ler a politica de privacidade.</string>
+    <string name="version">Versao</string>
+
+    <!--Settings preferences keys-->
+    <string name="prefs_privacy_policy_key" translatable="true">privacy_policy_key</string>
+
+    <!--Settings preferences keys-->
 
 </resources>

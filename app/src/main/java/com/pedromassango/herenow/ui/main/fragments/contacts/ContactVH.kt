@@ -16,19 +16,21 @@ class ContactVH(val view: View) : RecyclerView.ViewHolder(view) {
         val number = contact.phoneNumber
 
         with(view) {
+            with(contact) {
 
-            tv_contact_first_letter.text = contact.getSimpleName()
-            tv_contact_number.text = number
-            tv_contact_name.text = if (name.isEmpty()) number.also { tv_contact_number.visibility = View.GONE } else name
+                tv_contact_first_letter.text = getSimpleName()
+                tv_contact_number.text = phoneNumber
+                tv_contact_name.text = if (name.isEmpty()) number.also { tv_contact_number.visibility = View.GONE } else contactName
 
-            cb_contact_permission.isChecked = contact.allow
+                cb_contact_permission.isChecked = allow
 
-            cb_contact_permission.setOnCheckedChangeListener { _, isChecked ->
+                cb_contact_permission.setOnCheckedChangeListener { _, isChecked ->
 
-                contact.allow = isChecked
+                    allow = isChecked
 
-                // Update permission
-                iSuitcherPermissionListener.updatePermission(adapterPosition, contact)
+                    // Update permission
+                    iSuitcherPermissionListener(adapterPosition, contact)
+                }
             }
         }
     }

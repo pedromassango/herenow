@@ -41,10 +41,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         mToolbar = (toolbar as Toolbar)
         setSupportActionBar(mToolbar)
 
-        // Changing tollbar title and subtitle text color
-        mToolbar.setTitleTextColor(resources.getColor(R.color.white))
-        mToolbar.setSubtitleTextColor(resources.getColor(R.color.white))
-
         // Setting up popup Window
         popup = PopupWindow(this)
         val viewPopup = layoutInflater.inflate(R.layout.popup_window, null)
@@ -123,10 +119,14 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         // Check the item clicked
         item.isChecked = true
 
+        // Remove popup window, if it is shown
+        dismissPopup()
+
         val fragment: Fragment = when (id) {
 
             R.id.action_home -> {
                 title = getString(R.string.map)
+
                 MapFragment.getInstance()
             }
             R.id.action_contacts -> {

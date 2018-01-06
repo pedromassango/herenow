@@ -73,8 +73,11 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         myLocationMarker.flat(true)
 
         // Setup presenter
+        val preferencesHelper = PreferencesHelper(context)
+
         presenter = MapPresenter(this,
-                RepositoryManager.contactsRepository(PreferencesHelper(context)))
+                preferencesHelper,
+                RepositoryManager.contactsRepository(preferencesHelper))
     }
 
     override fun onStart() {
@@ -128,13 +131,6 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         return root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // start fetch friends location
-        presenter.showFriendsOnMap()
-    }
-
     override fun showGetFriendsLocationError() {
         with(root) {
             mMapView.visibility = View.GONE
@@ -144,7 +140,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         }
     }
 
-    override fun showNoFriendsMessage() {
+    override fun showNoFriendsMessage(showDialog: Boolean) {
 
         // Show info in popup window
         (activity as MainActivity).showPopupAlert(R.string.no_friend_to_show_title)
@@ -155,8 +151,10 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         builder.setMessage(R.string.no_friend_to_show_message)
         builder.setPositiveButton(R.string.str_ok, null)
 
+        if(showDialog) {
         builder.create()
                 .show()
+        }
     }
 
     override fun showLoader() {
@@ -179,6 +177,9 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
         logcat("onMapReady")
+
+        // start fetch friends location
+        presenter.showFriendsOnMap()
 
         this.map = mMap!!
         map?.isBuildingsEnabled = true
