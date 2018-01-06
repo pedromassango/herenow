@@ -24,9 +24,12 @@ class MapPresenter(private val view: MapContract.View,
         contactsRepository.keepFriendsLocationSync(this)
     }
 
-    override fun onAllowed(contact: Contact) {
+    override fun onAllowed(contact: ArrayList<Contact>) {
         view.removeLoader()
-        view.showFriendOnMap(contact)
+
+        contact.forEach {
+            view.showFriendOnMap(it)
+        }
     }
 
     override fun onNoFriends() {

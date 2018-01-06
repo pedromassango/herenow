@@ -5,6 +5,7 @@ import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.ContactsDataSource
 import com.pedromassango.herenow.data.ContactsRepository
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.extras.Utils
 
 /**
  * Created by pedromassango on 12/29/17.
@@ -51,6 +52,9 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
         // Show progress while saving
         view.showSaveContactProgress()
+
+        // Format phone number before save
+        contact.phoneNumber = Utils.getFormatedNumber(contact.phoneNumber)
 
         // Save the contact
         contactsRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener{

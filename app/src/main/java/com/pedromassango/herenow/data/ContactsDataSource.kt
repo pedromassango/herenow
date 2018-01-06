@@ -18,7 +18,7 @@ interface ContactsDataSource{
     }
 
     interface ILocationListener{
-        fun onAllowed(contact: Contact)
+        fun onAllowed(contact: ArrayList<Contact>)
         fun onNoFriends()
         fun onError()
     }

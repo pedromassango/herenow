@@ -21,4 +21,8 @@ object Utils {
             false
         }
     }
+
+    fun getFormatedNumber(number: String) =
+            number.replace("-", "") // remove -
+                    .replace(" ", "") // remove blank space
 }

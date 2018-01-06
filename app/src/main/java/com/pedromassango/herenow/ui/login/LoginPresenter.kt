@@ -6,6 +6,7 @@ import com.facebook.accountkit.AccountKitCallback
 import com.facebook.accountkit.AccountKitError
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.Utils
 
 /**
  * Created by pedromassango on 12/28/17.
@@ -30,7 +31,7 @@ class LoginPresenter(val view: LoginContract.View,
                 logcat("onSuccess")
 
                 val number = account.phoneNumber
-                val phoneNumber = number.toString()
+                var phoneNumber = number.toString()
                 val countryCode = number.countryCode
 
                 logcat("number: $number")
@@ -39,6 +40,9 @@ class LoginPresenter(val view: LoginContract.View,
                 logcat("countryCodeISO: ${number.countryCodeIso}")
 
                 logcat("saving upser data remotely")
+
+                // Format phone number before save
+                phoneNumber = Utils.getFormatedNumber(phoneNumber)
 
                 // Change login state
                 preferencesHelper.isLoggedIn = true

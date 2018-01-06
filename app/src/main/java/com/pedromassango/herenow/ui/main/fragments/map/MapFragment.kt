@@ -54,7 +54,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     private val timeUpdate = 1000L // 1sec
 
     // TO update marker position
-    private var arleadySet = false
+    private var arleadySet = 0
 
     // View
     lateinit var root: View
@@ -187,8 +187,9 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         // Request location updates
 
         // Request location updates via NETWORK
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this)
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this)
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this)
     }
 
     override fun showFriendOnMap(contact: Contact) {
@@ -211,12 +212,13 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     // Location updates
     override fun onLocationChanged(location: Location?) {
         logcat("onLocationChanged")
+        logcat("onLocationChanged: provider -> ${location?.provider}")
 
-        if (arleadySet) {
+        if (arleadySet == 0) {
             // set the marker at first time
             myLocationMarker.position(LatLng(location!!.latitude, location.longitude))
             myMarker = map!!.addMarker(myLocationMarker)
-            arleadySet = true
+            arleadySet = 100
         } else {
             // Update the hold position to a recent position
             myMarker.position = LatLng(location!!.latitude, location.longitude)
