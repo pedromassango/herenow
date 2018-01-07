@@ -14,6 +14,7 @@ import com.pedromassango.herenow.extras.Utils
 class LoginPresenter(val view: LoginContract.View,
                      val preferencesHelper: PreferencesHelper) : LoginContract.Presenter {
 
+    // Request login in AccountKit
     override fun startLoginRequest() {
         view.startAccountKitActivity()
     }

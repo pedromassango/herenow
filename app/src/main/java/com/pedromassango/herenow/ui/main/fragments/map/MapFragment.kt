@@ -57,7 +57,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     private var arleadySet = 0
 
     // View
-    lateinit var root: View
+    private lateinit var root: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,6 +182,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         presenter.showFriendsOnMap()
 
         this.map = mMap!!
+        map?.uiSettings?.isIndoorLevelPickerEnabled = true
         map?.isBuildingsEnabled = true
         map?.mapType = GoogleMap.MAP_TYPE_NORMAL
 

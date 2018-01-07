@@ -7,8 +7,7 @@
     <string name="app_version_name" translatable="false">v1.0.0 - beta</string>
     <string name="developer_name" translatable="false">Pedro Massango</string>
     <string name="developer">Desenvolvedor</string>
-    <!--TODO: place the privacy policy URL-->
-    <string name="privacy_policy_url" translatable="false">https://wordpress.com/post/pedromassangoblog.wordpress.com/26</string>
+    <string name="privacy_policy_url" translatable="false">https://pedromassangoblog.wordpress.com/2018/01/06/privacy-policy-of-here-now</string>
 
     <string name="please_wait">Por favor, aguarde…</string>
     <string name="save_contacts">Salvar contacto(s)</string>

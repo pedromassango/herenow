@@ -80,5 +80,4 @@ class IntroActivity : AppIntro() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-
 }

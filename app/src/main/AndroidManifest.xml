@@ -57,13 +57,16 @@
         </activity>
 
         <!--Para autenticacao com AccountKit-->
-        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
+        <activity xmlns:tools="http://schemas.android.com/tools"
+            android:name="com.facebook.accountkit.ui.AccountKitActivity"
+            android:theme="@style/AppLoginTheme"
+            tools:replace="android:theme" />
         <activity android:name=".ui.login.LoginActivity" />
-        <activity android:name=".ui.intro.IntroActivity"/>
+        <activity android:name=".ui.intro.IntroActivity" />
 
         <receiver android:name=".services.MyBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 

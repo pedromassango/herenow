@@ -21,13 +21,19 @@
     <style name="dialogStyle" parent="AlertDialog.AppCompat">
         <item name="android:color">@color/primaryText</item>
     </style>
-    <!-- ACCOUNTKIT THEME
+    <!-- ACCOUNTKIT THEME-->
     <style name="AppLoginTheme" parent="Theme.AccountKit">
-        &lt;!&ndash; Customize your theme here. &ndash;&gt;
-        <item name="android:windowBackground">@color/white</item>
+        <item name="com_accountkit_background">@drawable/application_bacground</item>
+        <item name="com_accountkit_background_color">@android:color/transparent</item>
+        <item name="com_accountkit_input_background_color">@color/gradient_bottom</item>
+        <item name="com_accountkit_button_disabled_background_color">@color/login_btn_disabled</item>
+        <item name="com_accountkit_button_background_color">@color/gradient_bottom</item>
+        <item name="com_accountkit_primary_text_color">@color/white</item>
+        <item name="com_accountkit_input_text_color">@color/white</item>
+        <item name="com_accountkit_text_color">@color/white</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>-->
+    </style>
 
 </resources>
