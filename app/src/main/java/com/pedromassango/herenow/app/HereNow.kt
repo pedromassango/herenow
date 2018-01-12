@@ -4,7 +4,8 @@ import android.app.Application
 import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
-import com.pedromassango.herenow.services.MyBroadcastReceiver
+import com.pedromassango.herenow.services.PopupBroadcastReceiver
+import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 
 /**
  * Created by pedromassango on 12/28/17.
@@ -23,9 +24,16 @@ class HereNow : Application() {
 
     companion object {
 
-        fun setConnectionListener(iConnectionListener: MyBroadcastReceiver.IConnectionListener){
+        // Register a connection listner to a broadcast
+        fun setConnectionListener(iConnectionListener: NetworkBroadcastReceiver.IConnectionListener){
             checkNotNull(iConnectionListener)
-            MyBroadcastReceiver.iConnectionListener = iConnectionListener
+            NetworkBroadcastReceiver.iConnectionListener = iConnectionListener
+        }
+
+        // Register popup listener to a broadcast
+        fun setPopupListener(iShowPopupListener: PopupBroadcastReceiver.IShowPopupListener){
+            checkNotNull(iShowPopupListener)
+            PopupBroadcastReceiver.iShowPopupListener = iShowPopupListener
         }
 
         fun logcat(message: String){

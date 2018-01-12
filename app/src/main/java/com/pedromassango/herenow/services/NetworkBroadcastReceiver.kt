@@ -1,5 +1,6 @@
 package com.pedromassango.herenow.services
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -8,20 +9,29 @@ import com.pedromassango.herenow.extras.Utils
 
 /**
  * Created by pedromassango on 1/5/18.
+ *
+ * This BroadCast notify the MainActivity when the device internet connection as changed.
  */
-open class MyBroadcastReceiver : BroadcastReceiver() {
+open class NetworkBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
+        // A static var
         var iConnectionListener: IConnectionListener? = null
     }
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "Broadcast", Toast.LENGTH_SHORT).show()
 
+        // Get connection state
         val state = Utils.isConnected(context!!)
+
+        // Notify MainActivity if {iConnectionListener} is not null
         iConnectionListener?.onConnectionChanged(state)
     }
 
+    /**
+     * Used to notify MainActivity for connection changes.
+     */
     interface IConnectionListener {
         fun onConnectionChanged(connected: Boolean)
     }

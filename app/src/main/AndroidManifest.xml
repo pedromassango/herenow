@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pedromassango.herenow">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -64,9 +65,18 @@
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.intro.IntroActivity" />
 
-        <receiver android:name=".services.MyBroadcastReceiver">
+        <receiver android:name=".services.NetworkBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.PopupBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE"/>
             </intent-filter>
         </receiver>
 

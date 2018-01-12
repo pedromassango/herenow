@@ -11,9 +11,10 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -22,11 +23,14 @@ import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.ActivityUtils
 import com.pedromassango.herenow.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 
 /**
  * Created by pedromassango on 12/28/17.
+ *
+ * Show the Map with friends location (If available)
  */
 class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationListener {
 
@@ -51,7 +55,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
     // Location updates delay and distance
     private val distance = 20F
-    private val timeUpdate = 1000L // 1sec
+    private val timeUpdate = 5000L // 5sec
 
     // TO update marker position
     private var arleadySet = 0
@@ -124,7 +128,9 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
         try {
             MapsInitializer.initialize(activity.applicationContext)
-        }catch (ex : Exception){ ex.printStackTrace()}
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
 
         mMapView.getMapAsync(this)
 
@@ -142,18 +148,19 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
     override fun showNoFriendsMessage(showDialog: Boolean) {
 
-        // Show info in popup window
-        (activity as MainActivity).showPopupAlert(R.string.no_friend_to_show_title)
+        // Show info in popup window from Broadcast Receiver
+        ActivityUtils.showPopupMessage(activity, R.string.no_friend_to_show_title, closeOnClick = false)
 
-        val builder = AlertDialog.Builder(context)
-        builder.setCancelable(false)
-        builder.setTitle(R.string.no_friend_to_show_title)
-        builder.setMessage(R.string.no_friend_to_show_message)
-        builder.setPositiveButton(R.string.str_ok, null)
+        // Show the dialog only one time
+        if (showDialog) {
 
-        if(showDialog) {
-        builder.create()
-                .show()
+            val builder = AlertDialog.Builder(context)
+            builder.setCancelable(false)
+            builder.setTitle(R.string.no_friend_to_show_title)
+            builder.setMessage(R.string.no_friend_to_show_message)
+            builder.setPositiveButton(R.string.str_ok, null)
+            builder.create()
+                    .show() // Show the dialog
         }
     }
 
@@ -188,9 +195,11 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
         // Request location updates
 
-        // Request location updates via NETWORK
+        // Request location updates via GPS
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
+        // Request location updates via PASSIVE-PROVIDER
         locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this)
+        // Request location updates via NETWORK
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this)
     }
 

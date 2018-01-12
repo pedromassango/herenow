@@ -1,12 +1,12 @@
 package com.pedromassango.herenow.ui.main
 
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
@@ -15,7 +15,8 @@ import android.widget.PopupWindow
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
-import com.pedromassango.herenow.services.MyBroadcastReceiver
+import com.pedromassango.herenow.services.PopupBroadcastReceiver
+import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
@@ -25,13 +26,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.popup_window.view.*
 
 class MainActivity : AppCompatActivity(), MainContract.View,
-        BottomNavigationView.OnNavigationItemSelectedListener, MyBroadcastReceiver.IConnectionListener {
+        BottomNavigationView.OnNavigationItemSelectedListener, NetworkBroadcastReceiver.IConnectionListener, PopupBroadcastReceiver.IShowPopupListener {
 
     //MVP
     private lateinit var presenter: MainPresenter
 
     // Toolbar for popup window
-    lateinit var mToolbar: Toolbar
+    private lateinit var mToolbar: Toolbar
 
     private lateinit var popup: PopupWindow
 
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         // Setting up popup Window
         popup = PopupWindow(this)
         val viewPopup = layoutInflater.inflate(R.layout.popup_window, null)
-        popup.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+        popup.setBackgroundDrawable(ColorDrawable(ResourcesCompat.getColor(resources, android.R.color.transparent, null)))
         popup.contentView = viewPopup
 
         // Set POPUP content with and height
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Setup views
+        // Setup activity views
         initializeViews()
 
         presenter = MainPresenter(this, PreferencesHelper(this))
@@ -67,15 +68,34 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
         // Listen when device is connected to  internet
         HereNow.setConnectionListener(this)
+
+        // Listen for popup message request
+        HereNow.setPopupListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Check again when comming from LoginActivity
+        //presenter.checkAppState()
+    }
+
+    override fun showMapFragment() {
+
+        // Select the map fragment
+        // in bottom navigation view
+        bottom_navigation.selectedItemId = R.id.action_home
+    }
+
+    /**
+     * SHow a popup menu info bellow a Toolbar.
+     */
     fun showPopupAlert(@StringRes message: Int,
-                               bgColor: PopupColor = PopupColor.DEFAULT,
-                               closeOnClick: Boolean = false) {
+                       bgColor: PopupColor = PopupColor.DEFAULT,
+                               closeOnClick: Boolean = true) {
 
         val backgroundgColor = when (bgColor) {
-            PopupColor.RED -> resources.getColor(R.color.red)
-            PopupColor.DEFAULT -> resources.getColor(R.color.gradient_bottom)
+            PopupColor.RED -> ResourcesCompat.getColor(resources, R.color.red, null)
+            PopupColor.DEFAULT -> ResourcesCompat.getColor(resources, R.color.gradient_bottom, null)
         }
 
         val tvInfo = with(popup.contentView) { popup_textview }
@@ -90,26 +110,29 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         popup.showAsDropDown(mToolbar)
     }
 
+    /**
+     * Dismiss the popup bellow a toolbar if it is shown.
+     */
     private fun dismissPopup() = if (popup.isShowing) popup.dismiss() else {
+    }
+
+    /**
+     * Show popup message requested by PopupBroadcastReceiver
+     */
+    override fun onBroadcastShowPopup(@StringRes message: Int, closeOnClick: Boolean) {
+        showPopupAlert(message = message, closeOnClick = closeOnClick)
     }
 
     // Notified when a internet connection state as changed
     override fun onConnectionChanged(connected: Boolean) {
         when (connected) {
             true -> dismissPopup()
-            false -> showPopupAlert(R.string.not_connection, bgColor = PopupColor.RED)
+            false -> showPopupAlert(R.string.not_connection, bgColor = PopupColor.RED, closeOnClick = false)
         }
     }
 
     override fun startSplashActivity() = startActivity(Intent(this, IntroActivity::class.java))
     override fun startLoginActivity() = startActivityForResult(Intent(this, LoginActivity::class.java), MainContract.LOGIN_REQUEST)
-
-    override fun showMapFragment() {
-
-        // Select the map fragment
-        // in bottom navigation view
-        bottom_navigation.selectedItemId = R.id.action_home
-    }
 
     // BottomNavigationView item selected listener
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
