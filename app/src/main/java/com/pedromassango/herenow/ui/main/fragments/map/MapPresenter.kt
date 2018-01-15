@@ -27,6 +27,7 @@ class MapPresenter(private val view: MapContract.View,
     }
 
     override fun onAllowed(contact: ArrayList<Contact>) {
+        logcat("MapPresenter: onAllowed -> ${contact.size}")
         view.removeLoader()
 
         contact.forEach {
@@ -35,6 +36,7 @@ class MapPresenter(private val view: MapContract.View,
     }
 
     override fun onNoFriends() {
+        logcat("MapPresenter: onNoFriends.")
         view.removeLoader()
 
         val showDialog = preferencesHelper.noFriendsDialogShown

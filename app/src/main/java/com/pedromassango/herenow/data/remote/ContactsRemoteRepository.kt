@@ -43,40 +43,24 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
     override fun keepFriendsLocationSync(iLocationListener: ContactsDataSource.ILocationListener) {
         logcat("RemoteRepository: keepFriendsLocationSync...")
 
-        // Temp list containing friends that can I see on map
-        val friendsList: ArrayList<Contact?> = arrayListOf()
-
         // Get from User friends list
         getContacts(object : ContactsDataSource.IListener<Contact> {
             override fun onSuccess(data: ArrayList<Contact>) {
+                logcat("keepFriendsLocationSync: getContacts -> done: ${data.size}")
 
                 // Check if the user have friends
-                data.isEmpty().also { iLocationListener.onNoFriends(); return }
+                if (data.isEmpty()) {
+                    iLocationListener.onNoFriends();
+                    return
+                }
 
-                // CHECKING AUTHORIZATION
+                logcat("keepFriendsLocationSync: getContacts -> checking authorization...")
+
+                // CHECKING AUTHORIZATION && GET FRIENDS LOCATION if allowed
                 // Check if the user is on their friend allowed list
-                checkAuthorization(data, userPhone, object : ContactsDataSource.IContactListener {
-                    override fun onSuccess(contact: Contact?) {
-                        contact?.also { friend -> //  This friend allow user to see location
-                                logcat("this friend allow you to see their location")
+                // For each friend, check if we can see their location
+                checkAuthorization(data, iLocationListener)
 
-                                //GETTING LOCATION
-                                // User is allowed to see location, get friend location
-                                getFriendLocation(friend, object : ContactsDataSource.IContactListener {
-                                    override fun onSuccess(contact: Contact?) {
-                                        friendsList.add(contact!!)
-                                    }
-                                })
-                            } ?: friendsList.add(contact)
-                    }
-                })
-
-                val tmp = friendsList.filterNotNull().toTypedArray()
-                // Convert List to ArrayList for return
-                val output = arrayListOf<Contact>() ; output.addAll(tmp)
-
-                output.isEmpty().apply { iLocationListener.onNoFriends() }
-                output.isNotEmpty().apply { iLocationListener.onAllowed(output) }
             }
 
             override fun onError() = iLocationListener.onError()
@@ -91,34 +75,56 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
      * @param iContactListener the listener to retrieve the contact
      * @return the friend checked.
      */
-    private fun checkAuthorization(friends: ArrayList<Contact>, userNumber: String,
-                                   iContactListener: ContactsDataSource.IContactListener) {
+    private fun checkAuthorization(friends: ArrayList<Contact>,
+                                   iLocationListener: ContactsDataSource.ILocationListener) {
+
+        val friendsSize = friends.size
+        var friendsVerifies = 0
+        val checkedFirends = arrayListOf<Contact?>()
 
         // For each friend, check if we can see their location
         friends.forEach { friend ->
             rootRef.child(USERS_CONTACTS)
                     .child(friend.phoneNumber)
-                    .child(userNumber)
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError?) = iContactListener.onSuccess(null)
+                    .child(userPhone)
+                    .addValueEventListener(IValueEventListener(object : MyValueListener {
+                        override fun success(contact: Contact?) {
+                            // Increase friends verifieds field
+                            friendsVerifies++
 
-                        override fun onDataChange(p0: DataSnapshot?) {
-                            if(p0 == null || !p0.exists()) {
-                                logcat("checkAuthorization -> Not in list")
-                                iContactListener.onSuccess(null)
-                                return
+                            // Add this friend to result list if this friend allow you to see their location
+                            when (contact != null && contact.allow) {
+                                true -> checkedFirends.add(friend)
+                                else -> checkedFirends.add(null)
                             }
 
-                            // The user is on some friend list
-                            logcat("checkAuthorization -> The user is on some friend list.")
-                            logcat("checkAuthorization -> friend: ${friend.phoneNumber}")
+                            // If has verified all friends, do the next thing
+                            if (friendsSize == friendsVerifies) {
+                                // Get only friends who allowed this user to see their location
+                                val tempList = checkedFirends.filterNotNull()
+                                val friendsWhoAllowedToSeeTheirLocations = arrayListOf<Contact>()
+                                friendsWhoAllowedToSeeTheirLocations.addAll(tempList)
 
-                            val userInFriend = p0.getValue(Contact::class.java)
+                                if (friendsWhoAllowedToSeeTheirLocations.isNotEmpty()) {
+                                    logcat("Friends allowed you to see their locations")
 
-                            userInFriend!!.allow.apply { iContactListener.onSuccess(friend) }
-                            userInFriend.allow.not().apply { iContactListener.onSuccess(null) }
+                                    logcat("Getting friends location or Nothing...")
+
+                                    //GETTING LOCATION
+                                    // User is allowed to see location, get friend location
+                                    getFriendLocation(friendsWhoAllowedToSeeTheirLocations, object : ContactsDataSource.IResult<Contact> {
+                                        override fun onSuccess(data: ArrayList<Contact>) {
+                                            logcat("Friend location received")
+                                            iLocationListener.onAllowed(data)
+                                        }
+                                    })
+                                } else {  // There is no friends tha allow user to see their location
+                                    iLocationListener.onNoFriends()
+                                }
+
+                            }
                         }
-                    })
+                    }))
         }
     }
 
@@ -130,6 +136,7 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
             override fun onCancelled(p0: DatabaseError?) = iListener!!.onError()
 
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
+
                 if (!dataSnapshot!!.exists()) {
                     logcat("getContacts: onDataChange -> notExist")
                     iListener!!.onSuccess(arrayListOf())  // No user contacts
@@ -187,25 +194,38 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
                 .addOnSuccessListener { logcat("update success.") }
     }
 
-    fun getFriendLocation(friend: Contact, iContactListener: ContactsDataSource.IContactListener) {
-        usersLocationRef.child(friend.phoneNumber)
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) = iContactListener.onSuccess(null)
+    fun getFriendLocation(friends: ArrayList<Contact>, iResult: ContactsDataSource.IResult<Contact>) {
 
-                    override fun onDataChange(p0: DataSnapshot?) {
-                        checkNotNull(p0)
+        val tempList = arrayListOf<Contact>()
 
-                        // Get latitude and longitude from giving snapshot
-                        val latitude = p0!!.child("lat").value as Double
-                        val longitude = p0.child("lng").value as Double
+        friends.forEach { friend ->
+            usersLocationRef.child(friend.phoneNumber)
+                    .addValueEventListener(IValueEventListener(object : MyLocationListener {
+                        override fun success(p0: DataSnapshot?) {
+                            checkNotNull(p0)
+                            logcat("getFriendLocation: SHOT s-> $p0")
 
-                        // Pass the friend location
-                        friend.lat = latitude
-                        friend.lng = longitude
+                            // Get latitude and longitude from giving snapshot
+                            val latitude = p0!!.child("lat").value as Double
+                            val longitude = p0.child("lng").value as Double
 
-                        // return the friend with their location
-                        iContactListener.onSuccess(friend)
-                    }
-                })
+                            logcat("friend ${friend.phoneNumber}")
+                            logcat("LAT: $latitude LNG: $longitude")
+
+                            // Pass the friend location
+                            friend.lat = latitude
+                            friend.lng = longitude
+
+                            // save the friend with their location on temporary list
+                            tempList.add(friend)
+
+                            // Check if retrieve location for all friends
+                            if (tempList.size == friends.size) {
+                                iResult.onSuccess(tempList)
+                            }
+                        }
+                    }))
+        }
+
     }
 }

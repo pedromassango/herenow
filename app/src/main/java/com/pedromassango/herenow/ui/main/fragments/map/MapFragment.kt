@@ -211,7 +211,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
                 val mo = MarkerOptions()
                         .title(contact.contactName).snippet(contact.phoneNumber)
-                        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
+                        .position( LatLng(contact.lat, contact.lng))
                         .flat(true)
 
                 val m = map!!.addMarker(mo)
