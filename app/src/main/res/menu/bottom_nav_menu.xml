@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_places"
+        android:icon="@drawable/icon_places"
+        android:title="@string/neaby_places"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_contacts"
         android:icon="@drawable/ic_friends"
         android:title="@string/contacts"

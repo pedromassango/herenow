@@ -15,12 +15,13 @@ import android.widget.PopupWindow
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
-import com.pedromassango.herenow.services.PopupBroadcastReceiver
 import com.pedromassango.herenow.services.NetworkBroadcastReceiver
+import com.pedromassango.herenow.services.PopupBroadcastReceiver
 import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
 import com.pedromassango.herenow.ui.main.fragments.map.MapFragment
+import com.pedromassango.herenow.ui.main.fragments.places.FragmentPlaces
 import com.pedromassango.herenow.ui.main.fragments.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.popup_window.view.*
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
      */
     fun showPopupAlert(@StringRes message: Int,
                        bgColor: PopupColor = PopupColor.DEFAULT,
-                               closeOnClick: Boolean = true) {
+                       closeOnClick: Boolean = true) {
 
         val backgroundgColor = when (bgColor) {
             PopupColor.RED -> ResourcesCompat.getColor(resources, R.color.red, null)
@@ -113,8 +114,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     /**
      * Dismiss the popup bellow a toolbar if it is shown.
      */
-    private fun dismissPopup() = if (popup.isShowing) popup.dismiss() else {
-    }
+    private fun dismissPopup() = if (popup.isShowing) popup.dismiss() else { }
 
     /**
      * Show popup message requested by PopupBroadcastReceiver
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     // BottomNavigationView item selected listener
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        val title: String
+        var title = getString(R.string.app_name)
 
         // Check the item clicked
         item.isChecked = true
@@ -147,10 +147,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
         val fragment: Fragment = when (id) {
 
-            R.id.action_home -> {
-                title = getString(R.string.map)
-
-                MapFragment.getInstance()
+            R.id.action_home -> MapFragment.getInstance()
+            R.id.action_places ->{
+                title = getString(R.string.neaby_places)
+                FragmentPlaces.getInstance()
             }
             R.id.action_contacts -> {
                 title = getString(R.string.contacts)
@@ -160,10 +160,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
                 title = getString(R.string.settings)
                 SettingsFragment.getInstance()
             }
-            else -> {
-                title = getString(R.string.map)
-                MapFragment.getInstance()
-            }
+            else -> MapFragment.getInstance()
         }
 
         // Change activity title, with the selected fragment name

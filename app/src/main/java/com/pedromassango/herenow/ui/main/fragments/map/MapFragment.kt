@@ -6,15 +6,9 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -24,7 +18,7 @@ import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.ActivityUtils
-import com.pedromassango.herenow.ui.main.MainActivity
+import com.pedromassango.herenow.ui.main.fragments.BaseMapFragment
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 
 /**
@@ -32,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_maps.view.*
  *
  * Show the Map with friends location (If available)
  */
-class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationListener {
+class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
 
     companion object {
 
@@ -44,9 +38,6 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
     // MVP
     lateinit var presenter: MapPresenter
 
-    //Map
-    var map: GoogleMap? = null
-    lateinit var mMapView: MapView
     private lateinit var locationManager: LocationManager
     private lateinit var myLocationMarker: MarkerOptions
     private lateinit var myMarker: Marker
@@ -84,59 +75,6 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
                 RepositoryManager.contactsRepository(preferencesHelper))
     }
 
-    override fun onStart() {
-        super.onStart()
-        mMapView.onStart()
-    }
-
-    override fun onStop() {
-        mMapView.onStop()
-        super.onStop()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mMapView.onResume()
-    }
-
-    override fun onPause() {
-        mMapView.onPause()
-        super.onPause()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mMapView.onLowMemory()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        mMapView.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroy() {
-        mMapView.onDestroy()
-        super.onDestroy()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root = inflater!!.inflate(R.layout.fragment_maps, container, false)
-
-        mMapView = root.maps_view
-        mMapView.onCreate(savedInstanceState)
-        mMapView.onResume() // To setup Map immediately
-
-        try {
-            MapsInitializer.initialize(activity.applicationContext)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-
-        mMapView.getMapAsync(this)
-
-        return root
-    }
-
     override fun showGetFriendsLocationError() {
         with(root) {
             mMapView.visibility = View.GONE
@@ -164,39 +102,19 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
         }
     }
 
-    override fun showLoader() {
-        with(root) {
-            mMapView.visibility = View.GONE
-            progressbar_maps.visibility = View.VISIBLE
-            tv_map_info.visibility = View.VISIBLE
-            tv_map_info.text = getString(R.string.please_wait)
-        }
-    }
+    override fun showLoader() = super.Loader()
 
-    override fun removeLoader() {
-        with(root) {
-            mMapView.visibility = View.VISIBLE
-            progressbar_maps.visibility = View.GONE
-            tv_map_info.visibility = View.GONE
-        }
-    }
+    override fun removeLoader() = super.dismissLoader()
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
-        logcat("onMapReady")
+        this.map = mMap
 
         // start fetch friends location
         presenter.showFriendsOnMap()
 
-        this.map = mMap!!
-        map?.uiSettings?.isIndoorLevelPickerEnabled = true
-        map?.isBuildingsEnabled = true
-        map?.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-        // Request location updates
-
         // Request location updates via GPS
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
         // Request location updates via PASSIVE-PROVIDER
         locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this)
         // Request location updates via NETWORK
@@ -211,7 +129,7 @@ class MapFragment : Fragment(), MapContract.View, OnMapReadyCallback, LocationLi
 
                 val mo = MarkerOptions()
                         .title(contact.contactName).snippet(contact.phoneNumber)
-                        .position( LatLng(contact.lat, contact.lng))
+                        .position(LatLng(contact.lat, contact.lng))
                         .flat(true)
 
                 val m = map!!.addMarker(mo)
