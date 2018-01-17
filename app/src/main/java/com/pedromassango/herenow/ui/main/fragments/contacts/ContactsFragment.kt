@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Patterns
 import android.view.*
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow
@@ -21,7 +22,6 @@ import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
-import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
 import android.provider.ContactsContract as DeviceContract
 
@@ -29,7 +29,7 @@ import android.provider.ContactsContract as DeviceContract
 /**
  * Created by Pedro Massango on 12/28/17.
  */
-class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionListener{
+class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionListener {
 
     // Static fields
     companion object {
@@ -222,7 +222,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
     private fun showDialogNewContact() {
         //  View for this Dialog
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_number, null, false)
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_number, RelativeLayout(activity), false)
         val edtName = view.findViewById<TextInputLayout>(R.id.input_name)
         val edtNumber = view.findViewById<TextInputLayout>(R.id.input_number)
 

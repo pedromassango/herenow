@@ -15,6 +15,7 @@ import android.widget.PopupWindow
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.Utils
 import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 import com.pedromassango.herenow.services.PopupBroadcastReceiver
 import com.pedromassango.herenow.ui.intro.IntroActivity
@@ -74,12 +75,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         HereNow.setPopupListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Check again when comming from LoginActivity
-        //presenter.checkAppState()
-    }
-
     override fun showMapFragment() {
 
         // Select the map fragment
@@ -90,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     /**
      * SHow a popup menu info bellow a Toolbar.
      */
-    fun showPopupAlert(@StringRes message: Int,
+    private fun showPopupAlert(@StringRes message: Int,
                        bgColor: PopupColor = PopupColor.DEFAULT,
                        closeOnClick: Boolean = true) {
 
@@ -120,6 +115,12 @@ class MainActivity : AppCompatActivity(), MainContract.View,
      * Show popup message requested by PopupBroadcastReceiver
      */
     override fun onBroadcastShowPopup(@StringRes message: Int, closeOnClick: Boolean) {
+
+        // If we're not connected, do not show any other message
+        if(!Utils.isConnected(this)){
+            return
+        }
+
         showPopupAlert(message = message, closeOnClick = closeOnClick)
     }
 

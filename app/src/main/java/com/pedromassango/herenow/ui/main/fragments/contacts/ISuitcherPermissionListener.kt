@@ -1,4 +1,4 @@
-package com.pedromassango.herenow.ui.main
+package com.pedromassango.herenow.ui.main.fragments.contacts
 
 import com.pedromassango.herenow.data.model.Contact
 

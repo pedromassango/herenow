@@ -38,6 +38,8 @@ class HereNow : Application() {
 
         fun logcat(message: String){
             Log.v("output", "OUT: $message")
+
+            println("HELLO WORLD")
         }
 
     }

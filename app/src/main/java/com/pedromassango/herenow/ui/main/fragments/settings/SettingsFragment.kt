@@ -3,12 +3,13 @@ package com.pedromassango.herenow.ui.main.fragments.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.preference.Preference
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.preference.PreferenceCategory
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import com.pedromassango.herenow.BuildConfig
 import com.pedromassango.herenow.R
 
 /**
@@ -20,13 +21,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
         //private var INSTANCE: SettingsFragment? = null
 
         fun getInstance(): SettingsFragment {
-                return SettingsFragment()
+            return SettingsFragment()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = super.onCreateView(inflater, container, savedInstanceState)
-        root?.setBackgroundColor(resources.getColor(android.R.color.transparent))
+
+        // Changing Settings bacground color to transparent
+        root?.setBackgroundColor(ResourcesCompat.getColor(resources, android.R.color.transparent, null))
         return root
     }
 

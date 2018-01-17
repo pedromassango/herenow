@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.model.Contact
-import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
 
 /**
  * Created by pedromassango on 12/29/17.

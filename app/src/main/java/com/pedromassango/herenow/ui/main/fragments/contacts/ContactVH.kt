@@ -3,7 +3,6 @@ package com.pedromassango.herenow.ui.main.fragments.contacts
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.pedromassango.herenow.data.model.Contact
-import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
 import kotlinx.android.synthetic.main.row_contact.view.*
 
 /**

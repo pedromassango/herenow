@@ -4,9 +4,9 @@
     <string name="facebook_app_id" translatable="false">1364560283658078</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN" translatable="false">1998b6027012c6ba9b9e9fbf56923569</string>
     <string name="GOOGLE_MAPS_API_KEY" translatable="false">AIzaSyAL6hW1s37z0n_tcNYVjieIlvwRLHi9OZ4</string>
-    <string name="app_version_name" translatable="false">v1.0.0 - beta</string>
     <string name="developer_name" translatable="false">Pedro Massango</string>
     <string name="developer">Desenvolvedor</string>
+    <string name="version_name" translatable="false">1.0.0-beta</string>
     <string name="privacy_policy_url" translatable="false">https://pedromassangoblog.wordpress.com/2018/01/06/privacy-policy-of-here-now</string>
 
     <string name="please_wait">Por favor, aguarde…</string>
@@ -56,11 +56,17 @@
 
     <!--Settings preferences keys-->
     <string name="prefs_privacy_policy_key" translatable="true">privacy_policy_key</string>
+    <string name="prefs_notification" translatable="true">prefs_notification</string>
     <string name="neaby_places">Locais próximos</string>
     <string name="request_location_permission_title">Permissao necessária</string>
     <string name="request_location_permission_message">Precisamos de sua localizacao para mostrar você no mapa!</string>
     <string name="contact_deleted">Contacto eliminado!</string>
     <string name="delete_contact_error_message">Ocorreu algum erro, enquanto tentamos eliminar o contacto, por favor verifique sua internet e tente novamente!</string>
+    <string name="about">Sobre</string>
+    <string name="general">Geral</string>
+    <string name="notifications">Notificacoes</string>
+    <string name="disabled">Desativado</string>
+    <string name="enabled">Activado</string>
 
     <!--Settings preferences keys-->
 

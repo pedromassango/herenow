@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Sobre">
+    <PreferenceCategory android:title="@string/general">
+
+        <CheckBoxPreference
+            android:key="@string/prefs_notification"
+            android:title="@string/notifications"
+            android:defaultValue="true"
+            android:summaryOff="@string/disabled"
+            android:summaryOn="@string/enabled"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
         <Preference
-            android:summary="@string/app_version_name"
-            android:title="@string/version" />
+            android:title="@string/version"
+            android:summary="@string/version_name"/>
 
         <Preference
             android:summary="@string/developer_name"

@@ -1,10 +1,16 @@
 package com.pedromassango.herenow.services
 
+import android.app.Notification
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Build
 import android.support.annotation.StringRes
+import android.support.v7.preference.PreferenceManager
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
 
 /**
  * Created by Pedro Massango on 1/12/18.
@@ -16,6 +22,8 @@ class PopupBroadcastReceiver : BroadcastReceiver() {
     companion object {
         // Action to show popup message
         val SHOW_POPUP_MESSAGE = "com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE"
+        val SHOW_NOTIFICATION = "com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_NOTIFICATION"
+        val INTENT_TITLE = "INTENT_TITLE"
         val INTENT_MESSAGE = "INTENT_MESSAGE"
         val INTENT_BOOLEAN_MESSAGE = "INETNT_BOOLEAN_MESSAGE"
 
@@ -25,19 +33,56 @@ class PopupBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
 
-        when(intent!!.action){
-            // Show Popup intent
+        when (intent!!.action) {
+        // Show Popup intent
             SHOW_POPUP_MESSAGE -> {
                 val message = intent.getIntExtra(INTENT_MESSAGE, R.string.something_was_wrong)
                 val closeOnClick = intent.getBooleanExtra(INTENT_BOOLEAN_MESSAGE, true)
                 // Notify the activity that is listening from this listener
                 iShowPopupListener?.onBroadcastShowPopup(message, closeOnClick)
             }
+            SHOW_NOTIFICATION -> {
+                val title = intent.getStringExtra(INTENT_TITLE)
+                checkNotNull(title)
+                val message = intent.getStringExtra(INTENT_MESSAGE)
+                checkNotNull(message)
+
+                // Check if the user allow notification no Settings
+                val allowedNotifications = PreferenceManager.getDefaultSharedPreferences(context)
+                        .getBoolean(context!!.getString(R.string.prefs_notification), true)
+
+                // If user allowed notifications, show it
+                if (allowedNotifications) {
+                    showNotification(context, title, message)
+                }
+            }
         }
 
     }
 
-    interface IShowPopupListener{
+    interface IShowPopupListener {
         fun onBroadcastShowPopup(@StringRes message: Int, closeOnClick: Boolean)
     }
+
+    private fun showNotification(context: Context, title: String, message: String) {
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Notification.Builder(context, context.getString(R.string.app_name))
+        } else {
+            Notification.Builder(context)
+        }
+
+        builder.setAutoCancel(true)
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+
+        // Content
+        builder.setContentTitle(title)
+        builder.setContentText(message)
+
+        //TODO: testing info notification type
+        builder.setOnlyAlertOnce(true)
+
+        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(2, builder.build())
+    }
+
 }
