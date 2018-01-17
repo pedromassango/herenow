@@ -15,7 +15,7 @@ object Utils {
     fun isConnected(context: Context): Boolean {
         return try {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            cm.activeNetworkInfo.isConnected
+            cm.activeNetworkInfo?.isConnected ?: false
         } catch (ex: NullPointerException) {
             ex.printStackTrace()
             false

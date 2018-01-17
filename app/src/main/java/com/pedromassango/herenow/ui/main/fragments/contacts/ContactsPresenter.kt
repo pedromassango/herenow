@@ -16,6 +16,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
     override fun getUserContacts() {
         HereNow.logcat("ContactsPresenter: getUserContacts..")
         if (!view.isConnected) {
+            view.showGetContactsError()
             return
         }
 
