@@ -45,4 +45,5 @@ interface ContactsDataSource{
     fun saveUserContacts(contact: Contact, iSaveListener: ISaveListener?)
 
     fun keepFriendsLocationSync(iLocationListener: ILocationListener)
+    fun removeContact(contact: Contact, position: Int, iResultListener: IResultListener?)
 }

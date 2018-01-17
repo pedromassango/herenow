@@ -25,11 +25,14 @@ class ContactsContract {
         fun showPermissionUpdateSuccess()
         fun updateContactInAdapter(position: Int, contact: Contact)
         fun showPleaseWaitMessage()
+        fun showContactDeletedMessage()
+        fun showDeleteErrorMessage()
     }
 
     interface Presenter {
         fun contactPicked(contact: Contact)
         fun getUserContacts()
         fun contactPerssionSwitched(mPosition: Int, contact: Contact)
+        fun onDeleteContact(contact: Contact, position: Int)
     }
 }

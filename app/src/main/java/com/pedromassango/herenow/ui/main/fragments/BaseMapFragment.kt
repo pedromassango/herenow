@@ -98,7 +98,6 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
         logcat("onMapReady")
 

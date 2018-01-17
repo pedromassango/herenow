@@ -35,7 +35,7 @@ class ContactAdapter(private val context: Context,
         synchronized(ContactAdapter::class.java) {
             contacts.removeAt(position)
             contacts.add(position, contact)
-            notifyItemChanged(position)
+            notifyItemChanged(position, contact)
         }
     }
 
@@ -51,4 +51,11 @@ class ContactAdapter(private val context: Context,
         val view = LayoutInflater.from(context).inflate(R.layout.row_contact, parent, false)
         return ContactVH(view)
     }
+
+    fun removeAt(adapterPosition: Int) {
+        contacts.removeAt(adapterPosition)
+        notifyItemRemoved(adapterPosition)
+    }
+
+    fun getItem(adapterPosition: Int): Contact = contacts[adapterPosition]
 }

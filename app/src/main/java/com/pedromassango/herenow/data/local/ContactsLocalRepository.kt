@@ -48,4 +48,8 @@ class ContactsLocalRepository : ContactsDataSource {
         //iListener?.onSuccess(arrayList)
         iListener?.onError()
     }
+
+    override fun removeContact(contact: Contact, position: Int, iResultListener: ContactsDataSource.IResultListener?) {
+
+    }
 }

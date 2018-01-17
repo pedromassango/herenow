@@ -1,7 +1,9 @@
 package com.pedromassango.herenow.ui.main.fragments.map
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -12,12 +14,19 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.ActivityUtils
+import com.pedromassango.herenow.ui.main.IPermissionListener
 import com.pedromassango.herenow.ui.main.fragments.BaseMapFragment
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 
@@ -56,6 +65,7 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        logcat("MapFragment -> onCreate()")
 
         // Setup locationManager
         locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -106,19 +116,54 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
 
     override fun removeLoader() = super.dismissLoader()
 
-    @SuppressLint("MissingPermission")
+    override fun requestLocationPermission(iPermissionListener: IPermissionListener) {
+
+        Dexter.withActivity(activity)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(object : PermissionListener {
+                    override fun onPermissionGranted(response: PermissionGrantedResponse?) =
+                            iPermissionListener.invoke(true)
+
+                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+                        val dialog = AlertDialog.Builder(activity)
+                                .setTitle(R.string.request_location_permission_title)
+                                .setMessage(R.string.request_location_permission_message)
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.str_ok, object : DialogInterface.OnClickListener {
+                                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                                        requestLocationPermission(iPermissionListener)
+                                    }
+                                })
+                    }
+
+                    override fun onPermissionDenied(response: PermissionDeniedResponse?) =
+                            iPermissionListener.invoke(false)
+                })
+    }
+
     override fun onMapReady(mMap: GoogleMap?) {
         this.map = mMap
 
         // start fetch friends location
         presenter.showFriendsOnMap()
 
-        // Request location updates via GPS
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
-        // Request location updates via PASSIVE-PROVIDER
-        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this)
-        // Request location updates via NETWORK
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this)
+        requestLocationPermission(object : IPermissionListener {
+            @SuppressLint("MissingPermission")
+            override fun invoke(state: Boolean) {
+                when (state) {
+                    false -> activity.finish()
+                    true -> {
+
+                        // Request location updates via GPS
+                        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
+                        // Request location updates via PASSIVE-PROVIDER
+                        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this@MapFragment)
+                        // Request location updates via NETWORK
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this@MapFragment)
+                    }
+                }
+            }
+        })
     }
 
     override fun showFriendOnMap(contact: Contact) {

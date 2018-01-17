@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Patterns
 import android.view.*
 import android.widget.Toast
@@ -20,7 +22,6 @@ import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
 import com.pedromassango.herenow.ui.main.ISuitcherPermissionListener
-import com.pedromassango.herenow.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
 import android.provider.ContactsContract as DeviceContract
 
@@ -67,6 +68,20 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         // Initialize adapter
         contactsAdapter = ContactAdapter(activity, this)
 
+        // Swipe listener || Delete action
+        val swipeHandler = object : SwipeToDeleteCallback(activity) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val contact = contactsAdapter.getItem(position)
+
+                //Remove item in adapter
+                contactsAdapter.removeAt( position)
+
+                // Call delete in Presenter
+                presenter.onDeleteContact(contact, position)
+            }
+        }
+
         with(root) {
 
             // RecyclerView setup
@@ -74,7 +89,13 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
             recycler_contacts.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             recycler_contacts.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
             recycler_contacts.adapter = contactsAdapter
+
+            // Attach recyclerView on itemTouch listener, for swipe listener.
+            val itemTouch = ItemTouchHelper(swipeHandler)
+            itemTouch.attachToRecyclerView(recycler_contacts)
         }
+
+
 
         return root
     }
@@ -139,10 +160,6 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         }
     }
 
-    override fun showPleaseWaitMessage() {
-        showToast(R.string.please_wait)
-    }
-
     override fun showGetContactsError() {
         with(root) {
             recycler_contacts.visibility = View.GONE
@@ -180,17 +197,17 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         }
     }
 
-    override fun showSaveContactError() {
-        showDialog(R.string.fail, R.string.unable_to_save_contact)
-    }
+    override fun showPleaseWaitMessage() = showToast(R.string.please_wait)
 
-    override fun showPermissionUpdateSuccess() {
-        showToast(R.string.permission_updated_success, Toast.LENGTH_LONG)
-    }
+    override fun showSaveContactError() = showDialog(R.string.fail, R.string.unable_to_save_contact)
 
-    override fun updateContactInAdapter(position: Int, contact: Contact) {
-        contactsAdapter.update(position, contact)
-    }
+    override fun showPermissionUpdateSuccess() = showToast(R.string.permission_updated_success, Toast.LENGTH_LONG)
+
+    override fun showContactDeletedMessage() = showToast(R.string.contact_deleted, Toast.LENGTH_LONG)
+
+    override fun showDeleteErrorMessage() = showDialog(R.string.fail, R.string.delete_contact_error_message)
+
+    override fun updateContactInAdapter(position: Int, contact: Contact) = contactsAdapter.update(position, contact)
 
     private fun showDialog(@StringRes title: Int, @StringRes message: Int) {
         val builder = AlertDialog.Builder(context)

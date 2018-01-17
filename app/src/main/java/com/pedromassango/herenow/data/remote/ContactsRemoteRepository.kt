@@ -170,6 +170,15 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
                 .addOnSuccessListener { iSaveListener!!.onSaved() }
     }
 
+    override fun removeContact(contact: Contact, position: Int, iResultListener: ContactsDataSource.IResultListener?) {
+        logcat("removeContact")
+
+        userContactsRef.child(contact.phoneNumber)
+                .removeValue()
+                .addOnSuccessListener { iResultListener!!.onSuccess(position) }
+                .addOnFailureListener { iResultListener!!.onError(position) }
+    }
+
     // Update location permission
     override fun updatePermission(position: Int, number: Contact, iListener: ContactsDataSource.IResultListener?) {
         logcat("updatePermission")

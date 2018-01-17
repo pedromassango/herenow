@@ -15,7 +15,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
     override fun getUserContacts() {
         HereNow.logcat("ContactsPresenter: getUserContacts..")
-        if(!view.isConnected){
+        if (!view.isConnected) {
             return
         }
 
@@ -23,16 +23,16 @@ class ContactsPresenter(private val view: ContactsContract.View,
         view.showGetContactsProgress()
 
         // Get contacts
-        contactsRepository.getContacts(object : ContactsDataSource.IListener<Contact>{
+        contactsRepository.getContacts(object : ContactsDataSource.IListener<Contact> {
             override fun onSuccess(data: ArrayList<Contact>) {
                 HereNow.logcat("ContactsPresenter: getUserContacts - onSuccess")
 
-                if(data.isEmpty()){
+                if (data.isEmpty()) {
                     view.showNoContacts()
                     return
                 }
 
-                view.showContact( data)
+                view.showContact(data)
             }
 
             override fun onError() {
@@ -46,7 +46,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
         logcat("PICKED: $contact")
 
         // Check if there is connection to internet
-        if(!view.isConnected){
+        if (!view.isConnected) {
             return
         }
 
@@ -57,7 +57,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
         contact.phoneNumber = Utils.getFormatedNumber(contact.phoneNumber)
 
         // Save the contact
-        contactsRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener{
+        contactsRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener {
             override fun onSaved() {
 
                 view.dismissSaveContactProgress()
@@ -77,13 +77,14 @@ class ContactsPresenter(private val view: ContactsContract.View,
         logcat("contactPerssionSwitched: $mPosition")
 
         // Check if is connected, before execute task
-        if(!view.isConnected){
+        if (!view.isConnected) {
             return
         }
 
         // Show a feedback, that the action is being processed
         view.showPleaseWaitMessage()
 
+        // Request permissions updates on Database
         contactsRepository.updatePermission(mPosition, contact, object : ContactsDataSource.IResultListener {
             override fun onError(position: Int) {
                 logcat("onError: $position")
@@ -98,9 +99,25 @@ class ContactsPresenter(private val view: ContactsContract.View,
                 logcat("onSuccess: $position")
 
                 // Update item in adapter
-                view.updateContactInAdapter( position, contact)
+                view.updateContactInAdapter(position, contact)
 
                 view.showPermissionUpdateSuccess()
+            }
+        })
+    }
+
+    override fun onDeleteContact(contact: Contact, position: Int) {
+
+        contactsRepository.removeContact(contact, position, object : ContactsDataSource.IResultListener {
+            override fun onSuccess(position: Int) {
+
+                view.showContactDeletedMessage()
+            }
+
+            override fun onError(position: Int) {
+
+                view.showDeleteErrorMessage()
+                view.showContact(contact)
             }
         })
     }

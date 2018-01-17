@@ -33,7 +33,7 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
     }
 
     override fun updatePermission(position: Int, number: Contact, iListener: ContactsDataSource.IResultListener?) {
-        contactsRemoteRepository.updatePermission(position, number, object : ContactsDataSource.IResultListener{
+        contactsRemoteRepository.updatePermission(position, number, object : ContactsDataSource.IResultListener {
             override fun onSuccess(position: Int) {
 
                 // Update local repository
@@ -99,6 +99,17 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
             override fun onError() {
                 iSaveListener!!.onError()
             }
+        })
+    }
+
+    override fun removeContact(contact: Contact, position: Int, iResultListener: ContactsDataSource.IResultListener?) {
+        contactsRemoteRepository.removeContact(contact, position, object : ContactsDataSource.IResultListener {
+            override fun onSuccess(position: Int) {
+                contactsLocalRepository.removeContact(contact, position, null)
+                iResultListener!!.onSuccess(position)
+            }
+
+            override fun onError(position: Int) = iResultListener!!.onError(position)
         })
     }
 }
