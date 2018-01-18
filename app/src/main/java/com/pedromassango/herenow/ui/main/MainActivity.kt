@@ -15,6 +15,7 @@ import android.widget.PopupWindow
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.ActivityUtils
 import com.pedromassango.herenow.extras.Utils
 import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 import com.pedromassango.herenow.services.CommonBroadcastReceiver
@@ -22,7 +23,8 @@ import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
 import com.pedromassango.herenow.ui.main.fragments.map.MapFragment
-import com.pedromassango.herenow.ui.main.fragments.places.FragmentPlaces
+import com.pedromassango.herenow.ui.main.fragments.places.FragmentListPlaces
+import com.pedromassango.herenow.ui.main.fragments.places.FragmentShowPlacesOnMap
 import com.pedromassango.herenow.ui.main.fragments.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.popup_window.view.*
@@ -33,10 +35,15 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     //MVP
     private lateinit var presenter: MainPresenter
 
+    // Store current fragment id
+    var currentFragmentId = 0
+
     // Toolbar for popup window
     private lateinit var mToolbar: Toolbar
 
     private lateinit var popup: PopupWindow
+    // We should not show popupWindow in some fragments, this property will store the sow state
+    private var canShowPopup = true
 
     private fun initializeViews() {
 
@@ -102,8 +109,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         popup.isOutsideTouchable = closeOnClick
         popup.isTouchable = closeOnClick
 
-        // show the popup window
-        popup.showAsDropDown(mToolbar)
+        if(canShowPopup) {
+            // show the popup window
+            popup.showAsDropDown(mToolbar)
+        }
     }
 
     /**
@@ -138,10 +147,14 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     // BottomNavigationView item selected listener
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        var title = getString(R.string.app_name)
 
-        // Check the item clicked
-        item.isChecked = true
+        // Check if the selected fragment is not arleady shown
+        if(currentFragmentId == id){
+            return true
+        }
+
+
+        var title = getString(R.string.app_name)
 
         // Remove popup window, if it is shown
         dismissPopup()
@@ -151,13 +164,16 @@ class MainActivity : AppCompatActivity(), MainContract.View,
             R.id.action_home -> MapFragment.getInstance()
             R.id.action_places ->{
                 title = getString(R.string.neaby_places)
-                FragmentPlaces.getInstance()
+                FragmentListPlaces.getInstance()
             }
             R.id.action_contacts -> {
                 title = getString(R.string.contacts)
                 ContactsFragment.getInstance()
             }
             R.id.action_settings -> {
+                // Disable show popup window on settings fragment
+                canShowPopup = false
+
                 title = getString(R.string.settings)
                 SettingsFragment.getInstance()
             }
@@ -167,14 +183,22 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         // Change activity title, with the selected fragment name
         this.title = title
 
-        // Anim fragment transaction
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        // Replace the fragments
+        ActivityUtils.replaceFragment(supportFragmentManager, fragment = fragment)
 
-        // Show the selected frament
-        transaction.replace(R.id.frame_layout, fragment)
-                .commit()
+        // Save current item id
+        currentFragmentId = id
 
-        return false
+        return true
+    }
+
+    override fun onBackPressed() {
+        // Check if map places fragment is visible if it is visible, then
+        // replace with fragment list places.
+        when(supportFragmentManager.findFragmentByTag(
+                FragmentShowPlacesOnMap::class.java.simpleName).isVisible) {
+            true -> bottom_navigation.selectedItemId = R.id.action_places
+            false -> super.onBackPressed()
+        }
     }
 }

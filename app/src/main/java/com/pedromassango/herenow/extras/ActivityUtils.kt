@@ -3,6 +3,9 @@ package com.pedromassango.herenow.extras
 import android.content.Context
 import android.content.Intent
 import android.support.annotation.StringRes
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import com.pedromassango.herenow.R
 import com.pedromassango.herenow.services.CommonBroadcastReceiver
 
 /**
@@ -20,6 +23,21 @@ object ActivityUtils {
         popupBroadcastIntent.putExtra(CommonBroadcastReceiver.INTENT_MESSAGE, message)
 
         context.sendBroadcast(popupBroadcastIntent)
+    }
+
+    /**
+     * Replace fragments on activity
+     */
+    fun replaceFragment(supportFragmentManager: FragmentManager,
+        frame_layout_id: Int = R.id.frame_layout,
+        fragment: Fragment){
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+
+        // Show the selected frament
+        transaction.replace(frame_layout_id, fragment, fragment::class.java.simpleName)
+                .commit()
     }
 
     /**

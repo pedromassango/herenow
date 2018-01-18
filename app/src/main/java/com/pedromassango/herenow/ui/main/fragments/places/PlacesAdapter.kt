@@ -2,6 +2,7 @@ package com.pedromassango.herenow.ui.main.fragments.places
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.pedromassango.herenow.R
 
@@ -10,11 +11,17 @@ import com.pedromassango.herenow.R
  *
  * Adapt places item.
  */
-class PlacesAdapter(val places: ArrayList<Place>): RecyclerView.Adapter<PlaceVH>() {
+class PlacesAdapter(val places: ArrayList<Place>,
+                    val iPlaceClickListener: IPlaceClickListener) :
+        RecyclerView.Adapter<PlaceVH>() {
 
     override fun onBindViewHolder(holder: PlaceVH?, position: Int) {
         val place = places[position]
         holder!!.bindViews(place)
+
+        // Click listener for each place
+        holder.itemView.findViewById<View>(R.id.v1)
+                .setOnClickListener { iPlaceClickListener.invoke(place) }
     }
 
     override fun getItemCount(): Int = places.size
