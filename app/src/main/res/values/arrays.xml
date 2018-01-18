@@ -3,13 +3,23 @@
 
     <array name="places_names">
         <item>Restaurantes</item>
+        <item>Hospitais e Clínicas</item>
+        <item>Supermercado e Lojas</item>
+        <item>Hoteis</item>
+        <item>Escolas</item>
         <item>Igrejas</item>
         <item>Postos de abastecimento</item>
+        <item>Aeroporto</item>
     </array>
 
     <array name="places_icons">
         <item>@drawable/comida</item>
+        <item>@drawable/hospital</item>
+        <item>@drawable/lojas</item>
+        <item>@drawable/hotels</item>
+        <item>@drawable/escolas</item>
         <item>@drawable/igreja</item>
         <item>@drawable/bombas</item>
+        <item>@drawable/aeroporto</item>
     </array>
 </resources>
