@@ -4,28 +4,12 @@
     <array name="places_names">
         <item>Restaurantes</item>
         <item>Igrejas</item>
-        <item>Bombas de galosina</item>
-        <item>Igrejas</item>
-        <item>Restaurantes</item>
-        <item>Igrejas</item>
-        <item>Igrejas</item>
-        <item>Restaurantes</item>
-        <item>Bombas de galosina</item>
-        <item>Igrejas</item>
-        <item>Bombas de galosina</item>
+        <item>Postos de abastecimento</item>
     </array>
 
     <array name="places_icons">
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
-        <item>@drawable/icon_places</item>
+        <item>@drawable/comida</item>
+        <item>@drawable/igreja</item>
+        <item>@drawable/bombas</item>
     </array>
 </resources>

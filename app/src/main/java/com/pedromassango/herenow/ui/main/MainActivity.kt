@@ -17,7 +17,7 @@ import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
 import com.pedromassango.herenow.services.NetworkBroadcastReceiver
-import com.pedromassango.herenow.services.PopupBroadcastReceiver
+import com.pedromassango.herenow.services.CommonBroadcastReceiver
 import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.popup_window.view.*
 
 class MainActivity : AppCompatActivity(), MainContract.View,
-        BottomNavigationView.OnNavigationItemSelectedListener, NetworkBroadcastReceiver.IConnectionListener, PopupBroadcastReceiver.IShowPopupListener {
+        BottomNavigationView.OnNavigationItemSelectedListener, NetworkBroadcastReceiver.IConnectionListener, CommonBroadcastReceiver.IShowPopupListener {
 
     //MVP
     private lateinit var presenter: MainPresenter
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     private fun dismissPopup() = if (popup.isShowing) popup.dismiss() else { }
 
     /**
-     * Show popup message requested by PopupBroadcastReceiver
+     * Show popup message requested by CommonBroadcastReceiver
      */
     override fun onBroadcastShowPopup(@StringRes message: Int, closeOnClick: Boolean) {
 
@@ -167,9 +167,12 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         // Change activity title, with the selected fragment name
         this.title = title
 
+        // Anim fragment transaction
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+
         // Show the selected frament
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, fragment)
+        transaction.replace(R.id.frame_layout, fragment)
                 .commit()
 
         return false

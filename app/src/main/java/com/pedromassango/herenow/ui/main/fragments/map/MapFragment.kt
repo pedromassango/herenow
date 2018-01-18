@@ -60,9 +60,6 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
     // TO update marker position
     private var arleadySet = 0
 
-    // View
-    private lateinit var root: View
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logcat("MapFragment -> onCreate()")
@@ -97,7 +94,7 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
     override fun showNoFriendsMessage(showDialog: Boolean) {
 
         // Show info in popup window from Broadcast Receiver
-        ActivityUtils.showPopupMessage(activity, R.string.no_friend_to_show_title, closeOnClick = false)
+        ActivityUtils.showPopupMessage(activity, R.string.no_friend_to_show_title, closeOnClick = true)
 
         // Show the dialog only one time
         if (showDialog) {
@@ -129,11 +126,7 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
                                 .setTitle(R.string.request_location_permission_title)
                                 .setMessage(R.string.request_location_permission_message)
                                 .setCancelable(false)
-                                .setPositiveButton(R.string.str_ok, object : DialogInterface.OnClickListener {
-                                    override fun onClick(dialog: DialogInterface?, which: Int) {
-                                        requestLocationPermission(iPermissionListener)
-                                    }
-                                })
+                                .setPositiveButton(R.string.str_ok) { dialog, which -> requestLocationPermission(iPermissionListener) }
                     }
 
                     override fun onPermissionDenied(response: PermissionDeniedResponse?) =
@@ -141,21 +134,21 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
                 })
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
-        this.map = mMap
+        super.onMapReady(mMap)
 
         // start fetch friends location
         presenter.showFriendsOnMap()
 
         requestLocationPermission(object : IPermissionListener {
-            @SuppressLint("MissingPermission")
             override fun invoke(state: Boolean) {
                 when (state) {
                     false -> activity.finish()
                     true -> {
 
                         // Request location updates via GPS
-                        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this)
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this@MapFragment)
                         // Request location updates via PASSIVE-PROVIDER
                         locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this@MapFragment)
                         // Request location updates via NETWORK

@@ -21,9 +21,12 @@ import com.pedromassango.herenow.ui.main.fragments.BaseMapFragment
 class FragmentPlaces : Fragment() {
 
     companion object {
-
+        var INSTANCE: FragmentPlaces? = null
         fun getInstance(): FragmentPlaces {
-            return FragmentPlaces()
+            if(INSTANCE == null){
+                INSTANCE = FragmentPlaces()
+            }
+            return INSTANCE!!
         }
     }
 
@@ -39,8 +42,7 @@ class FragmentPlaces : Fragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT)
 
-        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         root.layoutManager = layoutManager
         root.setHasFixedSize(true)
 
@@ -49,11 +51,10 @@ class FragmentPlaces : Fragment() {
         val placesNames = resources.getStringArray(R.array.places_names)
         val placesIcons = resources.obtainTypedArray(R.array.places_icons)
 
-        for ((index, i) in placesNames.withIndex()) {
-            val place = Place(i, placesIcons.getResourceId(index, 0))
-            places.add(place)
-        }
+        // Add places to list
+        placesNames.mapIndexedTo(places) { index, i -> Place(i, placesIcons.getResourceId(index, 0)) }
 
+        // Setting up adapter and pass it to recyclerView
         val placesAdapter = PlacesAdapter(places)
         root.adapter = placesAdapter
 

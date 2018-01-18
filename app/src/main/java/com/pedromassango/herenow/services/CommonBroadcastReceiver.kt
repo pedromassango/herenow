@@ -17,12 +17,12 @@ import com.pedromassango.herenow.data.preferences.PreferencesHelper
  *
  * A broadcast to show a application info with a popup inside a current activity.
  */
-class PopupBroadcastReceiver : BroadcastReceiver() {
+class CommonBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         // Action to show popup message
-        val SHOW_POPUP_MESSAGE = "com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE"
-        val SHOW_NOTIFICATION = "com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_NOTIFICATION"
+        val SHOW_POPUP_MESSAGE = "com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_POPUP_MESSAGE"
+        val SHOW_NOTIFICATION = "com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_NOTIFICATION"
         val INTENT_TITLE = "INTENT_TITLE"
         val INTENT_MESSAGE = "INTENT_MESSAGE"
         val INTENT_BOOLEAN_MESSAGE = "INETNT_BOOLEAN_MESSAGE"

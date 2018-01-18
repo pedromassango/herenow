@@ -19,12 +19,12 @@
         android:indeterminate="true" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_no_contacts"
         style="@style/appTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/progressbar_contacts"
         android:layout_centerInParent="true"
-        android:paddingTop="8dp"
-        android:text="@string/empty_contacts_info"/>
+        android:paddingTop="8dp"/>
 </RelativeLayout>

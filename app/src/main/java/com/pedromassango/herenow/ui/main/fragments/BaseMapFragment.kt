@@ -26,7 +26,7 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback {
     lateinit var mMapView: MapView
 
     // View
-    private lateinit var root: View
+    lateinit var root: View
 
     override fun onStart() {
         super.onStart()
@@ -108,5 +108,6 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback {
         mMap.uiSettings?.isIndoorLevelPickerEnabled = true
         mMap.isBuildingsEnabled = true
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mMap.setMinZoomPreference(11F)
     }
 }

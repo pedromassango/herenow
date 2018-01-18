@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
-import com.pedromassango.herenow.services.PopupBroadcastReceiver
+import com.pedromassango.herenow.services.CommonBroadcastReceiver
 import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 
 /**
@@ -16,7 +16,7 @@ class HereNow : Application() {
         super.onCreate()
 
         // Setup firebase
-        FirebaseApp.initializeApp(this);
+        FirebaseApp.initializeApp(this)
 
         // Enable firebase to persist data when offline
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
@@ -31,15 +31,15 @@ class HereNow : Application() {
         }
 
         // Register popup listener to a broadcast
-        fun setPopupListener(iShowPopupListener: PopupBroadcastReceiver.IShowPopupListener){
-            checkNotNull(iShowPopupListener)
-            PopupBroadcastReceiver.iShowPopupListener = iShowPopupListener
+        fun setPopupListener(iShowCommonListener: CommonBroadcastReceiver.IShowPopupListener){
+            checkNotNull(iShowCommonListener)
+            CommonBroadcastReceiver.iShowPopupListener = iShowCommonListener
         }
 
         fun logcat(message: String){
             Log.v("output", "OUT: $message")
 
-            println("HELLO WORLD")
+            println("OUT: $message")
         }
 
     }

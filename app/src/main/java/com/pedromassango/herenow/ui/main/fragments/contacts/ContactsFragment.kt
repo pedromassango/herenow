@@ -95,8 +95,6 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
             itemTouch.attachToRecyclerView(recycler_contacts)
         }
 
-
-
         return root
     }
 
@@ -163,9 +161,9 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
     override fun showGetContactsError() {
         with(root) {
             recycler_contacts.visibility = View.GONE
-            tv_no_contacts.visibility = View.VISIBLE
             progressbar_contacts.visibility = View.GONE
             tv_no_contacts.text = getString(R.string.get_contacts_error_click_toretry)
+            tv_no_contacts.visibility = View.VISIBLE
             tv_no_contacts.setOnClickListener { presenter.getUserContacts() }
         }
     }
@@ -174,8 +172,8 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         with(root) {
             recycler_contacts.visibility = View.GONE
             progressbar_contacts.visibility = View.GONE
-            tv_no_contacts.visibility = View.VISIBLE
             tv_no_contacts.text = getString(R.string.empty_contacts_info)
+            tv_no_contacts.visibility = View.VISIBLE
             tv_no_contacts.setOnClickListener { showDialogNewContact() }
         }
     }
@@ -183,8 +181,8 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
     override fun showSaveContactProgress() {
         with(root) {
             recycler_contacts.visibility = View.GONE
-            tv_no_contacts.visibility = View.VISIBLE
             tv_no_contacts.text = getString(R.string.saving_contact)
+            tv_no_contacts.visibility = View.VISIBLE
 
             progressbar_contacts.visibility = View.VISIBLE
         }
@@ -203,7 +201,16 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
     override fun showPermissionUpdateSuccess() = showToast(R.string.permission_updated_success, Toast.LENGTH_LONG)
 
-    override fun showContactDeletedMessage() = showToast(R.string.contact_deleted, Toast.LENGTH_LONG)
+    override fun showContactDeletedMessage() {
+
+        // Show contact delected
+        showToast(R.string.contact_deleted, Toast.LENGTH_LONG)
+
+        // Check if there is conctats on recyclerView
+        if(contactsAdapter.itemCount == 0){
+            showNoContacts()
+        }
+    }
 
     override fun showDeleteErrorMessage() = showDialog(R.string.fail, R.string.delete_contact_error_message)
 

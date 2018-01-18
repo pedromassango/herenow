@@ -75,7 +75,7 @@
         </receiver>
 
         <receiver
-            android:name=".services.PopupBroadcastReceiver"
+            android:name=".services.CommonBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE"/>
