@@ -50,7 +50,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
     // To check if has connection to internet
     override val isConnected: Boolean
-        get() = Utils.isConnected(context)
+        get() = Utils.isConnected(context!!)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,17 +59,17 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         setHasOptionsMenu(true)
 
         // Intialize presenter
-        presenter = ContactsPresenter(this, RepositoryManager.contactsRepository(PreferencesHelper(context)))
+        presenter = ContactsPresenter(this, RepositoryManager.contactsRepository(PreferencesHelper(context!!)))
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root = inflater!!.inflate(R.layout.fragment_contacts, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        root = inflater.inflate(R.layout.fragment_contacts, container, false)
 
         // Initialize adapter
-        contactsAdapter = ContactAdapter(activity, this)
+        contactsAdapter = ContactAdapter(activity!!, this)
 
         // Swipe listener || Delete action
-        val swipeHandler = object : SwipeToDeleteCallback(activity) {
+        val swipeHandler = object : SwipeToDeleteCallback(activity!!) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val contact = contactsAdapter.getItem(position)
@@ -98,7 +98,9 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         return root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         HereNow.logcat("ContactsFragment: onViewCreated.")
 
@@ -217,7 +219,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
     override fun updateContactInAdapter(position: Int, contact: Contact) = contactsAdapter.update(position, contact)
 
     private fun showDialog(@StringRes title: Int, @StringRes message: Int) {
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context!!)
         builder.setCancelable(false)
         builder.setTitle(title)
         builder.setMessage(message)
@@ -235,7 +237,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
 
         // Building the input dialog
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context!!)
         builder.setView(view)
         builder.setTitle(R.string.register_new_contact)
         builder.setNegativeButton(R.string.str_cancel, null)
@@ -296,7 +298,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
             // getData() method will have the Content Uri of the selected contact
             val uri = data.data
             //Query the content uri
-            cursor = activity.contentResolver.query(uri, null, null, null, null)
+            cursor = activity!!.contentResolver.query(uri, null, null, null, null)
             cursor!!.moveToFirst()
             // column index of the phone number
             val phoneIndex = cursor.getColumnIndex(DeviceContract.CommonDataKinds.Phone.NUMBER)

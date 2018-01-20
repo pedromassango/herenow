@@ -20,7 +20,7 @@ class PlacesAdapter(val places: ArrayList<Place>,
         holder!!.bindViews(place)
 
         // Click listener for each place
-        holder.itemView.findViewById<View>(R.id.v1)
+        holder.itemView
                 .setOnClickListener { iPlaceClickListener.invoke(place) }
     }
 

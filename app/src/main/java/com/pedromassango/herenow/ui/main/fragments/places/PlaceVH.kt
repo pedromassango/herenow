@@ -11,8 +11,8 @@ class PlaceVH(val view: View): RecyclerView.ViewHolder(view) {
 
     fun bindViews(place: Place){
         with(view){
-            place_icon.setImageResource( place.placeIcon)
-            place_name.text = place.placeName
+            img_place_icon.setImageResource( place.placeIcon)
+            tv_place_type.text = place.placeName
         }
     }
 }

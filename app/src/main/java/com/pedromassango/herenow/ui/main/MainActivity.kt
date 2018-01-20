@@ -5,12 +5,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow
@@ -23,10 +25,10 @@ import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
 import com.pedromassango.herenow.ui.main.fragments.map.MapFragment
-import com.pedromassango.herenow.ui.main.fragments.places.FragmentListPlaces
 import com.pedromassango.herenow.ui.main.fragments.places.FragmentShowPlacesOnMap
 import com.pedromassango.herenow.ui.main.fragments.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.bottom_shet_content.*
 import kotlinx.android.synthetic.main.popup_window.view.*
 
 class MainActivity : AppCompatActivity(), MainContract.View,
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     private lateinit var popup: PopupWindow
     // We should not show popupWindow in some fragments, this property will store the sow state
     private var canShowPopup = true
+    // To handle it on Fragment selection
+    var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
 
     private fun initializeViews() {
 
@@ -60,6 +64,9 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         // Set POPUP content with and height
         popup.width = WindowManager.LayoutParams.MATCH_PARENT
         popup.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+        // SETUP bottom Sheet
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
 
         // set a listener in bootom navigation bar
         bottom_navigation.setOnNavigationItemSelectedListener(this)
@@ -93,8 +100,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
      * SHow a popup menu info bellow a Toolbar.
      */
     private fun showPopupAlert(@StringRes message: Int,
-                       bgColor: PopupColor = PopupColor.DEFAULT,
-                       closeOnClick: Boolean = true) {
+                               bgColor: PopupColor = PopupColor.DEFAULT,
+                               closeOnClick: Boolean = true) {
 
         val backgroundgColor = when (bgColor) {
             PopupColor.RED -> ResourcesCompat.getColor(resources, R.color.red, null)
@@ -109,7 +116,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         popup.isOutsideTouchable = closeOnClick
         popup.isTouchable = closeOnClick
 
-        if(canShowPopup) {
+        if (canShowPopup) {
             // show the popup window
             popup.showAsDropDown(mToolbar)
         }
@@ -118,7 +125,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     /**
      * Dismiss the popup bellow a toolbar if it is shown.
      */
-    private fun dismissPopup() = if (popup.isShowing) popup.dismiss() else { }
+    private fun dismissPopup() = if (popup.isShowing) popup.dismiss() else {
+    }
 
     /**
      * Show popup message requested by CommonBroadcastReceiver
@@ -126,7 +134,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onBroadcastShowPopup(@StringRes message: Int, closeOnClick: Boolean) {
 
         // If we're not connected, do not show any other message
-        if(!Utils.isConnected(this)){
+        if (!Utils.isConnected(this)) {
             return
         }
 
@@ -149,7 +157,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         val id = item.itemId
 
         // Check if the selected fragment is not arleady shown
-        if(currentFragmentId == id){
+        if (currentFragmentId == id) {
             return true
         }
 
@@ -162,9 +170,13 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         val fragment: Fragment = when (id) {
 
             R.id.action_home -> MapFragment.getInstance()
-            R.id.action_places ->{
-                title = getString(R.string.neaby_places)
-                FragmentListPlaces.getInstance()
+            R.id.action_places -> {
+                // show or hide bottomShet, on locations item click
+                when (bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    true -> bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+                    else -> bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+                null
             }
             R.id.action_contacts -> {
                 title = getString(R.string.contacts)
@@ -178,7 +190,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
                 SettingsFragment.getInstance()
             }
             else -> MapFragment.getInstance()
-        }
+        } ?: return true
+
+        // On Navigation item click, close the bottomSheet
+        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
 
         // Change activity title, with the selected fragment name
         this.title = title
@@ -195,7 +210,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onBackPressed() {
         // Check if map places fragment is visible if it is visible, then
         // replace with fragment list places.
-        when(supportFragmentManager.findFragmentByTag(
+        when (supportFragmentManager.findFragmentByTag(
                 FragmentShowPlacesOnMap::class.java.simpleName).isVisible) {
             true -> bottom_navigation.selectedItemId = R.id.action_places
             false -> super.onBackPressed()

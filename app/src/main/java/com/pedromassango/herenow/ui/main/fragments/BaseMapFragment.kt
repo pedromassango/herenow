@@ -6,10 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import kotlinx.android.synthetic.main.fragment_maps.view.*
@@ -27,6 +24,24 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback {
 
     // View
     lateinit var root: View
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        root = inflater.inflate(R.layout.fragment_maps, container, false)
+
+        mMapView = root.maps_view
+        mMapView.onCreate(savedInstanceState)
+        mMapView.onResume() // To setup Map immediately
+
+        try {
+            MapsInitializer.initialize(activity!!.applicationContext)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+
+        mMapView.getMapAsync(this)
+
+        return root
+    }
 
     override fun onStart() {
         super.onStart()
@@ -53,32 +68,9 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback {
         mMapView.onLowMemory()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        mMapView.onSaveInstanceState(outState)
-    }
-
     override fun onDestroy() {
         mMapView.onDestroy()
         super.onDestroy()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root = inflater!!.inflate(R.layout.fragment_maps, container, false)
-
-        mMapView = root.maps_view
-        mMapView.onCreate(savedInstanceState)
-        mMapView.onResume() // To setup Map immediately
-
-        try {
-            MapsInitializer.initialize(activity.applicationContext)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-
-        mMapView.getMapAsync(this)
-
-        return root
     }
 
     fun Loader() {
@@ -105,9 +97,11 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback {
         this.map = mMap!!
 
         // Setting up map settings
-        mMap.uiSettings?.isIndoorLevelPickerEnabled = true
-        mMap.isBuildingsEnabled = true
+        //mMap.uiSettings?.isIndoorLevelPickerEnabled = true
+        //mMap.isBuildingsEnabled = true
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-        mMap.setMinZoomPreference(11F)
+
+        mMap.setMinZoomPreference(6.0F)
+        mMap.setMaxZoomPreference(20.0F)
     }
 }

@@ -26,8 +26,7 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bombas" />
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/place_name"

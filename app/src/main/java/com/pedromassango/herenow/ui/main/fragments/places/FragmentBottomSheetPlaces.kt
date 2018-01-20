@@ -1,7 +1,9 @@
 package com.pedromassango.herenow.ui.main.fragments.places
 
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,13 +18,13 @@ import com.pedromassango.herenow.ui.main.MainActivity
  *
  * List places.
  */
-class FragmentListPlaces : Fragment(), IPlaceClickListener {
+class FragmentBottomSheetPlaces : Fragment(), IPlaceClickListener {
 
     companion object {
-        var INSTANCE: FragmentListPlaces? = null
-        fun getInstance(): FragmentListPlaces {
+        private var INSTANCE: FragmentBottomSheetPlaces? = null
+        fun getInstance(): FragmentBottomSheetPlaces {
             if (INSTANCE == null) {
-                INSTANCE = FragmentListPlaces()
+                INSTANCE = FragmentBottomSheetPlaces()
             }
             return INSTANCE!!
         }
@@ -34,13 +36,13 @@ class FragmentListPlaces : Fragment(), IPlaceClickListener {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = RecyclerView(context)
         root.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT)
 
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = GridLayoutManager(context, 2)
         root.layoutManager = layoutManager
         root.setHasFixedSize(true)
 
@@ -55,6 +57,7 @@ class FragmentListPlaces : Fragment(), IPlaceClickListener {
         // Setting up adapter and pass it to recyclerView
         val placesAdapter = PlacesAdapter(places, this)
         root.adapter = placesAdapter
+        root.setHasFixedSize( true)
 
         return root
     }
@@ -65,13 +68,14 @@ class FragmentListPlaces : Fragment(), IPlaceClickListener {
     override fun invoke(place: Place) {
 
         // Change activity title
-        activity.title = place.placeName
+        activity!!.title = place.placeName
 
         // Change mainActivity is currentFragmentId
         (activity as MainActivity).currentFragmentId = 1024
+        //Collapse BottomSheet after Place click
+        (activity as MainActivity).bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
 
         // On Place click, show a fragment to list all neaby places
-        ActivityUtils.replaceFragment(fragmentManager, fragment = FragmentShowPlacesOnMap.getInstance(place.placeId))
+        ActivityUtils.replaceFragment(fragmentManager!!, fragment = FragmentShowPlacesOnMap.getInstance(place.placeId))
     }
-
 }

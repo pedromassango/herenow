@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.10'
-    ext.android_support_version = '26.1.0'
+    ext.android_support_version = '27.0.2'
     ext.facebook_version = '4.29.0'
     //ext.google_version = '11.0.4'
     ext.google_version = '11.8.0'

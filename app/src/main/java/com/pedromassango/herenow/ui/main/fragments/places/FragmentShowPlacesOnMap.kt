@@ -29,7 +29,7 @@ class FragmentShowPlacesOnMap : BaseMapFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        placesType = arguments.getInt(PLACES_TYPE)
+        placesType = arguments!!.getInt(PLACES_TYPE)
     }
 
     override fun onMapReady(mMap: GoogleMap?) {

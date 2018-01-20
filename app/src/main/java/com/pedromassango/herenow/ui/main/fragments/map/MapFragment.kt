@@ -3,17 +3,22 @@ package com.pedromassango.herenow.ui.main.fragments.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.model.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -47,9 +52,14 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
     // MVP
     lateinit var presenter: MapPresenter
 
+    // TO request device location updates
     private lateinit var locationManager: LocationManager
     private lateinit var myLocationMarker: MarkerOptions
+    // This device marker on Map
     private lateinit var myMarker: Marker
+
+    // Cicle arround the user location
+    var circle: Circle? = null
 
     private val friendsMarker: HashMap<String, Marker> = hashMapOf()
 
@@ -64,27 +74,28 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
         super.onCreate(savedInstanceState)
         logcat("MapFragment -> onCreate()")
 
+
         // Setup locationManager
-        locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Prepare user marker on map
         myLocationMarker = MarkerOptions()
-
         myLocationMarker.title(getString(R.string.you_are_here))
-        //myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
         myLocationMarker.flat(true)
 
         // Setup presenter
-        val preferencesHelper = PreferencesHelper(context)
+        val preferencesHelper = PreferencesHelper(context!!)
 
         presenter = MapPresenter(this,
                 preferencesHelper,
                 RepositoryManager.contactsRepository(preferencesHelper))
     }
 
+
+
     override fun showGetFriendsLocationError() {
         with(root) {
-            mMapView.visibility = View.GONE
+            //mMapView.visibility = View.GONE
             tv_map_info.visibility = View.VISIBLE
             tv_map_info.text = getString(R.string.get_friends_location_error)
             tv_map_info.setOnClickListener { presenter.showFriendsOnMap() }
@@ -94,12 +105,12 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
     override fun showNoFriendsMessage(showDialog: Boolean) {
 
         // Show info in popup window from Broadcast Receiver
-        ActivityUtils.showPopupMessage(activity, R.string.no_friend_to_show_title, closeOnClick = true)
+        ActivityUtils.showPopupMessage(activity!!, R.string.no_friend_to_show_title, closeOnClick = true)
 
         // Show the dialog only one time
         if (showDialog) {
 
-            val builder = AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(context!!)
             builder.setCancelable(false)
             builder.setTitle(R.string.no_friend_to_show_title)
             builder.setMessage(R.string.no_friend_to_show_message)
@@ -118,33 +129,36 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
         Dexter.withActivity(activity)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(object : PermissionListener {
-                    override fun onPermissionGranted(response: PermissionGrantedResponse?) =
-                            iPermissionListener.invoke(true)
+
+                    override fun onPermissionGranted(response: PermissionGrantedResponse?) = iPermissionListener.invoke(true)
 
                     override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
-                        val dialog = AlertDialog.Builder(activity)
+                        val dialog = AlertDialog.Builder(activity!!)
                                 .setTitle(R.string.request_location_permission_title)
                                 .setMessage(R.string.request_location_permission_message)
                                 .setCancelable(false)
-                                .setPositiveButton(R.string.str_ok) { dialog, which -> requestLocationPermission(iPermissionListener) }
+                                .setPositiveButton(R.string.str_ok) { _, _ -> requestLocationPermission(iPermissionListener) }
+
+                        dialog.create().show()
                     }
 
                     override fun onPermissionDenied(response: PermissionDeniedResponse?) =
                             iPermissionListener.invoke(false)
-                })
+                }).check()
     }
 
-    @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
         super.onMapReady(mMap)
+        logcat("MapActivity -> onMapReady")
 
         // start fetch friends location
         presenter.showFriendsOnMap()
 
         requestLocationPermission(object : IPermissionListener {
+            @SuppressLint("MissingPermission")
             override fun invoke(state: Boolean) {
                 when (state) {
-                    false -> activity.finish()
+                    false -> activity!!.finish()
                     true -> {
 
                         // Request location updates via GPS
@@ -181,14 +195,31 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
         logcat("onLocationChanged")
         logcat("onLocationChanged: provider -> ${location?.provider}")
 
+        val userCurrentPosition = LatLng(location!!.latitude, location.longitude)
+
         if (arleadySet == 0) {
             // set the marker at first time
-            myLocationMarker.position(LatLng(location!!.latitude, location.longitude))
+            myLocationMarker.position(userCurrentPosition)
+            myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
             myMarker = map!!.addMarker(myLocationMarker)
             arleadySet = 100
+
+            // Draw a circle on Map
+            circle = map!!.addCircle(CircleOptions()
+                    .center(userCurrentPosition)
+                    .fillColor(ResourcesCompat.getColor(resources, R.color.map_circle_fill, null))
+                    .radius(500.toDouble())
+                    .strokeWidth(0.toFloat()))
+
         } else {
+
             // Update the hold position to a recent position
-            myMarker.position = LatLng(location!!.latitude, location.longitude)
+            myMarker.position = userCurrentPosition
+            //move the camera to where user position is with a zoom of 20
+            map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(userCurrentPosition, 20F))
+
+            // Just update map center location
+            circle!!.center = userCurrentPosition
         }
 
         //Save user location

@@ -3,23 +3,19 @@
 
     <array name="places_names">
         <item>Restaurantes</item>
-        <item>Hospitais e Clínicas</item>
-        <item>Supermercado e Lojas</item>
-        <item>Hoteis</item>
+        <item>Hospitais</item>
+        <item>Supermercado</item>
         <item>Escolas</item>
         <item>Igrejas</item>
-        <item>Postos de abastecimento</item>
-        <item>Aeroporto</item>
+        <item>Combustível</item>
     </array>
 
     <array name="places_icons">
-        <item>@drawable/comida</item>
-        <item>@drawable/hospital</item>
-        <item>@drawable/lojas</item>
-        <item>@drawable/hotels</item>
-        <item>@drawable/escolas</item>
-        <item>@drawable/igreja</item>
-        <item>@drawable/bombas</item>
-        <item>@drawable/aeroporto</item>
+        <item>@drawable/ic_restaurant_white_24dp</item>
+        <item>@drawable/ic_local_hospital_white_24dp</item>
+        <item>@drawable/ic_store_mall_directory_white_24dp</item>
+        <item>@drawable/ic_school_white_24dp</item>
+        <item>@drawable/ic_store_mall_directory_white_24dp</item>
+        <item>@drawable/ic_local_gas_station_white_24dp</item>
     </array>
 </resources>
