@@ -49,8 +49,12 @@
             android:name="com.facebook.accountkit.ClientToken"
             android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
 
-        <activity android:name=".ui.main.MainActivity"
-            android:launchMode="singleTop">
+        <activity
+            android:name=".ui.main.SplashActivity"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:configChanges="orientation"
+            android:theme="@style/SplashSTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,12 +68,14 @@
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
 
+        <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.intro.IntroActivity" />
 
         <receiver android:name=".services.NetworkBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife" />
             </intent-filter>
         </receiver>
@@ -78,7 +84,7 @@
             android:name=".services.CommonBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE"/>
+                <action android:name="com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE" />
             </intent-filter>
         </receiver>
 

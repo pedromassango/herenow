@@ -2,9 +2,9 @@ package com.pedromassango.herenow.ui.main.fragments.places
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.data.model.Place
 
 /**
  * Created by Pedro Massango on 1/17/18.

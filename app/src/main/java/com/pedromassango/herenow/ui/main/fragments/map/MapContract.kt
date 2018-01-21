@@ -10,7 +10,6 @@ class MapContract {
 
     interface View{
 
-        fun requestLocationPermission(iPermissionListener: IPermissionListener)
         fun showFriendOnMap(contact: Contact)
         fun showGetFriendsLocationError()
         fun removeLoader()

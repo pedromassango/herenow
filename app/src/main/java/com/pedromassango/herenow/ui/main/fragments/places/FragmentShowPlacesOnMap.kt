@@ -1,20 +1,33 @@
 package com.pedromassango.herenow.ui.main.fragments.places
 
+import android.location.Location
 import android.os.Bundle
+import android.widget.Toast
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.pedromassango.herenow.R
+import com.pedromassango.herenow.app.HereNow
+import com.pedromassango.herenow.data.NearbyPlacesDataSource
+import com.pedromassango.herenow.data.RepositoryManager
+import com.pedromassango.herenow.data.model.Place
 import com.pedromassango.herenow.ui.main.fragments.BaseMapFragment
 
 /**
  * Created by Pedro Massango on 1/18/18.
+ *
+ * Show places on map
  */
-class FragmentShowPlacesOnMap : BaseMapFragment() {
+class FragmentShowPlacesOnMap : BaseMapFragment(), NearbyPlacesDataSource.IRequestNearbyPlacesListener {
 
     companion object {
-        val PLACES_TYPE = "place_id"
+        val PLACES_TYPE = "place_type"
 
-        fun getInstance(placeType: Int): FragmentShowPlacesOnMap {
+        fun getInstance(placeType: String): FragmentShowPlacesOnMap {
             val bundle = Bundle()
-            bundle.putInt(PLACES_TYPE, placeType)
+            bundle.putString(PLACES_TYPE, placeType)
 
             val instance = FragmentShowPlacesOnMap()
             instance.arguments = bundle
@@ -24,17 +37,54 @@ class FragmentShowPlacesOnMap : BaseMapFragment() {
     }
 
     // Received places type to show
-    var placesType = 0
+    var placesType = ""
+    // save fisrt time places set to map
+    var placesOnMap: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        placesType = arguments!!.getInt(PLACES_TYPE)
+        placesType = arguments!!.getString(PLACES_TYPE)
+
+        // here whe change the period of location update
+        timeUpdate = 150000
     }
 
-    override fun onMapReady(mMap: GoogleMap?) {
-        super.onMapReady(mMap)
+    override fun onLocationChanged(location: Location?) {
 
-        //TODO: request places
+        // Show a loader
+        //super.dismissLoader()
+        //super.loader()
+
+        // Request places
+        RepositoryManager.nearbyPlacesRepository()
+                .getNearbyPlaces(LatLng(location!!.latitude, location.longitude),
+                        placesType, this)
+    }
+
+    override fun onSuccess(result: ArrayList<Place>) {
+        HereNow.logcat("show placess - onSuccess")
+        dismissLoader()
+
+        result.forEach { place ->
+
+            val placeLocationmarker = MarkerOptions()
+            // set the marker at first time
+            placeLocationmarker.title(place.placeName).snippet(place.vicinity)
+            placeLocationmarker.position(LatLng(place.lat, place.lng))
+            placeLocationmarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
+            map!!.addMarker(placeLocationmarker)
+
+            if (!placesOnMap) {
+                map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(place.lat, place.lng), 10F))
+                placesOnMap = true
+            }
+        }
+    }
+
+    override fun onError() {
+        dismissLoader()
+        Toast.makeText(activity, "Falha ao obter lugares proximo de você.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "Tente novamente!", Toast.LENGTH_LONG).show()
     }
 }

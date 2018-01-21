@@ -4,10 +4,19 @@
     <array name="places_names">
         <item>Restaurantes</item>
         <item>Hospitais</item>
-        <item>Supermercado</item>
+        <item>Lojas</item>
         <item>Escolas</item>
         <item>Igrejas</item>
         <item>Combustível</item>
+    </array>
+
+    <array name="places_type">
+        <item>restaurant</item>
+        <item>hospital</item>
+        <item>store</item>
+        <item>school</item>
+        <item>church</item>
+        <item>gas_station</item>
     </array>
 
     <array name="places_icons">

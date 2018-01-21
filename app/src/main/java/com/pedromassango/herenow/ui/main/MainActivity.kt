@@ -89,6 +89,14 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         HereNow.setPopupListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Check if the device have installed Google play Service, if not, close the app
+        when(ActivityUtils.checkGooglePlayServices(this)){
+            false -> this.finish()
+        }
+    }
+
     override fun showMapFragment() {
 
         // Select the map fragment
@@ -210,9 +218,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onBackPressed() {
         // Check if map places fragment is visible if it is visible, then
         // replace with fragment list places.
-        when (supportFragmentManager.findFragmentByTag(
-                FragmentShowPlacesOnMap::class.java.simpleName).isVisible) {
-            true -> bottom_navigation.selectedItemId = R.id.action_places
+        when (bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_EXPANDED) {
+            true -> bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_COLLAPSED
             false -> super.onBackPressed()
         }
     }

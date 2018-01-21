@@ -5,8 +5,13 @@ import android.content.Intent
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.support.v7.app.AppCompatActivity
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.services.CommonBroadcastReceiver
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+
+
 
 /**
  * Created by Pedro Massango on 1/12/18.
@@ -38,6 +43,21 @@ object ActivityUtils {
         // Show the selected frament
         transaction.replace(frame_layout_id, fragment, fragment::class.java.simpleName)
                 .commit()
+    }
+
+    /**
+     * Check if the device have installed the Google Services app
+     */
+    fun checkGooglePlayServices(activity: AppCompatActivity): Boolean {
+        val googleAPI = GoogleApiAvailability.getInstance()
+        val result = googleAPI.isGooglePlayServicesAvailable(activity)
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(result)) {
+                googleAPI.getErrorDialog(activity, result, 0).show()
+            }
+            return false
+        }
+        return true
     }
 
     /**

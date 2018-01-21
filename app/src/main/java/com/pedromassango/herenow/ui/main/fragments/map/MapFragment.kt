@@ -1,37 +1,20 @@
 package com.pedromassango.herenow.ui.main.fragments.map
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.*
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.RepositoryManager
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.ActivityUtils
-import com.pedromassango.herenow.ui.main.IPermissionListener
 import com.pedromassango.herenow.ui.main.fragments.BaseMapFragment
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 
@@ -40,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_maps.view.*
  *
  * Show the Map with friends location (If available)
  */
-class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
+class MapFragment : BaseMapFragment(), MapContract.View {
 
     companion object {
 
@@ -52,8 +35,6 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
     // MVP
     lateinit var presenter: MapPresenter
 
-    // TO request device location updates
-    private lateinit var locationManager: LocationManager
     private lateinit var myLocationMarker: MarkerOptions
     // This device marker on Map
     private lateinit var myMarker: Marker
@@ -65,7 +46,6 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
 
     // Location updates delay and distance
     private val distance = 20F
-    private val timeUpdate = 5000L // 5sec
 
     // TO update marker position
     private var arleadySet = 0
@@ -73,10 +53,6 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logcat("MapFragment -> onCreate()")
-
-
-        // Setup locationManager
-        locationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Prepare user marker on map
         myLocationMarker = MarkerOptions()
@@ -120,32 +96,9 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
         }
     }
 
-    override fun showLoader() = super.Loader()
+    override fun showLoader() = super.loader()
 
     override fun removeLoader() = super.dismissLoader()
-
-    override fun requestLocationPermission(iPermissionListener: IPermissionListener) {
-
-        Dexter.withActivity(activity)
-                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(object : PermissionListener {
-
-                    override fun onPermissionGranted(response: PermissionGrantedResponse?) = iPermissionListener.invoke(true)
-
-                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
-                        val dialog = AlertDialog.Builder(activity!!)
-                                .setTitle(R.string.request_location_permission_title)
-                                .setMessage(R.string.request_location_permission_message)
-                                .setCancelable(false)
-                                .setPositiveButton(R.string.str_ok) { _, _ -> requestLocationPermission(iPermissionListener) }
-
-                        dialog.create().show()
-                    }
-
-                    override fun onPermissionDenied(response: PermissionDeniedResponse?) =
-                            iPermissionListener.invoke(false)
-                }).check()
-    }
 
     override fun onMapReady(mMap: GoogleMap?) {
         super.onMapReady(mMap)
@@ -153,24 +106,6 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
 
         // start fetch friends location
         presenter.showFriendsOnMap()
-
-        requestLocationPermission(object : IPermissionListener {
-            @SuppressLint("MissingPermission")
-            override fun invoke(state: Boolean) {
-                when (state) {
-                    false -> activity!!.finish()
-                    true -> {
-
-                        // Request location updates via GPS
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this@MapFragment)
-                        // Request location updates via PASSIVE-PROVIDER
-                        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this@MapFragment)
-                        // Request location updates via NETWORK
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this@MapFragment)
-                    }
-                }
-            }
-        })
     }
 
     override fun showFriendOnMap(contact: Contact) {
@@ -225,10 +160,4 @@ class MapFragment : BaseMapFragment(), MapContract.View, LocationListener {
         //Save user location
         presenter.onUserLocationChanged(location.latitude, location.longitude)
     }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) = logcat("onStatusChanged:  $provider")
-
-    override fun onProviderDisabled(provider: String?) = logcat("onProviderDisabled:  $provider")
-
-    override fun onProviderEnabled(provider: String?) = logcat("onProviderEnabled:  $provider")
 }

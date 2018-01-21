@@ -13,6 +13,11 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
+    <style name="SplashSTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/gradient_bottom</item>
+        <item name="android:background">@drawable/splash_background</item>
+    </style>
+
     <style name="appTextStyle" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@color/white</item>

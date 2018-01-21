@@ -2,11 +2,10 @@
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:padding="8dp"
     android:gravity="center_horizontal"
     android:id="@+id/popup_textview"
     android:textColor="@color/white"
-    android:background="@color/red"
-    android:text="@string/something_was_wrong">
+    android:background="@color/red">
 
 </TextView>
