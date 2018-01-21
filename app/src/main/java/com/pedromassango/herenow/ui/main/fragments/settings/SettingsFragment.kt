@@ -11,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.pedromassango.herenow.BuildConfig
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.ActivityUtils
+import com.pedromassango.herenow.ui.login.LoginActivity
 
 /**
  * Created by pedromassango on 12/28/17.
@@ -35,6 +38,26 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_fragment, rootKey)
+
+        // Set the user phone number on preferences
+        val prefssUsername = findPreference( getString(R.string.prefs_user_phone_number))
+        prefssUsername.summary = PreferencesHelper(context!!).phoneNumber
+
+        // Set the app version on version info preferences
+        val prefsVersion = findPreference( getString(R.string.prefs_app_version))
+        prefsVersion.summary = BuildConfig.VERSION_NAME
+
+        // Logout click listener
+        val prefsLogout = findPreference(getString(R.string.prefs_logout))
+        prefsLogout.setOnPreferenceClickListener {
+
+            // Remove user data
+            PreferencesHelper(context!!).logout()
+            // start login activity
+            startActivity( Intent(context!!, LoginActivity::class.java))
+
+            true
+        }
 
         // Privacy Policy click listener
         val prefsPrivacyPolicy = findPreference(getString(R.string.prefs_privacy_policy_key))

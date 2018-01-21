@@ -6,7 +6,6 @@
     <string name="GOOGLE_MAPS_API_KEY" translatable="false">AIzaSyAL6hW1s37z0n_tcNYVjieIlvwRLHi9OZ4</string>
     <string name="developer_name" translatable="false">Pedro Massango</string>
     <string name="developer">Desenvolvedor</string>
-    <string name="version_name" translatable="false">1.0.0-beta</string>
     <string name="privacy_policy_url" translatable="false">https://pedromassangoblog.wordpress.com/2018/01/06/privacy-policy-of-here-now</string>
 
     <string name="please_wait">Por favor, aguarde…</string>
@@ -57,6 +56,10 @@
     <!--Settings preferences keys-->
     <string name="prefs_privacy_policy_key" translatable="true">privacy_policy_key</string>
     <string name="prefs_notification" translatable="true">prefs_notification</string>
+    <string name="prefs_auto_login" translatable="false">prefs_auto_login</string>
+    <string name="prefs_user_phone_number" translatable="false">prefs_user_phone_number</string>
+    <string name="prefs_app_version" translatable="false">prefs_app_version</string>
+
     <string name="neaby_places">Locais próximos</string>
     <string name="request_location_permission_title">Permissao necessária</string>
     <string name="request_location_permission_message">Precisamos de sua localizacao para mostrar você no mapa!</string>
@@ -67,6 +70,11 @@
     <string name="notifications">Notificacoes</string>
     <string name="disabled">Desativado</string>
     <string name="enabled">Activado</string>
+    <string name="auto_login_summary">Se desligado, você fará o login, sempre que abrir este aplicativo.</string>
+    <string name="end_session">Terminar sessao</string>
+    <string name="prefs_logout">prefs_logout</string>
+    <string name="app_about">HereNow, permite que o usuário saiba quem está com ele no momento. Isto ajuda-nos quando formos ao encontro de alguém, e/ou queremos saber onde alguém está.</string>
+    <string name="user">Usuario</string>
 
     <!--Settings preferences keys-->
 

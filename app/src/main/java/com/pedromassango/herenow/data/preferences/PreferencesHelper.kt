@@ -13,13 +13,14 @@ class PreferencesHelper(context: Context) {
     private val KEY_LOGGED_IN = "com.pedromassango.herenow.database.keys.KEY_LOGGED_IN"
     private val KEY_FIRST_TIME = "com.pedromassango.herenow.database.keys.KEY_FIRST_TIME"
     private val KEY_NO_FRIENDS_DIALOG_SHOWN = "com.pedromassango.herenow.database.keys.KEY_NO_FRIENDS_DIALOG_SHOWN"
-    //private val KEY_NAME = "com.pedromassango.herenow.database.keys.KEY_NAME"
     private val KEY_NUMBER = "com.pedromassango.herenow.database.keys.KEY_NUMBER"
     private val KEY_LOGIN_TOKEN = "com.pedromassango.herenow.database.keys.KEY_LOGIN_TOKEN"
     private val KEY_COUNTRY_CODE = "com.pedromassango.herenow.database.keys.KEY_C_CODE"
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor = preferences.edit()
+
+    val defaultPreferences = preferences
 
     var isFirstTime = preferences.getBoolean(KEY_FIRST_TIME, true)
         set(value) = editor.putBoolean(KEY_FIRST_TIME, value).apply()
@@ -42,7 +43,7 @@ class PreferencesHelper(context: Context) {
     var countryCode = preferences.getString(KEY_COUNTRY_CODE, "")
         set(value) = editor.putString(KEY_COUNTRY_CODE, value).apply()
 
-    fun logout(context: Context) {
+    fun logout() {
         val editor = preferences!!.edit()
         editor.remove(KEY_COUNTRY_CODE)
         editor.remove(KEY_NUMBER)

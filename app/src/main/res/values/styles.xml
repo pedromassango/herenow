@@ -18,6 +18,10 @@
         <item name="android:background">@drawable/splash_background</item>
     </style>
 
+    <style name="IntroTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/gradient_bottom</item>
+    </style>
+
     <style name="appTextStyle" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@color/white</item>

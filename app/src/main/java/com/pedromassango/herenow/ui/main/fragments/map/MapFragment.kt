@@ -116,7 +116,9 @@ class MapFragment : BaseMapFragment(), MapContract.View {
 
                 val mo = MarkerOptions()
                         .title(contact.contactName).snippet(contact.phoneNumber)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_friend))
                         .position(LatLng(contact.lat, contact.lng))
+
                         .flat(true)
 
                 val m = map!!.addMarker(mo)
@@ -135,7 +137,7 @@ class MapFragment : BaseMapFragment(), MapContract.View {
         if (arleadySet == 0) {
             // set the marker at first time
             myLocationMarker.position(userCurrentPosition)
-            myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
+            myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_user))
             myMarker = map!!.addMarker(myLocationMarker)
             arleadySet = 100
 
@@ -151,7 +153,7 @@ class MapFragment : BaseMapFragment(), MapContract.View {
             // Update the hold position to a recent position
             myMarker.position = userCurrentPosition
             //move the camera to where user position is with a zoom of 20
-            map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(userCurrentPosition, 20F))
+            map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(userCurrentPosition, 15F))
 
             // Just update map center location
             circle!!.center = userCurrentPosition

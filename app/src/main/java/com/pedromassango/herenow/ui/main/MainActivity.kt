@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     // Store current fragment id
     var currentFragmentId = 0
 
+    // Retrieve autoLogin key for Presenter ///-> because Presenter must not reference context
+    override val getAutoLoginStateKey: String
+        get() = getString(R.string.prefs_auto_login)
+
     // Toolbar for popup window
     private lateinit var mToolbar: Toolbar
 
@@ -67,6 +71,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
         // SETUP bottom Sheet
         bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bottomSheetBehavior!!.isHideable = false
 
         // set a listener in bootom navigation bar
         bottom_navigation.setOnNavigationItemSelectedListener(this)

@@ -72,11 +72,11 @@ class FragmentShowPlacesOnMap : BaseMapFragment(), NearbyPlacesDataSource.IReque
             // set the marker at first time
             placeLocationmarker.title(place.placeName).snippet(place.vicinity)
             placeLocationmarker.position(LatLng(place.lat, place.lng))
-            placeLocationmarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location))
+            placeLocationmarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_place_blue_grey_900_24dp))
             map!!.addMarker(placeLocationmarker)
 
             if (!placesOnMap) {
-                map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(place.lat, place.lng), 10F))
+                map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(place.lat, place.lng), 15F))
                 placesOnMap = true
             }
         }

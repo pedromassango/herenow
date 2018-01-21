@@ -79,10 +79,10 @@ class CommonBroadcastReceiver : BroadcastReceiver() {
         builder.setContentText(message)
 
         //TODO: testing info notification type
-        builder.setOnlyAlertOnce(true)
+        //builder.setOnlyAlertOnce(true)
 
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(2, builder.build())
+        nm.notify(289, builder.build())
     }
 
 }

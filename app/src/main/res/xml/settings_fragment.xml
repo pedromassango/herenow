@@ -1,22 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="Conta">
+        <Preference android:key="@string/prefs_user_phone_number"
+            android:title="@string/user"
+            android:summary="@string/app_name"/>
+
+        <Preference
+            android:key="@string/prefs_logout"
+            android:summary="@string/end_session" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/general">
 
         <CheckBoxPreference
-            android:key="@string/prefs_notification"
-            android:title="@string/notifications"
             android:defaultValue="true"
+            android:key="@string/prefs_auto_login"
+            android:summary="@string/auto_login_summary"
+            android:title="Auto-Login" />
+
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/prefs_notification"
             android:summaryOff="@string/disabled"
-            android:summaryOn="@string/enabled"/>
+            android:summaryOn="@string/enabled"
+            android:title="@string/notifications" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
         <Preference
-            android:title="@string/version"
-            android:summary="@string/version_name"/>
+            android:selectable="false"
+            android:summary="@string/app_about" />
 
         <Preference
+            android:key="@string/prefs_app_version"
+            android:selectable="false"
+            android:title="@string/version" />
+
+        <Preference
+            android:selectable="false"
             android:summary="@string/developer_name"
             android:title="@string/developer" />
 

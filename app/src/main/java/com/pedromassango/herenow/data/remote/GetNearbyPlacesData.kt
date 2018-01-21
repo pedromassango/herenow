@@ -23,7 +23,7 @@ class GetNearbyPlacesData(private val userLocation: LatLng,
         val googlePlacesUrl = StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
         googlePlacesUrl.append("location=${userLocation.latitude},${userLocation.longitude}")
         googlePlacesUrl.append("&radius=" + 5000)
-        googlePlacesUrl.append("&type=" + placeType)
+        googlePlacesUrl.append("&type=$placeType")
         googlePlacesUrl.append("&sensor=true")
         googlePlacesUrl.append("&key=AIzaSyAL6hW1s37z0n_tcNYVjieIlvwRLHi9OZ4")
         return googlePlacesUrl.toString()

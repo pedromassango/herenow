@@ -13,6 +13,7 @@ import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.AccountKitSettings
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.ActivityUtils
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -63,10 +64,9 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
             if (loginResult.wasCancelled()) {
                 logcat("onActivityResult: ACCOUNT_KIT_LOGIN_REQUEST_CODE - cancelled")
-                showToast(R.string.login_cancelled)
 
-                // show account kit activity again
-                presenter.startLoginRequest()
+                // finish the app
+                ActivityUtils.killAppProccess()
                 return
             }
 

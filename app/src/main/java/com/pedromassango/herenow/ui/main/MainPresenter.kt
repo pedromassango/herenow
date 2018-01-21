@@ -17,10 +17,13 @@ class MainPresenter(private val view: MainContract.View,
         }
 
         // If is logged in, start maps and user location on map
-        if(preferencesHelper.isLoggedIn){
-            view.showMapFragment()
-        }else{
-            view.startLoginActivity()
+        // Also, check state of autoLogin on settings
+        val autoLoginKey = view.getAutoLoginStateKey
+        val autoLogin = preferencesHelper.defaultPreferences.getBoolean(autoLoginKey, true)
+
+        when(preferencesHelper.isLoggedIn && autoLogin){
+            true -> view.showMapFragment()
+            false -> view.startLoginActivity()
         }
     }
 }

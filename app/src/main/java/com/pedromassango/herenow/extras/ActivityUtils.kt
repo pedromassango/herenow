@@ -2,6 +2,7 @@ package com.pedromassango.herenow.extras
 
 import android.content.Context
 import android.content.Intent
+import android.os.Process
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -58,6 +59,12 @@ object ActivityUtils {
             return false
         }
         return true
+    }
+
+    // Close the app
+    fun killAppProccess() {
+        val appProccessId = Process.myPid()
+        Process.killProcess(appProccessId)
     }
 
     /**
