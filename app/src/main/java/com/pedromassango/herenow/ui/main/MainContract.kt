@@ -14,7 +14,6 @@ class MainContract {
         fun startSplashActivity()
         fun startLoginActivity()
         fun showMapFragment()
-        val getAutoLoginStateKey: String
     }
 
     interface Presenter{

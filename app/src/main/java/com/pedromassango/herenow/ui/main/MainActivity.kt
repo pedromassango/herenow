@@ -40,10 +40,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     // Store current fragment id
     var currentFragmentId = 0
 
-    // Retrieve autoLogin key for Presenter ///-> because Presenter must not reference context
-    override val getAutoLoginStateKey: String
-        get() = getString(R.string.prefs_auto_login)
-
     // Toolbar for popup window
     private lateinit var mToolbar: Toolbar
 
@@ -162,8 +158,15 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         }
     }
 
-    override fun startSplashActivity() = startActivity(Intent(this, IntroActivity::class.java))
-    override fun startLoginActivity() = startActivityForResult(Intent(this, LoginActivity::class.java), MainContract.LOGIN_REQUEST)
+    override fun startSplashActivity(){
+        startActivity(Intent(this, IntroActivity::class.java))
+        finish()
+    }
+
+    override fun startLoginActivity(){
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
 
     // BottomNavigationView item selected listener
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

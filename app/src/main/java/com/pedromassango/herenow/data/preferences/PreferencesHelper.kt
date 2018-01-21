@@ -1,7 +1,9 @@
 package com.pedromassango.herenow.data.preferences
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.pedromassango.herenow.R
 
 /**
  * Created by Pedro Massango on 13/06/2017 at 21:52.
@@ -10,6 +12,7 @@ import android.preference.PreferenceManager
 class PreferencesHelper(context: Context) {
 
     // Keys to fetch
+    private val KEY_AUTO_LOGIN = context.getString(R.string.prefs_auto_login)
     private val KEY_LOGGED_IN = "com.pedromassango.herenow.database.keys.KEY_LOGGED_IN"
     private val KEY_FIRST_TIME = "com.pedromassango.herenow.database.keys.KEY_FIRST_TIME"
     private val KEY_NO_FRIENDS_DIALOG_SHOWN = "com.pedromassango.herenow.database.keys.KEY_NO_FRIENDS_DIALOG_SHOWN"
@@ -17,10 +20,8 @@ class PreferencesHelper(context: Context) {
     private val KEY_LOGIN_TOKEN = "com.pedromassango.herenow.database.keys.KEY_LOGIN_TOKEN"
     private val KEY_COUNTRY_CODE = "com.pedromassango.herenow.database.keys.KEY_C_CODE"
 
-    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor = preferences.edit()
-
-    val defaultPreferences = preferences
 
     var isFirstTime = preferences.getBoolean(KEY_FIRST_TIME, true)
         set(value) = editor.putBoolean(KEY_FIRST_TIME, value).apply()
@@ -30,6 +31,9 @@ class PreferencesHelper(context: Context) {
 
     var isLoggedIn = preferences.getBoolean(KEY_LOGGED_IN, false)
         set(value) = editor.putBoolean(KEY_LOGGED_IN, value).apply()
+
+    var autoLogin = preferences.getBoolean(KEY_AUTO_LOGIN, true)
+        set(value) = editor.putBoolean(KEY_AUTO_LOGIN, value).apply()
 
     /*var usename = preferences.getString(KEY_NAME, "")
         set(value) = editor.putString(KEY_NAME, value).apply()*/
@@ -44,10 +48,11 @@ class PreferencesHelper(context: Context) {
         set(value) = editor.putString(KEY_COUNTRY_CODE, value).apply()
 
     fun logout() {
-        val editor = preferences!!.edit()
+        val editor = preferences.edit()
         editor.remove(KEY_COUNTRY_CODE)
         editor.remove(KEY_NUMBER)
-        //editor.remove(KEY_NAME)
+        editor.remove(KEY_LOGGED_IN)
+        editor.remove(KEY_AUTO_LOGIN)
         editor.apply()
     }
 

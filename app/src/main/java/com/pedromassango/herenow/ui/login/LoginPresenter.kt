@@ -47,6 +47,7 @@ class LoginPresenter(val view: LoginContract.View,
 
                 // Change login state
                 preferencesHelper.isLoggedIn = true
+                preferencesHelper.autoLogin = true
 
                 // Save user phone number and country code
                 preferencesHelper.phoneNumber = phoneNumber

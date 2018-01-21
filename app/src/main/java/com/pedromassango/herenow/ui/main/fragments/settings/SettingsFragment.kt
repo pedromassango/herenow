@@ -52,9 +52,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         prefsLogout.setOnPreferenceClickListener {
 
             // Remove user data
-            PreferencesHelper(context!!).logout()
+           PreferencesHelper(context!!).logout()
             // start login activity
             startActivity( Intent(context!!, LoginActivity::class.java))
+            activity!!.finish()
 
             true
         }

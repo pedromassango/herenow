@@ -11,19 +11,21 @@ class MainPresenter(private val view: MainContract.View,
     override fun checkAppState() {
 
         // If is first time, start intro activity
-        if(preferencesHelper.isFirstTime){
+        if (preferencesHelper.isFirstTime) {
             view.startSplashActivity()
             return
         }
 
         // If is logged in, start maps and user location on map
         // Also, check state of autoLogin on settings
-        val autoLoginKey = view.getAutoLoginStateKey
-        val autoLogin = preferencesHelper.defaultPreferences.getBoolean(autoLoginKey, true)
+        val autoLogin = preferencesHelper.autoLogin
+        val isLoggedIn = preferencesHelper.isLoggedIn
 
-        when(preferencesHelper.isLoggedIn && autoLogin){
-            true -> view.showMapFragment()
-            false -> view.startLoginActivity()
+        // Check login status, only enter on application if it is logged in and Auto login is activated
+        if (isLoggedIn && autoLogin) {
+            view.showMapFragment()
+        } else {
+            view.startLoginActivity()
         }
     }
 }

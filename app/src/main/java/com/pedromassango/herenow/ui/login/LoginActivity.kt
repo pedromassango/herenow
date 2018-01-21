@@ -14,6 +14,7 @@ import com.pedromassango.herenow.app.AccountKitSettings
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.ActivityUtils
+import com.pedromassango.herenow.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -28,7 +29,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        presenter = LoginPresenter(this, PreferencesHelper(this))
+        presenter = LoginPresenter(this, PreferencesHelper(this.applicationContext))
 
         presenter.startLoginRequest()
     }
@@ -66,7 +67,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
                 logcat("onActivityResult: ACCOUNT_KIT_LOGIN_REQUEST_CODE - cancelled")
 
                 // finish the app
-                ActivityUtils.killAppProccess()
+                this.finish()
                 return
             }
 
@@ -140,6 +141,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         Return to the activity that start this activity, with the login resultIntent.
      */
     override fun closeActivity() {
+        startActivity( Intent(this, MainActivity::class.java))
         finish()
     }
 }

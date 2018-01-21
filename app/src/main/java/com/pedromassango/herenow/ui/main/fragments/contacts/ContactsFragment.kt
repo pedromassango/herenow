@@ -59,7 +59,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         setHasOptionsMenu(true)
 
         // Intialize presenter
-        presenter = ContactsPresenter(this, RepositoryManager.contactsRepository(PreferencesHelper(context!!)))
+        presenter = ContactsPresenter(this, RepositoryManager.contactsRepository(PreferencesHelper(context!!.applicationContext)))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

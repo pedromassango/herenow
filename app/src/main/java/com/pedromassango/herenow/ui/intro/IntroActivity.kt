@@ -73,11 +73,12 @@ class IntroActivity : AppIntro() {
         super.onDonePressed(currentFragment)
 
         // Change first time state
-        PreferencesHelper(this)
+        PreferencesHelper(this.applicationContext)
                 .isFirstTime = false
 
         // Start Login Activity
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
 }
