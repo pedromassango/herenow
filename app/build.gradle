@@ -5,27 +5,45 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        configRelease {
+            keyAlias 'key0'
+            keyPassword 'S3t3mbr0'
+            storeFile file('/home/pedromassango/AndroidStudioProjects/keystores/herenow.jks')
+            storePassword 'S3t3mbr0'
+        }
+    }
+
     compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.pedromassango.herenow"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
-        versionName '1.0-beta'
+        versionName '1.0.0-beta'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         // AccountKit - Optional: Specify the language(s) your app supports.
         resConfigs "en_US", "pt_PT"
+        signingConfig signingConfigs.configRelease
     }
     buildTypes {
-        release {
+        debug {
+            //shrinkResources false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.configRelease
+            proguardFile '/home/pedromassango/AndroidStudioProjects/HereNow/app/proguard-rules.pro'
         }
     }
     productFlavors {
     }
-    buildToolsVersion '27.0.3'
 }
 
 dependencies {

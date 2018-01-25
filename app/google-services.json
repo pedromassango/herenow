@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "162317275839-2mqiljqt6l963cof6kgrfc46qtpbtsbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pedromassango.herenow",
+            "certificate_hash": "0cfaeb36e4a05e7dbd07ee65ac666b075e9ebb23"
+          }
+        },
+        {
           "client_id": "162317275839-nnadbipmfkm7t1rkh9ajma9t4da4159h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

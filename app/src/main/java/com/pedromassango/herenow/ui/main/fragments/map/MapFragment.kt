@@ -1,7 +1,6 @@
 package com.pedromassango.herenow.ui.main.fragments.map
 
 import android.location.Location
-import android.location.LocationListener
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
@@ -41,14 +40,13 @@ class MapFragment : BaseMapFragment(), MapContract.View {
 
     // Cicle arround the user location
     var circle: Circle? = null
-
-    private val friendsMarker: HashMap<String, Marker> = hashMapOf()
-
-    // Location updates delay and distance
-    private val distance = 20F
+    // Store users marker position, to just update instead of create it again on Map
+    private val friendsMarkers: HashMap<String, Marker> = hashMapOf()
 
     // TO update marker position
     private var arleadySet = 0
+    // Map circle radius in meters
+    private val MAP_CIRCLE_RADIUS = 500.toDouble()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +64,6 @@ class MapFragment : BaseMapFragment(), MapContract.View {
                 preferencesHelper,
                 RepositoryManager.contactsRepository(preferencesHelper))
     }
-
 
 
     override fun showGetFriendsLocationError() {
@@ -110,19 +107,18 @@ class MapFragment : BaseMapFragment(), MapContract.View {
 
     override fun showFriendOnMap(contact: Contact) {
 
-        when (friendsMarker.containsKey(contact.phoneNumber)) {
-            true -> friendsMarker[contact.phoneNumber]!!.position = LatLng(contact.lat, contact.lng)
+        when (friendsMarkers.containsKey(contact.phoneNumber)) {
+            true -> friendsMarkers[contact.phoneNumber]!!.position = LatLng(contact.lat, contact.lng)
             false -> {
 
                 val mo = MarkerOptions()
                         .title(contact.contactName).snippet(contact.phoneNumber)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_friend))
                         .position(LatLng(contact.lat, contact.lng))
-
                         .flat(true)
 
                 val m = map!!.addMarker(mo)
-                friendsMarker.put(contact.phoneNumber, m)
+                friendsMarkers.put(contact.phoneNumber, m)
             }
         }
     }
@@ -145,7 +141,7 @@ class MapFragment : BaseMapFragment(), MapContract.View {
             circle = map!!.addCircle(CircleOptions()
                     .center(userCurrentPosition)
                     .fillColor(ResourcesCompat.getColor(resources, R.color.map_circle_fill, null))
-                    .radius(500.toDouble())
+                    .radius(MAP_CIRCLE_RADIUS)
                     .strokeWidth(0.toFloat()))
 
         } else {
@@ -159,7 +155,44 @@ class MapFragment : BaseMapFragment(), MapContract.View {
             circle!!.center = userCurrentPosition
         }
 
+        // Trace a rout from user to their friend, if it is in bounds
+        traceRouterBetwenFirends(userCurrentPosition)
+
         //Save user location
         presenter.onUserLocationChanged(location.latitude, location.longitude)
+    }
+
+    private fun traceRouterBetwenFirends(userCurrentPosition: LatLng) {
+
+        // If have friends on list, trace a route
+        if (friendsMarkers.size > 0) {
+            friendsMarkers.forEach { marker ->
+                // Calculate the distance betwen user and current friend on list
+                logcat("Getting distance betwen friends...")
+
+                val holdResult = FloatArray(1)
+                Location.distanceBetween(userCurrentPosition.latitude, userCurrentPosition.longitude,
+                        marker.value.position.latitude, marker.value.position.longitude, holdResult)
+
+                // The distance
+                val distanceBetwen = holdResult[0]
+                logcat("Distance is: $distanceBetwen")
+
+                // Only trace a route if the distance is betwen 50 to 1000 meters
+                if (distanceBetwen.toInt() in 50..1000) {
+                    logcat("Distance is greatter")
+
+                    logcat("Showing route in Map")
+
+                    //val route = map!!.addPolyline(PolylineOptions()
+                    map!!.addPolyline(PolylineOptions()
+                            .color(ResourcesCompat.getColor(resources, R.color.gradient_bottom, null))
+                            .add(marker.value.position)
+                            .add( userCurrentPosition)
+                            .width(4F))
+                }
+            }
+
+        }
     }
 }

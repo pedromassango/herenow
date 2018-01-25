@@ -91,6 +91,9 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
     override fun onPause() {
         mMapView.onPause()
         super.onPause()
+
+        // Remove location updates
+        locationManager.removeUpdates(this)
     }
 
     override fun onLowMemory() {
@@ -154,7 +157,7 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
         //mMap.isBuildingsEnabled = true
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-        mMap.setMinZoomPreference(6.0F)
+        mMap.setMinZoomPreference(10.0F)
         //mMap.setMaxZoomPreference(20.0F)
 
         requestLocationPermission(object : IPermissionListener {
