@@ -55,17 +55,17 @@ dependencies {
     implementation "com.android.support:support-v4:$android_support_version"
     implementation "com.android.support:preference-v7:$android_support_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
     implementation "com.google.android.gms:play-services-maps:$google_version"
-    //implementation "com.google.android.gms:play-services:$google_version"
     implementation "com.google.firebase:firebase-database:$google_version"
+    implementation "com.google.firebase:firebase-messaging:$google_version"
+
     implementation 'com.karumi:dexter:4.2.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.github.apl-devs:appintro:v4.2.2'
     implementation "com.facebook.android:facebook-android-sdk:$facebook_version"
     implementation 'com.facebook.android:account-kit-sdk:4.24.0'
-    //implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    //implementation "com.google.firebase:firebase-messaging:$google_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -81,6 +81,7 @@ configurations.all {
         }
     }
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

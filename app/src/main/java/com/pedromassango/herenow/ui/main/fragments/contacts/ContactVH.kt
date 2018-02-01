@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.row_contact.view.*
  */
 class ContactVH(val view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bindViews(contact: Contact, iSuitcherPermissionListener: ISuitcherPermissionListener) {
+    fun bindViews(contact: Contact, iSuitcherPermissionListener: (position: Int, contact: Contact)-> Unit) {
         val name = contact.contactName
         val number = contact.phoneNumber
 

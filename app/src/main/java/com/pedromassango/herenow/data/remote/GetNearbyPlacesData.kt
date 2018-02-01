@@ -2,8 +2,6 @@ package com.pedromassango.herenow.data.remote
 
 import android.os.AsyncTask
 import com.google.android.gms.maps.model.LatLng
-import com.pedromassango.herenow.R
-import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.DataParser
 import com.pedromassango.herenow.data.DownloadUrl

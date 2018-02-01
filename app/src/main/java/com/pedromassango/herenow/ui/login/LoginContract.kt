@@ -7,12 +7,7 @@ class LoginContract {
 
     companion object {
 
-        val ACCOUNT_KIT_LOGIN_REQUEST_CODE = 1024
-        val ACTIVITY_LOGIN_RESULT_KEY = "com.pedromassango.herenow.ui.login.ACTIVITY_LOGIN_RESULT_KEY"
-    }
-
-    interface Model {
-
+        const val ACCOUNT_KIT_LOGIN_REQUEST_CODE = 1024
     }
 
     interface View {

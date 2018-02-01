@@ -23,13 +23,14 @@ import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
+import java.util.*
 import android.provider.ContactsContract as DeviceContract
 
 
 /**
  * Created by Pedro Massango on 12/28/17.
  */
-class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionListener {
+class ContactsFragment : Fragment(), ContactsContract.View, (Int, Contact) -> Unit {
 
     // Static fields
     companion object {
@@ -58,8 +59,12 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         // Enable optionsMenu on this fragment
         setHasOptionsMenu(true)
 
+        val preferencesHelper = PreferencesHelper(context!!.applicationContext)
+
         // Intialize presenter
-        presenter = ContactsPresenter(this, RepositoryManager.contactsRepository(PreferencesHelper(context!!.applicationContext)))
+        presenter = ContactsPresenter(this,
+                RepositoryManager.contactsRepository(preferencesHelper),
+                preferencesHelper)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -75,7 +80,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
                 val contact = contactsAdapter.getItem(position)
 
                 //Remove item in adapter
-                contactsAdapter.removeAt( position)
+                contactsAdapter.removeAt(position)
 
                 // Call delete in Presenter
                 presenter.onDeleteContact(contact, position)
@@ -98,8 +103,6 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         return root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         HereNow.logcat("ContactsFragment: onViewCreated.")
@@ -108,6 +111,10 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         presenter.getUserContacts()
     }
 
+    /**
+     * Show received contacts from database  on List.
+     * @param data the conact list to show
+     */
     override fun showContact(data: ArrayList<Contact>) {
         data.forEach { showContact(it) }
     }
@@ -209,7 +216,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
         showToast(R.string.contact_deleted, Toast.LENGTH_LONG)
 
         // Check if there is conctats on recyclerView
-        if(contactsAdapter.itemCount == 0){
+        if (contactsAdapter.itemCount == 0) {
             showNoContacts()
         }
     }
@@ -229,12 +236,14 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
                 .show()
     }
 
-    private fun showDialogNewContact() {
+    private fun showDialogNewContact(name: String = "",
+                                     number: String = "") {
         //  View for this Dialog
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_number, RelativeLayout(activity), false)
         val edtName = view.findViewById<TextInputLayout>(R.id.input_name)
+        edtName.editText!!.setText(name)
         val edtNumber = view.findViewById<TextInputLayout>(R.id.input_number)
-
+        edtNumber.editText!!.setText(number)
 
         // Building the input dialog
         val builder = AlertDialog.Builder(context!!)
@@ -258,6 +267,8 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
 
         builder.create()
                 .show()
+
+        showToast(R.string.add_country_code, Toast.LENGTH_LONG)
     }
 
     private fun validEntries(number: String): Boolean {
@@ -275,7 +286,8 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
             if (requestCode == ContactsContract.RESULT_CONTACT_PICKER) {
                 val contact = toContact(data!!)
                 if (contact != null) {
-                    presenter.contactPicked(contact)
+                    showDialogNewContact(contact.contactName, contact.phoneNumber)
+                    //presenter.contactPicked(contact)
                 } else {
                     showToast(R.string.something_was_wrong)
                 }
@@ -284,8 +296,8 @@ class ContactsFragment : Fragment(), ContactsContract.View, ISuitcherPermissionL
     }
 
     // updatePermission switch clicked
-    override fun invoke(position: Int, contact: Contact) {
-        presenter.contactPerssionSwitched(position, contact)
+    override fun invoke(mPosition: Int, mContact: Contact) {
+        presenter.contactPerssionSwitched(mPosition, mContact)
     }
 
     /**

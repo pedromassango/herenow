@@ -1,6 +1,5 @@
 package com.pedromassango.herenow.data.model
 
-import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
 /**
@@ -30,20 +29,20 @@ data class Contact(var phoneNumber: String,
 
     fun toMap(): Map<String, Any> {
         val map = java.util.HashMap<String, Any>()
-        map.put("phoneNumber", phoneNumber)
-        map.put("contactName", contactName)
-        map.put("lastLocation", lastLocation)
-        map.put("allow", allow)
-        map.put("lat", lat)
-        map.put("lng", lng)
+        map["phoneNumber"] = phoneNumber
+        map["contactName"] = contactName
+        map["lastLocation"] = lastLocation
+        map["allow"] = allow
+        map["lat"] = lat
+        map["lng"] = lng
         return map
     }
 
     fun toDataMap(): Map<String, Any> {
         val map = java.util.HashMap<String, Any>()
-        map.put("phoneNumber", phoneNumber)
-        map.put("contactName", contactName)
-        map.put("allow", allow)
+        map["phoneNumber"] = phoneNumber
+        map["contactName"] = contactName
+        map["allow"] = allow
         return map
     }
 }

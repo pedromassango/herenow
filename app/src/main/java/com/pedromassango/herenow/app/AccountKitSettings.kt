@@ -1,17 +1,18 @@
 package com.pedromassango.herenow.app
 
-import android.content.Context
-import com.facebook.accountkit.ui.*
-import com.pedromassango.herenow.R
+import com.facebook.accountkit.ui.AccountKitActivity
+import com.facebook.accountkit.ui.AccountKitConfiguration
+import com.facebook.accountkit.ui.LoginType
 
 /**
  * Created by pedromassango on 12/28/17.
+ * Facebook Account Kit settings.
  */
 object AccountKitSettings {
 
     private var output: AccountKitConfiguration.AccountKitConfigurationBuilder? = null
 
-    operator fun get(context: Context): AccountKitConfiguration.AccountKitConfigurationBuilder {
+    fun get(): AccountKitConfiguration.AccountKitConfigurationBuilder {
         if (output == null) {
             output = AccountKitConfiguration.AccountKitConfigurationBuilder(
                     LoginType.PHONE,
@@ -25,7 +26,7 @@ object AccountKitSettings {
         return output!!
     }
 
-    fun build(context: Context): AccountKitConfiguration {
-        return get(context).build()
+    fun build(): AccountKitConfiguration {
+        return get().build()
     }
 }

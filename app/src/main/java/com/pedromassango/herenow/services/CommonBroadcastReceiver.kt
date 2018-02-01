@@ -5,10 +5,8 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.support.annotation.StringRes
-import android.support.v7.preference.PreferenceManager
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 
@@ -21,11 +19,11 @@ class CommonBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         // Action to show popup message
-        val SHOW_POPUP_MESSAGE = "com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_POPUP_MESSAGE"
-        val SHOW_NOTIFICATION = "com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_NOTIFICATION"
-        val INTENT_TITLE = "INTENT_TITLE"
-        val INTENT_MESSAGE = "INTENT_MESSAGE"
-        val INTENT_BOOLEAN_MESSAGE = "INETNT_BOOLEAN_MESSAGE"
+        const val SHOW_POPUP_MESSAGE = "com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_POPUP_MESSAGE"
+        const val SHOW_NOTIFICATION = "com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_NOTIFICATION"
+        const val INTENT_TITLE = "com.pedromassango.herenow.services.CommonBroadcastReceiver.INTENT_TITLE"
+        const val INTENT_MESSAGE = "com.pedromassango.herenow.services.CommonBroadcastReceiver.INTENT_MESSAGE"
+        const val INTENT_BOOLEAN_MESSAGE = "com.pedromassango.herenow.services.CommonBroadcastReceiver.INETNT_BOOLEAN_MESSAGE"
 
         // To be notified when need to show a popup via broadcastReceiver
         var iShowPopupListener: IShowPopupListener? = null
@@ -48,8 +46,7 @@ class CommonBroadcastReceiver : BroadcastReceiver() {
                 checkNotNull(message)
 
                 // Check if the user allow notification no Settings
-                val allowedNotifications = PreferenceManager.getDefaultSharedPreferences(context)
-                        .getBoolean(context!!.getString(R.string.prefs_notification), true)
+                val allowedNotifications = PreferencesHelper(context!!).showNotification
 
                 // If user allowed notifications, show it
                 if (allowedNotifications) {

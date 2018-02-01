@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name" translatable="false">Here Now</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="true">Aqui Agora</string>
 
     <string name="facebook_app_id" translatable="false">1364560283658078</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN" translatable="false">1998b6027012c6ba9b9e9fbf56923569</string>
@@ -9,28 +9,23 @@
     <string name="privacy_policy_url" translatable="false">https://pedromassangoblog.wordpress.com/2018/01/06/privacy-policy-of-here-now</string>
 
     <string name="please_wait">Por favor, aguarde…</string>
-    <string name="save_contacts">Salvar contacto(s)</string>
     <string name="saving_contact">Salvando contacto…</string>
 
-    <string name="action_settings">Settings</string>
     <string name="str_ok" translatable="false">OK</string>
     <string name="str_cancel">Cancelar</string>
 
     <string name="something_was_wrong">Algo de errado aconteceu, tente novamente!</string>
-    <string name="login_cancelled">Você precisa estar logado!</string>
     <string name="login_error">Erro de login, tente novamente.</string>
     <string name="login_error_message">Erro de login, parece que nao ha uma conexao com a internet!</string>
-    <string name="sem_contactos_na_sua_lista_nclique_aqui_para_adicionar">Sem contactos.\nClique aqui para adicionar.</string>
     <string name="register_new_contact">Novo contacto</string>
     <string name="str_save">Salvar</string>
     <string name="phone_number_invalid">Você adiciou um número invalido!</string>
-    <string name="permission_denied_message">Você precisa garantir permissao  para o funcionamento do app.\nClique aqui para tentar novamente!</string>
     <string name="no_friend_to_show_title">Sem amigos disponivel!</string>
     <string name="no_friend_to_show_message">Ninguem adicionou voce a lista de permitidos a ver sua localizacao. Partlihe o app, e peca aos amigos que adicionem voce a lista de quem pode ver sua localizacao.</string>
     <string name="map">Mapa</string>
     <string name="contacts">Contactos</string>
     <string name="settings">Configuracoes</string>
-    <string name="intro_one_title">Veja quem esta perto de você neste momento.</string>
+    <string name="intro_one_title" tools:ignore="Typos">Veja quem esta perto de você neste momento.</string>
     <string name="intro_one_description">Adicione contactos para poderem ver você no mapa.</string>
     <string name="intro_two_title">Seja visto por quem você quer.</string>
     <string name="intro_two_description">Você precisa estar na lista de seus amigos, para você poder ver eles também.</string>
@@ -75,6 +70,7 @@
     <string name="prefs_logout">prefs_logout</string>
     <string name="app_about">HereNow, permite que o usuário saiba quem está com ele no momento. Isto ajuda-nos quando formos ao encontro de alguém, e/ou queremos saber onde alguém está.</string>
     <string name="user">Usuario</string>
+    <string name="add_country_code">Adicione o código do país!</string>
 
     <!--Settings preferences keys-->
 

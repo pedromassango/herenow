@@ -5,7 +5,6 @@ import com.pedromassango.herenow.data.model.Place
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import org.json.JSONStringer
 
 
 /**
@@ -30,7 +29,7 @@ object DataParser {
     private fun getPlaces(jsonArray: JSONArray?): List<HashMap<String, String>> {
         val placesCount = jsonArray!!.length()
         val placesList = arrayListOf<HashMap<String, String>>()
-        var placeMap: HashMap<String, String>? = null
+        var placeMap: HashMap<String, String>?
         Log.d("Places", "getPlaces")
 
         for (i in 0 until placesCount) {
@@ -52,9 +51,9 @@ object DataParser {
         val googlePlaceMap = HashMap<String, String>()
         var placeName = "-NA-"
         var vicinity = "-NA-"
-        var latitude = ""
-        var longitude = ""
-        var reference = ""
+        val latitude : String
+        val longitude: String
+        val reference: String
 
         Log.d("getPlace", "Entered")
 
@@ -68,11 +67,11 @@ object DataParser {
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat")
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng")
             reference = googlePlaceJson.getString("reference")
-            googlePlaceMap.put("place_name", placeName)
-            googlePlaceMap.put("vicinity", vicinity)
-            googlePlaceMap.put("lat", latitude)
-            googlePlaceMap.put("lng", longitude)
-            googlePlaceMap.put("reference", reference)
+            googlePlaceMap["place_name"] = placeName
+            googlePlaceMap["vicinity"] = vicinity
+            googlePlaceMap["lat"] = latitude
+            googlePlaceMap["lng"] = longitude
+            googlePlaceMap["reference"] = reference
             Log.d("getPlace", "Putting Places")
         } catch (e: JSONException) {
             Log.d("getPlace", "Error")
@@ -86,10 +85,10 @@ object DataParser {
         val output = arrayListOf<Place>()
 
         unknowPlaceList.forEach {unknowPlace ->
-            val placeName = unknowPlace.get("place_name")!!
-            val vicinity = unknowPlace.get("vicinity")!!
-            val lat = unknowPlace.get("lat")!!.toDouble()
-            val lng = unknowPlace.get("lng")!!.toDouble()
+            val placeName = unknowPlace["place_name"]!!
+            val vicinity = unknowPlace["vicinity"]!!
+            val lat = unknowPlace["lat"]!!.toDouble()
+            val lng = unknowPlace["lng"]!!.toDouble()
 
             val place = Place(placeName, vicinity = vicinity, lat = lat, lng = lng)
             output.add( place)

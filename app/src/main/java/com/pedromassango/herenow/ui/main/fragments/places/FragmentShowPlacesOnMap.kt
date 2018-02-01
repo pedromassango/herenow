@@ -4,7 +4,6 @@ import android.location.Location
 import android.os.Bundle
 import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -23,7 +22,7 @@ import com.pedromassango.herenow.ui.main.fragments.BaseMapFragment
 class FragmentShowPlacesOnMap : BaseMapFragment(), NearbyPlacesDataSource.IRequestNearbyPlacesListener {
 
     companion object {
-        val PLACES_TYPE = "place_type"
+        const val PLACES_TYPE = "place_type"
 
         fun getInstance(placeType: String): FragmentShowPlacesOnMap {
             val bundle = Bundle()
@@ -37,9 +36,9 @@ class FragmentShowPlacesOnMap : BaseMapFragment(), NearbyPlacesDataSource.IReque
     }
 
     // Received places type to show
-    var placesType = ""
+    private var placesType = ""
     // save fisrt time places set to map
-    var placesOnMap: Boolean = false
+    private var placesOnMap: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

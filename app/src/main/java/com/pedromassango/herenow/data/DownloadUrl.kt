@@ -38,7 +38,7 @@ object DownloadUrl {
             val sb = StringBuffer()
 
             var line: String? = null
-            while ({line = bufferReader.readLine(); line }() != null) {
+            while ({ line = bufferReader.readLine(); line }() != null) {
                 //line = bufferReader.readLine()
                 sb.append(line)
             }

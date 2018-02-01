@@ -1,7 +1,9 @@
 package com.pedromassango.herenow.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.BottomNavigationView
@@ -10,6 +12,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.transition.Slide
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -19,13 +22,12 @@ import com.pedromassango.herenow.app.HereNow
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.ActivityUtils
 import com.pedromassango.herenow.extras.Utils
-import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 import com.pedromassango.herenow.services.CommonBroadcastReceiver
+import com.pedromassango.herenow.services.NetworkBroadcastReceiver
 import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
 import com.pedromassango.herenow.ui.main.fragments.map.MapFragment
-import com.pedromassango.herenow.ui.main.fragments.places.FragmentShowPlacesOnMap
 import com.pedromassango.herenow.ui.main.fragments.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_shet_content.*
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     // To handle it on Fragment selection
     var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
 
+    @SuppressLint("InflateParams")
     private fun initializeViews() {
 
         // Set a toolbar as actionBar
@@ -93,7 +96,7 @@ class MainActivity : AppCompatActivity(), MainContract.View,
     override fun onResume() {
         super.onResume()
         // Check if the device have installed Google play Service, if not, close the app
-        when(ActivityUtils.checkGooglePlayServices(this)){
+        when (ActivityUtils.checkGooglePlayServices(this)) {
             false -> this.finish()
         }
     }
@@ -127,6 +130,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
 
         if (canShowPopup) {
             // show the popup window
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                popup.enterTransition = android.transition.Slide(Slide.MODE_IN)
+                popup.enterTransition = android.transition.Slide(Slide.MODE_OUT)
+            }
             popup.showAsDropDown(mToolbar)
         }
     }
@@ -158,12 +165,12 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         }
     }
 
-    override fun startSplashActivity(){
+    override fun startSplashActivity() {
         startActivity(Intent(this, IntroActivity::class.java))
         finish()
     }
 
-    override fun startLoginActivity(){
+    override fun startLoginActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
@@ -176,7 +183,6 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         if (currentFragmentId == id) {
             return true
         }
-
 
         var title = getString(R.string.app_name)
 

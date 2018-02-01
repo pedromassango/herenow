@@ -2,16 +2,14 @@ package com.pedromassango.herenow.extras
 
 import android.content.Context
 import android.content.Intent
-import android.os.Process
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
-import com.pedromassango.herenow.R
-import com.pedromassango.herenow.services.CommonBroadcastReceiver
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-
+import com.pedromassango.herenow.R
+import com.pedromassango.herenow.services.CommonBroadcastReceiver
 
 
 /**
@@ -61,16 +59,14 @@ object ActivityUtils {
         return true
     }
 
-    // Close the app
-    fun killAppProccess() {
-        val appProccessId = Process.myPid()
-        Process.killProcess(appProccessId)
-    }
-
     /**
      * Send a broadcast to show a notification
      */
     fun showNotification(context: Context, title: String, message: String){
-        TODO("Method not implemented yet")
+        val notificationIntent = Intent(context, CommonBroadcastReceiver::class.java)
+        notificationIntent.putExtra(CommonBroadcastReceiver.INTENT_TITLE, title)
+        notificationIntent.putExtra(CommonBroadcastReceiver.INTENT_MESSAGE, message)
+
+        context.sendBroadcast(notificationIntent)
     }
 }

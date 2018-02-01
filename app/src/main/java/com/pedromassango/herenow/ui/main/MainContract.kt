@@ -5,11 +5,6 @@ package com.pedromassango.herenow.ui.main
  */
 class MainContract {
 
-    companion object {
-
-        val LOGIN_REQUEST = 766
-    }
-
     interface View{
         fun startSplashActivity()
         fun startLoginActivity()

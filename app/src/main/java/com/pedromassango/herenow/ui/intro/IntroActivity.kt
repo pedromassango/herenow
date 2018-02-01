@@ -30,7 +30,7 @@ class IntroActivity : AppIntro() {
 
         // Sliders background color
         val drawableColor = ColorDrawable(resources.getColor(R.color.gradient_bottom))
-        val color = (drawableColor as ColorDrawable).color
+        val color = drawableColor.color
 
         addSlide(AppIntroFragment.newInstance(
                 getString(R.string.intro_one_title),

@@ -9,7 +9,7 @@ class ContactsContract {
 
     companion object {
 
-        val RESULT_CONTACT_PICKER = 743
+        const val RESULT_CONTACT_PICKER = 743
     }
 
     interface View {

@@ -13,7 +13,6 @@ import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.AccountKitSettings
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
-import com.pedromassango.herenow.extras.ActivityUtils
 import com.pedromassango.herenow.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -36,7 +35,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     override fun startAccountKitActivity() {
         val intent = Intent(this, AccountKitActivity::class.java)
-        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, AccountKitSettings.build(this))
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, AccountKitSettings.build())
         startActivityForResult(intent, LoginContract.ACCOUNT_KIT_LOGIN_REQUEST_CODE)
     }
 

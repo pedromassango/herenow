@@ -8,9 +8,9 @@ import com.pedromassango.herenow.data.model.Contact
 /**
  * Created by Pedro Massango on 1/12/18.
  */
-class IValueEventListener(val myValueListener: MyValueListener?) : ValueEventListener {
+class IValueEventListener(private val myValueListener: MyValueListener?) : ValueEventListener {
 
-    var myLocationListener: MyLocationListener? = null
+    private var myLocationListener: MyLocationListener? = null
 
     constructor(myLocationListener: MyLocationListener) : this(null) {
         this.myLocationListener = myLocationListener

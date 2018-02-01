@@ -5,13 +5,16 @@ import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.ContactsDataSource
 import com.pedromassango.herenow.data.ContactsRepository
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.NotificationSender
 import com.pedromassango.herenow.extras.Utils
 
 /**
  * Created by pedromassango on 12/29/17.
  */
 class ContactsPresenter(private val view: ContactsContract.View,
-                        private val contactsRepository: ContactsRepository) : ContactsContract.Presenter {
+                        private val contactsRepository: ContactsRepository,
+                        private val preferencesHelper: PreferencesHelper) : ContactsContract.Presenter {
 
     override fun getUserContacts() {
         HereNow.logcat("ContactsPresenter: getUserContacts..")
@@ -60,6 +63,12 @@ class ContactsPresenter(private val view: ContactsContract.View,
         // Save the contact
         contactsRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener {
             override fun onSaved() {
+
+                // Notify the saved user that someone added him to a contacts list.
+                NotificationSender.send(
+                        NotificationSender.NotificationType.ADDED_AS_FRIEND,
+                        contact.phoneNumber,
+                        preferencesHelper.phoneNumber)
 
                 view.dismissSaveContactProgress()
                 view.showContact(contact)

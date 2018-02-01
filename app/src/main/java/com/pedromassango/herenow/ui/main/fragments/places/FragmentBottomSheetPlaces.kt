@@ -19,7 +19,7 @@ import com.pedromassango.herenow.ui.main.MainActivity
  *
  * List places.
  */
-class FragmentBottomSheetPlaces : Fragment(), IPlaceClickListener {
+class FragmentBottomSheetPlaces : Fragment(), (Place) -> Unit {
 
     companion object {
         private var INSTANCE: FragmentBottomSheetPlaces? = null
@@ -64,7 +64,7 @@ class FragmentBottomSheetPlaces : Fragment(), IPlaceClickListener {
     /**
      * Invoked when a place on list is clicked.
      */
-    override fun invoke(place: Place) {
+    override fun invoke(place: Place) = synchronized(MainActivity::class) {
 
         // Change activity title
         activity!!.title = place.placeName

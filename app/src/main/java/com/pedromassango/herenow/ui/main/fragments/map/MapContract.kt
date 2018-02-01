@@ -1,7 +1,7 @@
 package com.pedromassango.herenow.ui.main.fragments.map
 
+import com.google.android.gms.maps.model.LatLng
 import com.pedromassango.herenow.data.model.Contact
-import com.pedromassango.herenow.ui.main.IPermissionListener
 
 /**
  * Created by pedromassango on 12/29/17.
@@ -15,6 +15,7 @@ class MapContract {
         fun removeLoader()
         fun showNoFriendsMessage(showDialog: Boolean)
         fun showLoader()
+        fun getDistance(userLatLng: LatLng, friendLatLng: LatLng): Float
     }
 
     interface Presenter{

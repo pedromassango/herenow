@@ -31,22 +31,33 @@ class MapFragment : BaseMapFragment(), MapContract.View {
         }
     }
 
-    // MVP
-    lateinit var presenter: MapPresenter
+    // The app will only show a friend on map, if it have a minimun of five metters of distance
+    private val MIN_DISTANCE_TO_SHOW_FRIEND_ON_MAP = 5
+    // minimum distance to show a route betwen friend and the user
+    private val MIN_DISTANCE_TO_SHOW_ROUTE = 50
+    // maximum distance to show a route betwen friend and the user
+    private val MAX_DISTANCE_TO_SHOW_ROUTE = 1000
+    // Map circle radius in meters
+    private val MAP_CIRCLE_RADIUS = 200.toDouble()
 
+    // MVP
+    private lateinit var presenter: MapPresenter
+
+    // User location Marker
     private lateinit var myLocationMarker: MarkerOptions
+    // User current position
+    private var userCurrentPosition = LatLng(0.toDouble(), 0.0)
+
     // This device marker on Map
     private lateinit var myMarker: Marker
 
     // Cicle arround the user location
-    var circle: Circle? = null
+    private var circle: Circle? = null
     // Store users marker position, to just update instead of create it again on Map
     private val friendsMarkers: HashMap<String, Marker> = hashMapOf()
 
     // TO update marker position
     private var arleadySet = 0
-    // Map circle radius in meters
-    private val MAP_CIRCLE_RADIUS = 500.toDouble()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +75,6 @@ class MapFragment : BaseMapFragment(), MapContract.View {
                 preferencesHelper,
                 RepositoryManager.contactsRepository(preferencesHelper))
     }
-
 
     override fun showGetFriendsLocationError() {
         with(root) {
@@ -107,6 +117,15 @@ class MapFragment : BaseMapFragment(), MapContract.View {
 
     override fun showFriendOnMap(contact: Contact) {
 
+        // If distance betwen is less than 5 meters, hide friend on MAP
+        logcat("DIST: ${userCurrentPosition.latitude}")
+        if (userCurrentPosition.latitude != 0.0) {
+            val distance = getDistance(userCurrentPosition, LatLng(contact.lat, contact.lng))
+            if (distance < MIN_DISTANCE_TO_SHOW_FRIEND_ON_MAP) {
+                return
+            }
+        }
+
         when (friendsMarkers.containsKey(contact.phoneNumber)) {
             true -> friendsMarkers[contact.phoneNumber]!!.position = LatLng(contact.lat, contact.lng)
             false -> {
@@ -117,8 +136,8 @@ class MapFragment : BaseMapFragment(), MapContract.View {
                         .position(LatLng(contact.lat, contact.lng))
                         .flat(true)
 
-                val m = map!!.addMarker(mo)
-                friendsMarkers.put(contact.phoneNumber, m)
+                val marker = map!!.addMarker(mo)
+                friendsMarkers[contact.phoneNumber] = marker
             }
         }
     }
@@ -128,8 +147,9 @@ class MapFragment : BaseMapFragment(), MapContract.View {
         logcat("onLocationChanged")
         logcat("onLocationChanged: provider -> ${location?.provider}")
 
-        val userCurrentPosition = LatLng(location!!.latitude, location.longitude)
+        userCurrentPosition = LatLng(location!!.latitude, location.longitude)
 
+        // Check if we need to create a marker and circle, or just update the position
         if (arleadySet == 0) {
             // set the marker at first time
             myLocationMarker.position(userCurrentPosition)
@@ -137,7 +157,7 @@ class MapFragment : BaseMapFragment(), MapContract.View {
             myMarker = map!!.addMarker(myLocationMarker)
             arleadySet = 100
 
-            // Draw a circle on Map
+            // Draw a circle on Map, with he user at center
             circle = map!!.addCircle(CircleOptions()
                     .center(userCurrentPosition)
                     .fillColor(ResourcesCompat.getColor(resources, R.color.map_circle_fill, null))
@@ -162,6 +182,13 @@ class MapFragment : BaseMapFragment(), MapContract.View {
         presenter.onUserLocationChanged(location.latitude, location.longitude)
     }
 
+    override fun getDistance(userLatLng: LatLng, friendLatLng: LatLng): Float {
+        val holdResult = FloatArray(1)
+        Location.distanceBetween(userLatLng.latitude, userLatLng.longitude,
+                friendLatLng.latitude, friendLatLng.longitude, holdResult)
+        return holdResult[0]
+    }
+
     private fun traceRouterBetwenFirends(userCurrentPosition: LatLng) {
 
         // If have friends on list, trace a route
@@ -170,16 +197,13 @@ class MapFragment : BaseMapFragment(), MapContract.View {
                 // Calculate the distance betwen user and current friend on list
                 logcat("Getting distance betwen friends...")
 
-                val holdResult = FloatArray(1)
-                Location.distanceBetween(userCurrentPosition.latitude, userCurrentPosition.longitude,
-                        marker.value.position.latitude, marker.value.position.longitude, holdResult)
 
                 // The distance
-                val distanceBetwen = holdResult[0]
+                val distanceBetwen = getDistance(userCurrentPosition, marker.value.position)
                 logcat("Distance is: $distanceBetwen")
 
                 // Only trace a route if the distance is betwen 50 to 1000 meters
-                if (distanceBetwen.toInt() in 50..1000) {
+                if (distanceBetwen.toInt() in MIN_DISTANCE_TO_SHOW_ROUTE..MAX_DISTANCE_TO_SHOW_ROUTE) {
                     logcat("Distance is greatter")
 
                     logcat("Showing route in Map")
@@ -188,7 +212,7 @@ class MapFragment : BaseMapFragment(), MapContract.View {
                     map!!.addPolyline(PolylineOptions()
                             .color(ResourcesCompat.getColor(resources, R.color.gradient_bottom, null))
                             .add(marker.value.position)
-                            .add( userCurrentPosition)
+                            .add(userCurrentPosition)
                             .width(4F))
                 }
             }

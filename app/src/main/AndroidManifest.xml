@@ -22,7 +22,7 @@
 
     <application
         android:name=".app.HereNow"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -57,6 +57,7 @@
             android:theme="@style/SplashSTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -81,11 +82,25 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".services.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".services.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+
         <receiver
             android:name=".services.CommonBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.pedromassango.herenow.services.PopupBroadcastReceiver.SHOW_POPUP_MESSAGE" />
+                <action android:name="com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_POPUP_MESSAGE" />
+                <action android:name="com.pedromassango.herenow.services.CommonBroadcastReceiver.SHOW_NOTIFICATION" />
             </intent-filter>
         </receiver>
 

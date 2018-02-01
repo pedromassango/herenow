@@ -11,7 +11,7 @@ import com.pedromassango.herenow.data.model.Contact
  * Created by pedromassango on 12/29/17.
  */
 class ContactAdapter(private val context: Context,
-                     private var switcherListener: ISuitcherPermissionListener) : RecyclerView.Adapter<ContactVH>() {
+                     private var switcherListener: (mPosition: Int, mContact: Contact) -> Unit) : RecyclerView.Adapter<ContactVH>() {
 
     private var contacts = arrayListOf<Contact>()
 

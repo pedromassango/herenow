@@ -11,8 +11,8 @@ import com.pedromassango.herenow.data.model.Place
  *
  * Adapt places item.
  */
-class PlacesAdapter(val places: ArrayList<Place>,
-                    val iPlaceClickListener: IPlaceClickListener) :
+class PlacesAdapter(private val places: ArrayList<Place>,
+                    private val iPlaceClickListener: (Place) -> Unit) :
         RecyclerView.Adapter<PlaceVH>() {
 
     override fun onBindViewHolder(holder: PlaceVH?, position: Int) {

@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import com.pedromassango.herenow.R
-import com.pedromassango.herenow.app.HereNow.Companion.logcat
 
 
 /**

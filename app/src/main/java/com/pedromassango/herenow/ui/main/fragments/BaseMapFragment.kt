@@ -23,7 +23,6 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
-import com.pedromassango.herenow.ui.main.IPermissionListener
 import kotlinx.android.synthetic.main.fragment_maps.view.*
 
 /**
@@ -35,11 +34,11 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
 
     //Map
     var map: GoogleMap? = null
-    lateinit var mMapView: MapView
+    private lateinit var mMapView: MapView
 
 
     // TO request device location updates
-    lateinit var locationManager: LocationManager
+    private lateinit var locationManager: LocationManager
 
     // Location updates delay and distance
     private val distance = 20F
@@ -90,10 +89,10 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
 
     override fun onPause() {
         mMapView.onPause()
-        super.onPause()
 
         // Remove location updates
         locationManager.removeUpdates(this)
+        super.onPause()
     }
 
     override fun onLowMemory() {
@@ -123,8 +122,7 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
         }
     }
 
-    fun requestLocationPermission(iPermissionListener: IPermissionListener) {
-
+    fun requestLocationPermission(iPermissionListener: (state: Boolean) -> Unit) {
         Dexter.withActivity(activity)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(object : PermissionListener {
@@ -146,6 +144,7 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
                 }).check()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(mMap: GoogleMap?) {
         logcat("onMapReady")
 
@@ -153,30 +152,25 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
         this.map = mMap!!
 
         // Setting up map settings
-        //mMap.uiSettings?.isIndoorLevelPickerEnabled = true
-        //mMap.isBuildingsEnabled = true
+        mMap.isBuildingsEnabled = true
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-
         mMap.setMinZoomPreference(10.0F)
-        //mMap.setMaxZoomPreference(20.0F)
 
-        requestLocationPermission(object : IPermissionListener {
-            @SuppressLint("MissingPermission")
-            override fun invoke(state: Boolean) {
-                when (state) {
-                    false -> activity!!.finish()
-                    true -> {
+        // Request permission to access location
+        requestLocationPermission { state ->
+            when (state) {
+                true -> {
 
-                        // Request location updates via GPS
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this@BaseMapFragment)
-                        // Request location updates via PASSIVE-PROVIDER
-                        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this@BaseMapFragment)
-                        // Request location updates via NETWORK
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this@BaseMapFragment)
-                    }
+                    // Request location updates via GPS
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeUpdate, distance, this@BaseMapFragment)
+                    // Request location updates via PASSIVE-PROVIDER
+                    locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, timeUpdate, distance, this@BaseMapFragment)
+                    // Request location updates via NETWORK
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, timeUpdate, distance, this@BaseMapFragment)
                 }
+                false -> activity!!.finish()
             }
-        })
+        }
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) = logcat("onStatusChanged:  $provider")

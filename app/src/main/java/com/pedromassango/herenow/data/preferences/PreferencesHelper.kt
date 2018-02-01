@@ -13,6 +13,7 @@ class PreferencesHelper(context: Context) {
 
     // Keys to fetch
     private val KEY_AUTO_LOGIN = context.getString(R.string.prefs_auto_login)
+    private val KEY_SHOW_NOTIFICATION = context.getString(R.string.prefs_notification)
     private val KEY_LOGGED_IN = "com.pedromassango.herenow.database.keys.KEY_LOGGED_IN"
     private val KEY_FIRST_TIME = "com.pedromassango.herenow.database.keys.KEY_FIRST_TIME"
     private val KEY_NO_FRIENDS_DIALOG_SHOWN = "com.pedromassango.herenow.database.keys.KEY_NO_FRIENDS_DIALOG_SHOWN"
@@ -35,16 +36,19 @@ class PreferencesHelper(context: Context) {
     var autoLogin = preferences.getBoolean(KEY_AUTO_LOGIN, true)
         set(value) = editor.putBoolean(KEY_AUTO_LOGIN, value).apply()
 
+    var showNotification = preferences.getBoolean(KEY_SHOW_NOTIFICATION, true)
+        set(value) = editor.putBoolean(KEY_SHOW_NOTIFICATION, value).apply()
+
     /*var usename = preferences.getString(KEY_NAME, "")
         set(value) = editor.putString(KEY_NAME, value).apply()*/
 
-    var token = preferences.getString(KEY_LOGIN_TOKEN, "")
+    var token = preferences.getString(KEY_LOGIN_TOKEN, "")!!
         set(value) = editor.putString(KEY_LOGIN_TOKEN, value).apply()
 
-    var phoneNumber = preferences.getString(KEY_NUMBER, "")
+    var phoneNumber = preferences.getString(KEY_NUMBER, "")!!
         set(value) = editor.putString(KEY_NUMBER, value).apply()
 
-    var countryCode = preferences.getString(KEY_COUNTRY_CODE, "")
+    var countryCode = preferences.getString(KEY_COUNTRY_CODE, "")!!
         set(value) = editor.putString(KEY_COUNTRY_CODE, value).apply()
 
     fun logout() {
