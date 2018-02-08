@@ -45,7 +45,7 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
 
         // Get from User friends list
         getContacts(object : ContactsDataSource.IListener<Contact> {
-            override fun onSuccess(data: ArrayList<Contact>) {
+            override fun onSuccess(data: MutableList<Contact>) {
                 logcat("keepFriendsLocationSync: getContacts -> done: ${data.size}")
 
                 // Check if the user have friends
@@ -71,7 +71,7 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
      * This method check if the user is on some friend list, and
      * get locations of that friends.
      */
-    private fun checkAuthorization(friends: ArrayList<Contact>,
+    private fun checkAuthorization(friends: MutableList<Contact>,
                                    iLocationListener: ContactsDataSource.ILocationListener) {
 
         val friendsSize = friends.size
@@ -112,7 +112,7 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
                             //GETTING LOCATION
                             // User is allowed to see location, get friend location
                             getFriendLocation(friendsWhoAllowedToSeeTheirLocations, object : ContactsDataSource.IResult<Contact> {
-                                override fun onSuccess(data: ArrayList<Contact>) {
+                                override fun onSuccess(data: MutableList<Contact>) {
                                     logcat("Friend location received")
                                     iLocationListener.onAllowed(data)
                                 }

@@ -61,7 +61,7 @@ class FragmentShowPlacesOnMap : BaseMapFragment(), NearbyPlacesDataSource.IReque
                         placesType, this)
     }
 
-    override fun onSuccess(result: ArrayList<Place>) {
+    override fun onSuccess(result: MutableList<Place>) {
         HereNow.logcat("show placess - onSuccess")
         dismissLoader()
 

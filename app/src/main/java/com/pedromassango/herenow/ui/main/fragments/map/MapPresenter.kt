@@ -26,7 +26,7 @@ class MapPresenter(private val view: MapContract.View,
         contactsRepository.keepFriendsLocationSync(this)
     }
 
-    override fun onAllowed(contact: ArrayList<Contact>) {
+    override fun onAllowed(contact: MutableList<Contact>) {
         logcat("MapPresenter: onAllowed -> ${contact.size}")
         view.removeLoader()
 

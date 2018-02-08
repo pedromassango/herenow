@@ -43,14 +43,14 @@ class LoginPresenter(val view: LoginContract.View,
                 logcat("saving upser data remotely")
 
                 // Format phone number before save
-                phoneNumber = Utils.getFormatedNumber(phoneNumber)
+                val formatedPhoneNumber = Utils.getFormatedNumber(phoneNumber)
 
                 // Change login state
                 preferencesHelper.isLoggedIn = true
                 preferencesHelper.autoLogin = true
 
                 // Save user phone number and country code
-                preferencesHelper.phoneNumber = phoneNumber
+                preferencesHelper.phoneNumber = formatedPhoneNumber
                 preferencesHelper.countryCode = countryCode
 
                 // remove loader

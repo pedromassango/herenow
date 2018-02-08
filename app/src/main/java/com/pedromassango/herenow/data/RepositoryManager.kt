@@ -1,7 +1,5 @@
 package com.pedromassango.herenow.data
 
-import com.pedromassango.herenow.data.local.ContactsLocalRepository
-import com.pedromassango.herenow.data.local.NearbyPlacesLocalRepository
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.data.remote.ContactsRemoteRepository
 
@@ -12,11 +10,8 @@ object RepositoryManager {
 
     fun contactsRepository(helper: PreferencesHelper) =
             ContactsRepository.getInstance(
-                    ContactsRemoteRepository.getInstance(helper),
-                    ContactsLocalRepository.getInstance())
+                    ContactsRemoteRepository.getInstance(helper))
 
-    fun nearbyPlacesRepository() =
-            NearbyPlacesRepository(
-                    NearbyPlacesLocalRepository.getInstance())
+    fun nearbyPlacesRepository() = NearbyPlacesRepository()
 
 }

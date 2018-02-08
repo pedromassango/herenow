@@ -9,6 +9,16 @@ import android.net.ConnectivityManager
 
 object Utils {
 
+    /**
+     * Build the function only if the version is >= android N
+     */
+    /*@RequiresApi(Build.VERSION_CODES.M)
+    val supportLoolipop = {minVersion: Int, code: () -> Unit ->
+        if(Build.VERSION.SDK_INT >= minVersion){
+            code()
+        }
+    }*/
+
     fun isConnected(context: Context): Boolean {
         return try {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

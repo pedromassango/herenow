@@ -13,16 +13,16 @@ interface ContactsDataSource{
     }
 
     interface IListener<T>{
-        fun onSuccess(data: ArrayList<T>)
+        fun onSuccess(data: MutableList<T>)
         fun onError()
     }
 
     interface IResult<T>{
-        fun onSuccess(data: ArrayList<T>)
+        fun onSuccess(data: MutableList<T>)
     }
 
     interface ILocationListener{
-        fun onAllowed(contact: ArrayList<Contact>)
+        fun onAllowed(contact: MutableList<Contact>)
         fun onNoFriends()
         fun onError()
     }

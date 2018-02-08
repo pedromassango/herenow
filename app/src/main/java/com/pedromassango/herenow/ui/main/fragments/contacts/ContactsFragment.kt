@@ -23,7 +23,6 @@ import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Utils
 import kotlinx.android.synthetic.main.fragment_contacts.view.*
-import java.util.*
 import android.provider.ContactsContract as DeviceContract
 
 
@@ -115,7 +114,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, (Int, Contact) -> Un
      * Show received contacts from database  on List.
      * @param data the conact list to show
      */
-    override fun showContact(data: ArrayList<Contact>) {
+    override fun showContact(data: MutableList<Contact>) {
         data.forEach { showContact(it) }
     }
 

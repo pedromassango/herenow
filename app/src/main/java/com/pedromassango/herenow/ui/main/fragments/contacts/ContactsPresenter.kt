@@ -28,7 +28,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
         // Get contacts
         contactsRepository.getContacts(object : ContactsDataSource.IListener<Contact> {
-            override fun onSuccess(data: ArrayList<Contact>) {
+            override fun onSuccess(data: MutableList<Contact>) {
                 HereNow.logcat("ContactsPresenter: getUserContacts - onSuccess")
 
                 if (data.isEmpty()) {

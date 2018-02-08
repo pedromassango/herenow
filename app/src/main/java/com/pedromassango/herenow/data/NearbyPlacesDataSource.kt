@@ -9,7 +9,7 @@ import com.pedromassango.herenow.data.model.Place
 interface NearbyPlacesDataSource {
 
     interface IRequestNearbyPlacesListener{
-        fun onSuccess(result: ArrayList<Place>)
+        fun onSuccess(result: MutableList<Place>)
         fun onError()
     }
 

@@ -61,8 +61,7 @@ object NotificationSender {
 
                 val json = JSONObject()
                 json.put("to", "/topics/" + Utils.getFormatedNumber(topic))
-                val info = JSONObject()
-                info.put(Constants.NOTIFICATION_DATA, data)
+                json.put(Constants.NOTIFICATION_DATA, data)
                 // json.put("notification", data)
 
                 val writer = OutputStreamWriter(connection.outputStream)

@@ -14,7 +14,7 @@ class ContactsContract {
 
     interface View {
         fun showContact(data: Contact)
-        fun showContact(data: ArrayList<Contact>)
+        fun showContact(data: MutableList<Contact>)
         fun showSaveContactProgress()
         fun dismissSaveContactProgress()
         fun showSaveContactError()

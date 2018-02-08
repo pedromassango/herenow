@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="true">Aqui Agora</string>
+    <string name="app_name" translatable="false">Here Now</string>
 
     <string name="facebook_app_id" translatable="false">1364560283658078</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN" translatable="false">1998b6027012c6ba9b9e9fbf56923569</string>

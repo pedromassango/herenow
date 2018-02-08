@@ -1,22 +1,19 @@
 package com.pedromassango.herenow.data
 
-import com.pedromassango.herenow.data.local.ContactsLocalRepository
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.remote.ContactsRemoteRepository
 
 /**
  * Created by pedromassango on 12/30/17.
  */
-class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRepository,
-                         private val contactsLocalRepository: ContactsLocalRepository) : ContactsDataSource {
+class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRepository) : ContactsDataSource {
 
     companion object {
         private var INSTANCE: ContactsRepository? = null
 
-        fun getInstance(contactsRemoteRepository: ContactsRemoteRepository,
-                        contactsLocalRepository: ContactsLocalRepository): ContactsRepository {
+        fun getInstance(contactsRemoteRepository: ContactsRemoteRepository): ContactsRepository {
             if (INSTANCE == null) {
-                INSTANCE = ContactsRepository(contactsRemoteRepository, contactsLocalRepository)
+                INSTANCE = ContactsRepository(contactsRemoteRepository)
             }
             return INSTANCE!!
         }
@@ -36,9 +33,6 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
         contactsRemoteRepository.updatePermission(position, number, object : ContactsDataSource.IResultListener {
             override fun onSuccess(position: Int) {
 
-                // Update local repository
-                contactsLocalRepository.updatePermission(position, number, null)
-
                 // Notify the listener
                 iListener!!.onSuccess(position)
             }
@@ -50,41 +44,15 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
     }
 
     override fun getContacts(iListener: ContactsDataSource.IListener<Contact>?) {
-        contactsLocalRepository.getContacts(object : ContactsDataSource.IListener<Contact> {
-            override fun onSuccess(data: ArrayList<Contact>) {
-                if (data.isEmpty()) {
-                    getFromRemote(iListener, true)
-                    return
-                }
-
-                // Notify the listener
-                iListener!!.onSuccess(data)
-
-                // Get recent data from remote
-                getFromRemote(iListener, false)
-            }
-
-            override fun onError() {
-                getFromRemote(iListener, true)
-            }
-        })
-    }
-
-    private fun getFromRemote(iListener: ContactsDataSource.IListener<Contact>?, notifyError: Boolean) {
         contactsRemoteRepository.getContacts(object : ContactsDataSource.IListener<Contact> {
-            override fun onSuccess(data: ArrayList<Contact>) {
-
-                // update local repository
-                data.forEach { contactsLocalRepository.saveUserContacts(it, null) }
+            override fun onSuccess(data: MutableList<Contact>) {
 
                 // Notify listener
                 iListener!!.onSuccess(data)
             }
 
             override fun onError() {
-                if (notifyError) {
-                    iListener!!.onError()
-                }
+                iListener!!.onError()
             }
         })
     }
@@ -92,7 +60,6 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
     override fun saveUserContacts(contact: Contact, iSaveListener: ContactsDataSource.ISaveListener?) {
         contactsRemoteRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener {
             override fun onSaved() {
-                contactsLocalRepository.saveUserContacts(contact, null)
                 iSaveListener!!.onSaved()
             }
 
@@ -105,7 +72,6 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
     override fun removeContact(contact: Contact, position: Int, iResultListener: ContactsDataSource.IResultListener?) {
         contactsRemoteRepository.removeContact(contact, position, object : ContactsDataSource.IResultListener {
             override fun onSuccess(position: Int) {
-                contactsLocalRepository.removeContact(contact, position, null)
                 iResultListener!!.onSuccess(position)
             }
 

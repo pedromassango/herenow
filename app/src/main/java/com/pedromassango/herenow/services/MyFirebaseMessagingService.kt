@@ -1,9 +1,9 @@
 package com.pedromassango.herenow.services
 
-import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
+import com.pedromassango.herenow.extras.ActivityUtils
 import com.pedromassango.herenow.extras.Constants
 
 /**
@@ -14,7 +14,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(p0: RemoteMessage?) {
         //super.onMessageReceived(p0)
         val remoteMessage = p0!!
-
 
         // Log sender
         logcat("From: ${remoteMessage.from}")
@@ -32,10 +31,11 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val nType = nData[Constants.NOTIFICATION_TYPE]
         logcat("nData: $nType")
 
-        val nSenderNumber = nData[Constants.SENDER_NUMBER]
+        val nSenderNumber = nData[Constants.SENDER_NUMBER]!!
         logcat("nData: $nSenderNumber")
 
-        Toast.makeText(applicationContext, "$nType :: $nSenderNumber", Toast.LENGTH_LONG).show()
-        Toast.makeText(applicationContext, "$nType :: $nSenderNumber", Toast.LENGTH_LONG).show()
+        // Show the notification
+        ActivityUtils.showNotification(applicationContext,
+                nSenderNumber, nType!!)
     }
 }

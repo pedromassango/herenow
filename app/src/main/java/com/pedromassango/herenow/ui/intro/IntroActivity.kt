@@ -5,8 +5,10 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
+import com.github.paolorotolo.appintro.model.SliderPage
 import com.pedromassango.herenow.R
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.ui.main.MainActivity
@@ -15,7 +17,6 @@ import com.pedromassango.herenow.ui.main.MainActivity
  * Created by pedromassango on 12/28/17.
  */
 class IntroActivity : AppIntro() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,32 +30,45 @@ class IntroActivity : AppIntro() {
         // Just set a title, description, background and image. AppIntro will do the rest.
 
         // Sliders background color
-        val drawableColor = ColorDrawable(resources.getColor(R.color.gradient_bottom))
+        val drawableColor = ColorDrawable( ResourcesCompat.getColor(resources, R.color.gradient_bottom, null))
         val color = drawableColor.color
 
-        addSlide(AppIntroFragment.newInstance(
-                getString(R.string.intro_one_title),
-                getString(R.string.intro_one_description),
-                R.mipmap.ic_launcher, color))
+        val sp = SliderPage()
+        sp.title = getString(R.string.intro_one_title)
+        sp.description = getString(R.string.intro_one_description)
+        sp.imageDrawable = R.mipmap.ic_launcher
+        sp.bgColor = color
 
-        addSlide(AppIntroFragment.newInstance(
-                getString(R.string.intro_two_title),
-                getString(R.string.intro_two_description),
-                R.mipmap.ic_launcher, color))
+        // Intro 1
+        addSlide(AppIntroFragment.newInstance(sp))
+
+        sp.title = getString(R.string.intro_two_title)
+        sp.description = getString(R.string.intro_two_description)
+        sp.imageDrawable = R.mipmap.ic_launcher
+        sp.bgColor = color
+
+        // Intro 2
+        addSlide(AppIntroFragment.newInstance(sp))
+
+        sp.title = getString(R.string.intro_tree_title)
+        sp.description = getString(R.string.intro_tree_description)
+        sp.imageDrawable = R.drawable.ic_friends
+        sp.bgColor = color
 
         // Request permissions on fragment 3 and 4
         askForPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 3)
         askForPermissions(arrayOf(Manifest.permission.READ_CONTACTS), 4)
 
-        addSlide(AppIntroFragment.newInstance(
-                getString(R.string.intro_tree_title),
-                getString(R.string.intro_tree_description),
-                R.drawable.ic_friends, color))
+        // Intro 3
+        addSlide(AppIntroFragment.newInstance(sp))
 
-        addSlide(AppIntroFragment.newInstance(
-                getString(R.string.intro_four_title),
-                getString(R.string.intro_four_description),
-                R.mipmap.ic_launcher, color))
+        sp.title = getString(R.string.intro_four_title)
+        sp.description = getString(R.string.intro_four_description)
+        sp.imageDrawable = R.mipmap.ic_launcher
+        sp.bgColor = color
+
+        // Intro 4
+        addSlide(AppIntroFragment.newInstance(sp))
 
         // OPTIONAL METHODS
         // Override bar/separator color.
@@ -80,5 +94,4 @@ class IntroActivity : AppIntro() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
-
 }

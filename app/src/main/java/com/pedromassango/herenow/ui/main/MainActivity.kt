@@ -12,7 +12,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.transition.Slide
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -131,8 +131,8 @@ class MainActivity : AppCompatActivity(), MainContract.View,
         if (canShowPopup) {
             // show the popup window
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                popup.enterTransition = android.transition.Slide(Slide.MODE_IN)
-                popup.enterTransition = android.transition.Slide(Slide.MODE_OUT)
+                popup.enterTransition = android.transition.Slide(Gravity.TOP)
+                popup.exitTransition = android.transition.Slide(Gravity.TOP)
             }
             popup.showAsDropDown(mToolbar)
         }
