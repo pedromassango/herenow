@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_import_contact"
-        android:title="Selecionar dos contactos"
+        android:title="@string/importar_dos_contactos"
        android:icon="@drawable/ic_import_contacts_black"
         app:showAsAction="ifRoom"/>
 

@@ -16,7 +16,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome (opcional)" />
+            android:hint="@string/nome_opcional" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -29,7 +29,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cod. país + Numero de telefone"
+            android:hint="@string/cod_pa_s_numero_de_telefone"
             android:inputType="phone" />
     </android.support.design.widget.TextInputLayout>
 </RelativeLayout>

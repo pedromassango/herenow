@@ -8,9 +8,7 @@ import com.pedromassango.herenow.data.remote.ContactsRemoteRepository
  */
 object RepositoryManager {
 
-    fun contactsRepository(helper: PreferencesHelper) =
-            ContactsRepository.getInstance(
-                    ContactsRemoteRepository.getInstance(helper))
+    fun contactsRepository(helper: PreferencesHelper) = ContactsRepository.getInstance(ContactsRemoteRepository.getInstance(helper))
 
     fun nearbyPlacesRepository() = NearbyPlacesRepository()
 

@@ -20,12 +20,16 @@ class PreferencesHelper(context: Context) {
     private val KEY_NUMBER = "com.pedromassango.herenow.database.keys.KEY_NUMBER"
     private val KEY_LOGIN_TOKEN = "com.pedromassango.herenow.database.keys.KEY_LOGIN_TOKEN"
     private val KEY_COUNTRY_CODE = "com.pedromassango.herenow.database.keys.KEY_C_CODE"
+    private val KEY_FIRST_TIME_DATA_LOADED = "com.pedromassango.herenow.database.keys.KEY_FIRST_TIME_DATA_LOADED"
 
     private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val editor = preferences.edit()
 
     var isFirstTime = preferences.getBoolean(KEY_FIRST_TIME, true)
         set(value) = editor.putBoolean(KEY_FIRST_TIME, value).apply()
+
+    var dataLoaded = preferences.getBoolean(KEY_FIRST_TIME_DATA_LOADED, true)
+        set(value) = editor.putBoolean(KEY_FIRST_TIME_DATA_LOADED, value).apply()
 
     var noFriendsDialogShown = preferences.getBoolean(KEY_NO_FRIENDS_DIALOG_SHOWN, false)
         set(value) = editor.putBoolean(KEY_NO_FRIENDS_DIALOG_SHOWN, value).apply()

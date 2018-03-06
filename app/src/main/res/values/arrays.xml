@@ -2,12 +2,12 @@
 <resources>
 
     <array name="places_names">
-        <item>Restaurante</item>
-        <item>Hospital</item>
-        <item>Lojas</item>
-        <item>Escolas</item>
-        <item>Igrejas</item>
-        <item>Gasolina</item>
+        <item>@string/restaurant</item>
+        <item>@string/hospital</item>
+        <item>@string/store</item>
+        <item>@string/school</item>
+        <item>@string/church</item>
+        <item>@string/gas_station</item>
     </array>
 
     <array name="places_type">

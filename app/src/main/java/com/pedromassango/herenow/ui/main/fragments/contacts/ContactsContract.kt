@@ -32,7 +32,7 @@ class ContactsContract {
     interface Presenter {
         fun contactPicked(contact: Contact)
         fun getUserContacts()
-        fun contactPerssionSwitched(mPosition: Int, contact: Contact)
+        fun contactPermissionSwitched(mPosition: Int, contact: Contact)
         fun onDeleteContact(contact: Contact, position: Int)
     }
 }

@@ -19,8 +19,8 @@
     <string name="login_error_message">Erro de login, parece que nao ha uma conexao com a internet!</string>
     <string name="register_new_contact">Novo contacto</string>
     <string name="str_save">Salvar</string>
-    <string name="phone_number_invalid">Você adiciou um número invalido!</string>
-    <string name="no_friend_to_show_title">Sem amigos disponivel!</string>
+    <string name="phone_number_invalid">Você adiciou um número invalido.</string>
+    <string name="no_friend_to_show_title">Sem contactos disponivel!</string>
     <string name="no_friend_to_show_message">Ninguem adicionou voce a lista de permitidos a ver sua localizacao. Partlihe o app, e peca aos amigos que adicionem voce a lista de quem pode ver sua localizacao.</string>
     <string name="map">Mapa</string>
     <string name="contacts">Contactos</string>
@@ -38,19 +38,19 @@
     <string name="you_are_here">Você está aqui!</string>
     <string name="fail">Falha!</string>
     <string name="unable_to_save_contact">Nao foi possivel salvar o contacto. verifique sua conexao a internet, e tente novamente.</string>
-    <string name="not_connection">Sem conexao a internet!</string>
+    <string name="not_connection">Sem conexao a internet.</string>
     <string name="getting_contacts">Carregando contactos, aguarde…</string>
     <string name="get_contacts_error_click_toretry">Falha ao obter contactos.\nClique para tentar novamente.</string>
-    <string name="permission_updated_success">Permissao actualizada!</string>
+    <string name="permission_updated_success">Permissao actualizada.</string>
     <string name="retry">Tentar novamente</string>
-    <string name="get_friends_location_error">Falha ao obter a localizacao de seus contactos. Clique aqui para tentar novamente!</string>
+    <string name="get_friends_location_error">Falha ao obter a localizacao de seus contactos. Clique aqui para tentar novamente.</string>
     <string name="privacy_policy">Politica de privacidade</string>
     <string name="privacy_policy_summary">Clique aqui para ler a politica de privacidade.</string>
-    <string name="version">Versao</string>
+    <string name="version">Versão</string>
 
     <!--Settings preferences keys-->
-    <string name="prefs_privacy_policy_key" translatable="true">privacy_policy_key</string>
-    <string name="prefs_notification" translatable="true">prefs_notification</string>
+    <string name="prefs_privacy_policy_key" translatable="false">privacy_policy_key</string>
+    <string name="prefs_notification" translatable="false">prefs_notification</string>
     <string name="prefs_auto_login" translatable="false">prefs_auto_login</string>
     <string name="prefs_user_phone_number" translatable="false">prefs_user_phone_number</string>
     <string name="prefs_app_version" translatable="false">prefs_app_version</string>
@@ -58,19 +58,31 @@
     <string name="neaby_places">Locais próximos</string>
     <string name="request_location_permission_title">Permissao necessária</string>
     <string name="request_location_permission_message">Precisamos de sua localizacao para mostrar você no mapa!</string>
-    <string name="contact_deleted">Contacto eliminado!</string>
-    <string name="delete_contact_error_message">Ocorreu algum erro, enquanto tentamos eliminar o contacto, por favor verifique sua internet e tente novamente!</string>
+    <string name="contact_deleted">Contacto eliminado.</string>
+    <string name="delete_contact_error_message">Ocorreu algum erro, ao eliminar o contacto, por favor verifique sua internet e tente novamente!</string>
     <string name="about">Sobre</string>
     <string name="general">Geral</string>
-    <string name="notifications">Notificacoes</string>
+    <string name="notifications">Notificações</string>
     <string name="disabled">Desativado</string>
     <string name="enabled">Activado</string>
     <string name="auto_login_summary">Se desligado, você fará o login, sempre que abrir este aplicativo.</string>
     <string name="end_session">Terminar sessao</string>
-    <string name="prefs_logout">prefs_logout</string>
+    <string name="prefs_logout" translatable="false">prefs_logout</string>
     <string name="app_about">HereNow, permite que o usuário saiba quem está com ele no momento. Isto ajuda-nos quando formos ao encontro de alguém, e/ou queremos saber onde alguém está.</string>
     <string name="user">Usuario</string>
-    <string name="add_country_code">Adicione o código do país!</string>
+    <string name="add_country_code">Adicione o código do país.</string>
+    <string name="the_number">O número</string>
+    <string name="whant_to_see_your_location">quer ver você no mapa. Clique aqui permitir.</string>
+    <string name="added_you">adicionou você</string>
+    <string name="nome_opcional">Nome (opcional)</string>
+    <string name="cod_pa_s_numero_de_telefone">Cod. país + Numero de telefone</string>
+    <string name="importar_dos_contactos">Importar dos contactos</string>
+    <string name="restaurant">Restaurante</string>
+    <string name="hospital">Hospital</string>
+    <string name="store">Lojas</string>
+    <string name="school">Escolas</string>
+    <string name="church">Igrejas</string>
+    <string name="gas_station">Gasolina</string>
 
     <!--Settings preferences keys-->
 

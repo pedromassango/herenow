@@ -6,6 +6,7 @@ import com.pedromassango.herenow.data.ContactsDataSource
 import com.pedromassango.herenow.data.ContactsRepository
 import com.pedromassango.herenow.data.model.Contact
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
+import com.pedromassango.herenow.extras.Constants
 import com.pedromassango.herenow.extras.NotificationSender
 import com.pedromassango.herenow.extras.Utils
 
@@ -18,7 +19,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
     override fun getUserContacts() {
         HereNow.logcat("ContactsPresenter: getUserContacts..")
-        if (!view.isConnected) {
+        if (!view.isConnected && !preferencesHelper.dataLoaded) {
             view.showGetContactsError()
             return
         }
@@ -31,10 +32,14 @@ class ContactsPresenter(private val view: ContactsContract.View,
             override fun onSuccess(data: MutableList<Contact>) {
                 HereNow.logcat("ContactsPresenter: getUserContacts - onSuccess")
 
+                // check if there have contacts
                 if (data.isEmpty()) {
                     view.showNoContacts()
                     return
                 }
+
+                // Save state that first data loader as succeded.
+                preferencesHelper.dataLoaded = true
 
                 view.showContact(data)
             }
@@ -50,12 +55,13 @@ class ContactsPresenter(private val view: ContactsContract.View,
         logcat("PICKED: $contact")
 
         // Check if there is connection to internet
-        if (!view.isConnected) {
-            return
-        }
+        val isConnected = view.isConnected
 
-        // Show progress while saving
-        view.showSaveContactProgress()
+        // Show progress while saving ONLY if there is internet connection
+        // otherwise just save it, and reload the data.
+        if(isConnected) {
+            view.showSaveContactProgress()
+        }
 
         // Format phone number before save
         contact.phoneNumber = Utils.getFormatedNumber(contact.phoneNumber)
@@ -66,7 +72,7 @@ class ContactsPresenter(private val view: ContactsContract.View,
 
                 // Notify the saved user that someone added him to a contacts list.
                 NotificationSender.send(
-                        NotificationSender.NotificationType.ADDED_AS_FRIEND,
+                        Constants.NOTIFICATION_TYPE_ADDED_AS_FRIEND,
                         contact.phoneNumber,
                         preferencesHelper.phoneNumber)
 
@@ -81,10 +87,16 @@ class ContactsPresenter(private val view: ContactsContract.View,
                 view.showSaveContactError()
             }
         })
+
+        // if is not connected, add the data manually, because Firebase never notify
+        // listeners when the device is offline.
+        if(!isConnected){
+            view.showContact( contact)
+        }
     }
 
-    override fun contactPerssionSwitched(mPosition: Int, contact: Contact) {
-        logcat("contactPerssionSwitched: $mPosition")
+    override fun contactPermissionSwitched(mPosition: Int, contact: Contact) {
+        logcat("contactPermissionSwitched: $mPosition")
 
         // Check if is connected, before execute task
         if (!view.isConnected) {

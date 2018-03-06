@@ -2,6 +2,7 @@ package com.pedromassango.herenow.services
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.pedromassango.herenow.R
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.extras.ActivityUtils
 import com.pedromassango.herenow.extras.Constants
@@ -28,14 +29,27 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val nData = remoteMessage.data
         logcat("nData: $nData")
 
-        val nType = nData[Constants.NOTIFICATION_TYPE]
-        logcat("nData: $nType")
+        val nType = nData[Constants.NOTIFICATION_TYPE]!!
+        logcat("nData - nType: $nType")
 
         val nSenderNumber = nData[Constants.SENDER_NUMBER]!!
-        logcat("nData: $nSenderNumber")
+        logcat("nData - nSenderNumber: $nSenderNumber")
+
+        var title = nSenderNumber
+        var description = nType
+
+        when(nType.toInt()){
+           Constants.NOTIFICATION_TYPE_ADDED_AS_FRIEND->{
+               val theNumber = getString(R.string.the_number)
+               title = String.format("%s %s %s",theNumber, nSenderNumber, getString(R.string.added_you))
+
+               description = String.format("%s %s %s", theNumber,
+                       nSenderNumber, getString(R.string.whant_to_see_your_location))
+           }
+        }
 
         // Show the notification
         ActivityUtils.showNotification(applicationContext,
-                nSenderNumber, nType!!)
+                title, description)
     }
 }

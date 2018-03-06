@@ -117,14 +117,14 @@ class MapFragment : BaseMapFragment(), MapContract.View {
 
     override fun showFriendOnMap(contact: Contact) {
 
-        // If distance betwen is less than 5 meters, hide friend on MAP
         logcat("DIST: ${userCurrentPosition.latitude}")
-        if (userCurrentPosition.latitude != 0.0) {
-            val distance = getDistance(userCurrentPosition, LatLng(contact.lat, contact.lng))
-            if (distance < MIN_DISTANCE_TO_SHOW_FRIEND_ON_MAP) {
-                return
-            }
-        }
+        // If distance betwen is less than 5 meters, hide friend on MAP
+        /*  if (userCurrentPosition.latitude != 0.0) {
+              val distance = getDistance(userCurrentPosition, LatLng(contact.lat, contact.lng))
+              if (distance < MIN_DISTANCE_TO_SHOW_FRIEND_ON_MAP) {
+                  return
+              }
+          }*/
 
         when (friendsMarkers.containsKey(contact.phoneNumber)) {
             true -> friendsMarkers[contact.phoneNumber]!!.position = LatLng(contact.lat, contact.lng)

@@ -296,7 +296,7 @@ class ContactsFragment : Fragment(), ContactsContract.View, (Int, Contact) -> Un
 
     // updatePermission switch clicked
     override fun invoke(mPosition: Int, mContact: Contact) {
-        presenter.contactPerssionSwitched(mPosition, mContact)
+        presenter.contactPermissionSwitched(mPosition, mContact)
     }
 
     /**

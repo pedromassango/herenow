@@ -14,8 +14,6 @@ import java.net.URL
 
 object NotificationSender {
 
-    enum class NotificationType{  GERAL, ADDED_AS_FRIEND}
-
     // My Firebase sender id
     private const val SENDER_ID = "AAAAJcrdEr8:APA91bGy-Y4Yag7Kvl42DHFhr-XnJcxi4bWXrfQuK-88hGo_NbcWJw1Sv8NEbWPSzuA5FDnBhi-oRoKB9BjwG4acMNPaffpYxWtwNF0vbyoe7dOhAt7dx9ArEFyQgwvpW_trDCIYlNr4"
     private const val API_URL_FCM = "https://fcm.googleapis.com/fcm/send"
@@ -23,7 +21,7 @@ object NotificationSender {
 
     private val firebaseMessaging = FirebaseMessaging.getInstance()
 
-    fun send(notificationType: NotificationType,
+    fun send(notificationType: Int,
              friendNumber: String,
              senderNumber: String) {
         Log.v(TAG, "sending Notification")
