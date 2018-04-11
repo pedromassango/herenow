@@ -7,6 +7,7 @@ import com.google.firebase.database.ValueEventListener
 import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.ContactsDataSource
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.data.model.Notification
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 
 /**
@@ -16,6 +17,7 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
 
     private val CONTACTS = "users_contacts"
     private val LOCATION = "users_location"
+    private val NOTIFICATIONS = "user_notifications"
 
     companion object {
         private var INSTANCE: ContactsRemoteRepository? = null
@@ -38,6 +40,8 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
 
     // LOCATION -> store the users location info
     private val usersLocationRef = rootRef.child(LOCATION).ref
+
+    private val usersNotifications = rootRef.child(NOTIFICATIONS)
 
     // Read from USERS_CONTACT && LOCATION
     override fun keepFriendsLocationSync(iLocationListener: ContactsDataSource.ILocationListener) {
@@ -163,7 +167,9 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
     override fun saveUserContacts(contact: Contact, iSaveListener: ContactsDataSource.ISaveListener?) {
         logcat("saveUserContacts")
 
-        userContactsRef.child(contact.phoneNumber)
+        val formattedNumber = contact.phoneNumber
+
+        userContactsRef.child(formattedNumber)
                 .setValue(contact.toDataMap())
                 .addOnFailureListener { iSaveListener!!.onError() }
                 .addOnSuccessListener { iSaveListener!!.onSaved() }
@@ -238,5 +244,45 @@ class ContactsRemoteRepository(private val preferencesHelper: PreferencesHelper)
             }))
         }
 
+    }
+
+    override fun getNotifications(callback: (ArrayList<Notification>) -> Unit) {
+        usersNotifications
+                .child(userPhone)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError?) {
+                callback(arrayListOf())
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                if (p0 == null) {
+                    callback(arrayListOf())
+                    return
+                }
+
+                val data = arrayListOf<Notification>()
+
+                p0.children.forEach {
+                    val n = it.getValue(Notification::class.java)
+                    data.add(n!!)
+                }
+
+                callback(data)
+            }
+        })
+    }
+
+    override fun sendNotification(update: Boolean, notification: Notification) {
+
+        val formattedNumber = notification.toNumber
+
+        // If is to update just get the same id, otherwise, get a new id
+        val id = if(update) notification.id else rootRef.push().key
+
+        usersNotifications
+                .child(formattedNumber)
+                .child(id)
+                .setValue(notification.toDataMap())
     }
 }

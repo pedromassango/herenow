@@ -83,6 +83,11 @@
     <string name="school">Escolas</string>
     <string name="church">Igrejas</string>
     <string name="gas_station">Gasolina</string>
+    <string name="update_permission_error_message">Nao foi possivel actualizar a permissao, tente novamente.</string>
+    <string name="your_notifications_appear_here">Suas notificacoes estarao aqui.</string>
+    <string name="request_gps_enable_title">GPS desabilitado</string>
+    <string name="request_gps_enable_message">Precisamos que você ative o GPS, para poder-mos localizar seus contactos.</string>
+    <string name="str_enable">Activar</string>
 
     <!--Settings preferences keys-->
 

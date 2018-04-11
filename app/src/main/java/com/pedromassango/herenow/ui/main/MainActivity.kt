@@ -28,6 +28,7 @@ import com.pedromassango.herenow.ui.intro.IntroActivity
 import com.pedromassango.herenow.ui.login.LoginActivity
 import com.pedromassango.herenow.ui.main.fragments.contacts.ContactsFragment
 import com.pedromassango.herenow.ui.main.fragments.map.MapFragment
+import com.pedromassango.herenow.ui.main.fragments.notifications.FragmentNotifications
 import com.pedromassango.herenow.ui.main.fragments.settings.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_shet_content.*
@@ -203,6 +204,10 @@ class MainActivity : AppCompatActivity(), MainContract.View,
             R.id.action_contacts -> {
                 title = getString(R.string.contacts)
                 ContactsFragment.getInstance()
+            }
+            R.id.action_notifications -> {
+                title = getString(R.string.notifications)
+                FragmentNotifications()
             }
             R.id.action_settings -> {
                 // Disable show popup window on settings fragment

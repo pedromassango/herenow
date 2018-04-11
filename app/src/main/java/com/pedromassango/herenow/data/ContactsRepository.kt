@@ -1,6 +1,7 @@
 package com.pedromassango.herenow.data
 
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.data.model.Notification
 import com.pedromassango.herenow.data.remote.ContactsRemoteRepository
 
 /**
@@ -17,6 +18,14 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
             }
             return INSTANCE!!
         }
+    }
+
+    override fun sendNotification(update: Boolean, notification: Notification) {
+        contactsRemoteRepository.sendNotification(update, notification)
+    }
+
+    override fun getNotifications(callback: (ArrayList<Notification>) -> Unit) {
+        contactsRemoteRepository.getNotifications(callback)
     }
 
     override fun keepFriendsLocationSync(iLocationListener: ContactsDataSource.ILocationListener) {
@@ -60,6 +69,8 @@ class ContactsRepository(private val contactsRemoteRepository: ContactsRemoteRep
     override fun saveUserContacts(contact: Contact, iSaveListener: ContactsDataSource.ISaveListener?) {
         contactsRemoteRepository.saveUserContacts(contact, object : ContactsDataSource.ISaveListener {
             override fun onSaved() {
+
+                // Send a notification to thr saved contact, and notify the listener
                 iSaveListener!!.onSaved()
             }
 

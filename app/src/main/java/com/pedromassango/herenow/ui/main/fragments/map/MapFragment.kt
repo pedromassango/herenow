@@ -155,6 +155,7 @@ class MapFragment : BaseMapFragment(), MapContract.View {
             myLocationMarker.position(userCurrentPosition)
             myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_user))
             myMarker = map!!.addMarker(myLocationMarker)
+            myMarker.showInfoWindow() // show info immediately
             arleadySet = 100
 
             // Draw a circle on Map, with he user at center

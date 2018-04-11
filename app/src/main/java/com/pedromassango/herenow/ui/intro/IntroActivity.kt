@@ -36,7 +36,7 @@ class IntroActivity : AppIntro() {
         val sp = SliderPage()
         sp.title = getString(R.string.intro_one_title)
         sp.description = getString(R.string.intro_one_description)
-        sp.imageDrawable = R.mipmap.ic_launcher
+        sp.imageDrawable = R.drawable.location_pin
         sp.bgColor = color
 
         // Intro 1
@@ -44,7 +44,7 @@ class IntroActivity : AppIntro() {
 
         sp.title = getString(R.string.intro_two_title)
         sp.description = getString(R.string.intro_two_description)
-        sp.imageDrawable = R.mipmap.ic_launcher
+        sp.imageDrawable = R.drawable.visibility
         sp.bgColor = color
 
         // Intro 2
@@ -52,7 +52,7 @@ class IntroActivity : AppIntro() {
 
         sp.title = getString(R.string.intro_tree_title)
         sp.description = getString(R.string.intro_tree_description)
-        sp.imageDrawable = R.drawable.ic_friends
+        sp.imageDrawable = R.drawable.location_pin
         sp.bgColor = color
 
         // Request permissions on fragment 3 and 4
@@ -64,7 +64,7 @@ class IntroActivity : AppIntro() {
 
         sp.title = getString(R.string.intro_four_title)
         sp.description = getString(R.string.intro_four_description)
-        sp.imageDrawable = R.mipmap.ic_launcher
+        sp.imageDrawable = R.drawable.contact
         sp.bgColor = color
 
         // Intro 4

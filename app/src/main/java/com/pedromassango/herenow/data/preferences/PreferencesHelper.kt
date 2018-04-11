@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.pedromassango.herenow.R
+import com.pedromassango.herenow.extras.Utils
 
 /**
  * Created by Pedro Massango on 13/06/2017 at 21:52.
@@ -50,7 +51,7 @@ class PreferencesHelper(context: Context) {
         set(value) = editor.putString(KEY_LOGIN_TOKEN, value).apply()
 
     var phoneNumber = preferences.getString(KEY_NUMBER, "")!!
-        set(value) = editor.putString(KEY_NUMBER, value).apply()
+        set(value) = editor.putString(KEY_NUMBER, Utils.getFormatedNumber(value)).apply()
 
     var countryCode = preferences.getString(KEY_COUNTRY_CODE, "")!!
         set(value) = editor.putString(KEY_COUNTRY_CODE, value).apply()

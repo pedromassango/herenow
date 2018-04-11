@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@android:color/transparent"
+    android:clickable="true"
+    android:gravity="start"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingEnd="@dimen/row_padding_end"
+    android:paddingLeft="@dimen/row_padding_end"
+    android:paddingRight="@dimen/row_padding_start"
+    android:paddingStart="@dimen/row_padding_start"
+    android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_notification_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/developer_name"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:typeface="serif" />
+
+    <TextView
+            android:paddingStart="4dp"
+            android:paddingLeft="4dp"
+        android:layout_toEndOf="@id/tv_notification_author"
+        android:layout_toRightOf="@id/tv_notification_author"
+            android:id="@+id/tv_notification_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quer ver sua localizacao."
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:typeface="serif" />
+
+    <Button
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/size16"
+        android:layout_below="@id/tv_notification_author"
+        android:background="@drawable/circle_retangle"
+        android:id="@+id/btn_allow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Permitir"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <Button
+        android:layout_marginEnd="@dimen/size16"
+        android:layout_marginRight="@dimen/size16"
+        android:layout_toStartOf="@id/btn_allow"
+        android:layout_toLeftOf="@id/btn_allow"
+        android:layout_marginTop="@dimen/size16"
+        android:layout_below="@id/tv_notification_author"
+        android:background="@drawable/circle_retangle"
+        android:id="@+id/btn_ignore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ignorar"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+</RelativeLayout>

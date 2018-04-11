@@ -17,7 +17,10 @@ data class Contact(var phoneNumber: String,
     constructor(): this("")
 
     fun getSimpleName(): String {
-        return if (contactName.contains(" ")) {
+        return if(contactName.trim().isEmpty()){
+            phoneNumber
+        }
+        else if (contactName.contains(" ")) {
             val c1 = contactName[0]
             val c2 = contactName[contactName.indexOf(" ") + 1]
             String.format("%s%s", c1, c2)

@@ -3,9 +3,11 @@ package com.pedromassango.herenow.ui.main.fragments
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -84,7 +86,28 @@ abstract class BaseMapFragment : Fragment(), OnMapReadyCallback, LocationListene
 
     override fun onResume() {
         super.onResume()
-        mMapView.onResume()
+
+        // if GPS is disable, request enable it
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+
+            val dialog = AlertDialog.Builder(activity!!)
+                    .setTitle(R.string.request_gps_enable_title)
+                    .setMessage(R.string.request_gps_enable_message)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.str_enable) { _, _ ->
+
+                        startActivity( Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    }
+
+            dialog.create().show()
+        }else{
+            mMapView.getMapAsync(this)
+
+            // resume the mapView
+            mMapView.onResume()
+        }
     }
 
     override fun onPause() {

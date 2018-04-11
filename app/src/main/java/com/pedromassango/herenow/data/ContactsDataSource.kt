@@ -1,6 +1,7 @@
 package com.pedromassango.herenow.data
 
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.data.model.Notification
 
 /**
  * Created by pedromassango on 12/29/17.
@@ -46,4 +47,6 @@ interface ContactsDataSource{
 
     fun keepFriendsLocationSync(iLocationListener: ILocationListener)
     fun removeContact(contact: Contact, position: Int, iResultListener: IResultListener?)
+    fun getNotifications(callback: (ArrayList<Notification>) -> Unit)
+    fun sendNotification(update: Boolean, notification: Notification)
 }

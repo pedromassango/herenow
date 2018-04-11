@@ -5,6 +5,7 @@ import com.pedromassango.herenow.app.HereNow.Companion.logcat
 import com.pedromassango.herenow.data.ContactsDataSource
 import com.pedromassango.herenow.data.ContactsRepository
 import com.pedromassango.herenow.data.model.Contact
+import com.pedromassango.herenow.data.model.Notification
 import com.pedromassango.herenow.data.preferences.PreferencesHelper
 import com.pedromassango.herenow.extras.Constants
 import com.pedromassango.herenow.extras.NotificationSender
@@ -75,6 +76,14 @@ class ContactsPresenter(private val view: ContactsContract.View,
                         Constants.NOTIFICATION_TYPE_ADDED_AS_FRIEND,
                         contact.phoneNumber,
                         preferencesHelper.phoneNumber)
+
+                // send a notification (save a notification in database
+                val n = Notification()
+                n.authorName = preferencesHelper.phoneNumber
+                n.authorNumber = preferencesHelper.phoneNumber
+                n.toNumber = contact.phoneNumber
+                // send notification in friend database
+                contactsRepository.sendNotification(false, n)
 
                 view.dismissSaveContactProgress()
                 view.showContact(contact)
