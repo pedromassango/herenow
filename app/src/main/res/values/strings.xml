@@ -16,12 +16,12 @@
 
     <string name="something_was_wrong">Algo de errado aconteceu, tente novamente!</string>
     <string name="login_error">Erro de login, tente novamente.</string>
-    <string name="login_error_message">Erro de login, parece que nao ha uma conexao com a internet!</string>
+    <string name="login_error_message">Erro de login, parece que não ha uma conexão com a internet!</string>
     <string name="register_new_contact">Novo contacto</string>
     <string name="str_save">Salvar</string>
     <string name="phone_number_invalid">Você adiciou um número invalido.</string>
     <string name="no_friend_to_show_title">Sem contactos disponivel!</string>
-    <string name="no_friend_to_show_message">Ninguem adicionou voce a lista de permitidos a ver sua localizacao. Partlihe o app, e peca aos amigos que adicionem voce a lista de quem pode ver sua localizacao.</string>
+    <string name="no_friend_to_show_message">Ninguém adicionou você a lista de permitidos a ver sua localizacão. Partilhe o app, e peca aos amigos que adicionem voce a lista de quem pode ver sua localizacão.</string>
     <string name="map">Mapa</string>
     <string name="contacts">Contactos</string>
     <string name="settings">Configuracoes</string>
@@ -72,7 +72,7 @@
     <string name="user">Usuario</string>
     <string name="add_country_code">Adicione o código do país.</string>
     <string name="the_number">O número</string>
-    <string name="whant_to_see_your_location">quer ver você no mapa. Clique aqui permitir.</string>
+    <string name="whant_to_see_your_location">quer ver você no mapa. Clique aqui para permitir.</string>
     <string name="added_you">adicionou você</string>
     <string name="nome_opcional">Nome (opcional)</string>
     <string name="cod_pa_s_numero_de_telefone">Cod. país + Numero de telefone</string>
@@ -83,11 +83,15 @@
     <string name="school">Escolas</string>
     <string name="church">Igrejas</string>
     <string name="gas_station">Gasolina</string>
-    <string name="update_permission_error_message">Nao foi possivel actualizar a permissao, tente novamente.</string>
+    <string name="update_permission_error_message">Não foi possível actualizar a permissão. Tente novamente.</string>
     <string name="your_notifications_appear_here">Suas notificacoes estarao aqui.</string>
     <string name="request_gps_enable_title">GPS desabilitado</string>
     <string name="request_gps_enable_message">Precisamos que você ative o GPS, para poder-mos localizar seus contactos.</string>
     <string name="str_enable">Activar</string>
+    <string name="want_see_your_location">Quer ver sua localizacão.</string>
+    <string name="allow">Permitir</string>
+    <string name="ignore">Ignorar</string>
+    <string name="click_here_to_quit">Clique aqui para sair.</string>
 
     <!--Settings preferences keys-->
 

@@ -7,8 +7,9 @@
             android:summary="@string/app_name"/>
 
         <Preference
+            android:title="@string/end_session"
             android:key="@string/prefs_logout"
-            android:summary="@string/end_session" />
+            android:summary="@string/click_here_to_quit" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/general">
@@ -48,7 +49,8 @@
             android:summary="@string/privacy_policy_summary"
             android:title="@string/privacy_policy" />
 
-        <Preference android:title=""/>
+        <Preference android:title=""
+            android:selectable="false"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

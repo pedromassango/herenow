@@ -8,7 +8,7 @@ import com.pedromassango.herenow.data.remote.GetNearbyPlacesData
 /**
  * Created by Pedro Massango on 1/21/18.
  */
-class NearbyPlacesRepository() : NearbyPlacesDataSource {
+class NearbyPlacesRepository : NearbyPlacesDataSource {
 
     override fun getNearbyPlaces(userLocation: LatLng, placeType: String,
                                  iRequestNearbyPlacesListener: NearbyPlacesDataSource.IRequestNearbyPlacesListener?) {

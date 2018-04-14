@@ -32,7 +32,7 @@ class LoginPresenter(val view: LoginContract.View,
                 logcat("onSuccess")
 
                 val number = account.phoneNumber
-                var phoneNumber = number.toString()
+                val phoneNumber = number.toString()
                 val countryCode = number.countryCode
 
                 logcat("number: $number")

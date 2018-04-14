@@ -5,8 +5,8 @@
     android:layout_height="80dp"
     android:background="@android:color/transparent"
     android:clickable="true"
-    android:gravity="start"
     android:focusable="true"
+    android:gravity="start"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
     android:paddingEnd="@dimen/row_padding_end"
@@ -15,54 +15,54 @@
     android:paddingStart="@dimen/row_padding_start"
     android:paddingTop="8dp">
 
-        <TextView
-            android:id="@+id/tv_notification_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/developer_name"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:typeface="serif" />
+    <TextView
+        android:id="@+id/tv_notification_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/developer_name"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
 
     <TextView
-            android:paddingStart="4dp"
-            android:paddingLeft="4dp"
+        android:id="@+id/tv_notification_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toEndOf="@id/tv_notification_author"
         android:layout_toRightOf="@id/tv_notification_author"
-            android:id="@+id/tv_notification_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quer ver sua localizacao."
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:typeface="serif" />
+        android:paddingLeft="4dp"
+        android:paddingStart="4dp"
+        android:text="@string/want_see_your_location"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:typeface="serif" />
 
     <Button
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/size16"
-        android:layout_below="@id/tv_notification_author"
-        android:background="@drawable/circle_retangle"
         android:id="@+id/btn_allow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Permitir"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_notification_author"
+        android:layout_marginTop="@dimen/size16"
+        android:background="@drawable/circle_retangle"
+        android:text="@string/allow"
         android:textColor="@color/white"
         android:textSize="12sp" />
 
     <Button
-        android:layout_marginEnd="@dimen/size16"
-        android:layout_marginRight="@dimen/size16"
-        android:layout_toStartOf="@id/btn_allow"
-        android:layout_toLeftOf="@id/btn_allow"
-        android:layout_marginTop="@dimen/size16"
-        android:layout_below="@id/tv_notification_author"
-        android:background="@drawable/circle_retangle"
         android:id="@+id/btn_ignore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ignorar"
+        android:layout_below="@id/tv_notification_author"
+        android:layout_marginEnd="@dimen/size16"
+        android:layout_marginRight="@dimen/size16"
+        android:layout_marginTop="@dimen/size16"
+        android:layout_toLeftOf="@id/btn_allow"
+        android:layout_toStartOf="@id/btn_allow"
+        android:background="@drawable/circle_retangle"
+        android:text="@string/ignore"
         android:textColor="@color/white"
         android:textSize="12sp" />
 
